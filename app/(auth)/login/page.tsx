@@ -20,6 +20,9 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Compass, Loader2 } from "lucide-react";
 import { useState } from "react";
 import GoogleColoredIcon from "../assets/google-colored-icon";
+import { googleAuth, login } from "@/api/actions/auth";
+import { toast } from "sonner";
+import { Eye, EyeOff } from "lucide-react";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -32,6 +35,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<LoginFormType>({
     resolver: zodResolver(loginSchema),
@@ -42,13 +46,29 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (data: LoginFormType) => {
-    setError("");
-    setLoading(true);
+  setError("");
+  setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-      router.push("/dashboard");
-    }, 1500);
+  try {
+    const res = await login(data);
+    console.log(res);
+    toast.success("Login successful! Redirecting to dashboard...");
+    router.push("/dashboard");
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An error occurred while logging in. Please try again.";
+    setError(errorMessage);
+    toast.error(errorMessage);
+  } finally {
+    setLoading(false);
+  }
+};
+
+  const handleGoogleAuth = async () => {
+    try {
+      googleAuth();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -90,13 +110,31 @@ export default function LoginPage() {
             {/* PASSWORD */}
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                {...form.register("password")}
-                disabled={loading}
-              />
+
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  {...form.register("password")}
+                  disabled={loading}
+                  className="pr-10"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700 cursor-pointer"
+                  tabIndex={-1}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
+
               {form.formState.errors.password && (
                 <p className="text-red-500 text-sm">
                   {form.formState.errors.password.message}
@@ -115,6 +153,8 @@ export default function LoginPage() {
 
             <Button
               variant="outline"
+              type="button"
+              onClick={handleGoogleAuth}
               className="w-full cursor-pointer hover:bg-white/10 transition-colors"
               size={"lg"}
             >
@@ -141,10 +181,7 @@ export default function LoginPage() {
 
             <p className="text-sm text-muted-foreground text-center">
               Don&apos;t have an account?{" "}
-              <Link
-                href="/sign-up"
-                className="text-primary hover:underline"
-              >
+              <Link href="/sign-up" className="text-primary hover:underline">
                 Sign up
               </Link>
             </p>
