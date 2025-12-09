@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
   Compass,
@@ -76,7 +76,7 @@ const CreativeFeatureCard = ({
       transition={{ type: 'spring', stiffness: 400, damping: 15 }}
       className="group relative h-full flex flex-col overflow-hidden rounded-3xl border-2 border-white/50 bg-white/80 backdrop-blur-sm shadow-xl hover:shadow-2xl hover:border-brand-teal/50 transition-all duration-300"
     >
-      <div className="relative h-32 bg-gradient-to-br from-brand-blush via-brand-teal to-brand-sky overflow-hidden">
+      <div className="relative h-32 bg-linear-to-br from-brand-blush via-brand-teal to-brand-sky overflow-hidden">
         <motion.div
           className="absolute inset-0"
           animate={{ rotate: 360 }}
@@ -95,9 +95,9 @@ const CreativeFeatureCard = ({
 
         {/* Wave Separator */}
         <div className="absolute -bottom-px left-0 w-full leading-0">
-           <svg className="w-full h-8 text-white fill-current opacity-90" viewBox="0 0 1200 120" preserveAspectRatio="none">
-             <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
-           </svg>
+          <svg className="w-full h-8 text-white fill-current opacity-90" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+          </svg>
         </div>
       </div>
 
