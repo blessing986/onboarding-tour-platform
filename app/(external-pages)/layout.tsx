@@ -1,7 +1,8 @@
-import { Navigation } from '@/components/navigation';
+import { Header } from '@/components/Header';
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { Footer } from '@/components/Footer';
 // import { AuthProvider } from '@/lib/auth-context';
 
 
@@ -22,9 +23,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {/* <AuthProvider> */}
-          <Navigation />
+          <Header />
           <main className="pt-16">{children}</main>
         {/* </AuthProvider> */}
+          <Footer />
+
       </body>
     </html>
   );
