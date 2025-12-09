@@ -253,17 +253,17 @@ export default function DocsPage() {
                           <div className="flex flex-wrap gap-3">
                             <Button
                               onClick={() => setActiveSection("integration")}
-                              className="bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky hover:from-brand-blush/90 hover:to-brand-sky/90 text-white shadow-xl shadow-brand-teal/30 rounded-full"
+                              className="bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky hover:from-brand-blush/90 hover:to-brand-sky/90 text-white shadow-xl shadow-brand-teal/30 rounded-full cursor-pointer"
                             >
                               View Integration Guide
                               <ChevronRight className="ml-2 h-4 w-4" />
                             </Button>
-                            <Button
+                            {/* <Button
                               variant="outline"
                               className="border-brand-teal/50 text-brand-teal hover:bg-brand-teal/10 rounded-full"
                             >
                               Watch Video Tutorial
-                            </Button>
+                            </Button> */}
                           </div>
                         </CardContent>
                       </Card>
