@@ -94,9 +94,9 @@ export function Navigation() {
 
         {/* Sign In Button - Right */}
         <div className="hidden md:flex items-center">
-          <Link href="/auth/login">
+          <Link href="/login">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button size="sm" className="bg-linear-to-r from-brand-teal to-brand-sky hover:from-brand-teal/90 hover:to-brand-sky/90 text-white rounded-full px-6">
+              <Button size="sm" className="bg-linear-to-r from-brand-teal to-brand-sky hover:from-brand-teal/90 hover:to-brand-sky/90 text-white rounded-full px-6 cursor-pointer">
                 Sign In
               </Button>
             </motion.div>
