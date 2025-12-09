@@ -20,15 +20,27 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Compass, Loader2 } from "lucide-react";
 import { useState } from "react";
 import GoogleColoredIcon from "../assets/google-colored-icon";
+import { googleAuth, signup } from "@/api/actions/auth";
+import { toast } from "sonner";
+import { Eye, EyeOff } from "lucide-react";
 
-const signupSchema = z.object({
-  email: z.string().email("Please enter a valid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string().min(6, "Please confirm your password"),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
+const signupSchema = z
+  .object({
+    email: z.string().email("Please enter a valid email"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters long")
+      .max(32, "Password must not exceed 32 characters")
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[\S]{8,32}$/,
+        "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
+      ),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 type SignUpFormType = z.infer<typeof signupSchema>;
 
@@ -36,6 +48,8 @@ export default function SignUpPage() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const form = useForm<SignUpFormType>({
     resolver: zodResolver(signupSchema),
@@ -50,10 +64,25 @@ export default function SignUpPage() {
     setError("");
     setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-      router.push("/dashboard");
-    }, 1500);
+    try {
+         await signup(data);
+        toast.success("Registration successful! Redirecting to dashboard...");
+        router.push("/dashboard");
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred while signing up. Please try again.";
+        setError(errorMessage);
+        toast.error(errorMessage);
+      } finally {
+        setLoading(false);
+      }
+  };
+
+  const handleGoogleAuth = async () => {
+    try {
+      googleAuth();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -95,13 +124,31 @@ export default function SignUpPage() {
             {/* PASSWORD */}
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Create a password"
-                {...form.register("password")}
-                disabled={loading}
-              />
+
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Create a password"
+                  {...form.register("password")}
+                  disabled={loading}
+                  className="pr-10"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                  tabIndex={-1}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
+
               {form.formState.errors.password && (
                 <p className="text-red-500 text-sm">
                   {form.formState.errors.password.message}
@@ -112,13 +159,37 @@ export default function SignUpPage() {
             {/* CONFIRM PASSWORD */}
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                placeholder="Confirm your password"
-                {...form.register("confirmPassword")}
-                disabled={loading}
-              />
+
+              <div className="relative">
+                <Input
+                  id="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Confirm your password"
+                  {...form.register("confirmPassword", {
+                    validate: (value) => {
+                      return form.getValues().password === value
+                        ? true
+                        : "Passwords don't match";
+                    },
+                  })}
+                  disabled={loading}
+                  className="pr-10"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                  tabIndex={-1}
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
+
               {form.formState.errors.confirmPassword && (
                 <p className="text-red-500 text-sm">
                   {form.formState.errors.confirmPassword.message}
@@ -137,6 +208,8 @@ export default function SignUpPage() {
 
             <Button
               variant="outline"
+              type="button"
+              onClick={handleGoogleAuth}
               className="w-full cursor-pointer hover:bg-white/10 transition-colors"
               size={"lg"}
             >
@@ -163,10 +236,7 @@ export default function SignUpPage() {
 
             <p className="text-sm text-muted-foreground text-center">
               Already have an account?{" "}
-              <Link
-                href="/login"
-                className="text-primary hover:underline"
-              >
+              <Link href="/login" className="text-primary hover:underline">
                 Sign in
               </Link>
             </p>

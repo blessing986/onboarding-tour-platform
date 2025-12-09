@@ -1,16 +1,14 @@
+import "./globals.css";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { Toaster } from "sonner";
 
-import './globals.css';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-
-
-
-
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'TourGuide - Embeddable Onboarding Tours',
-  description: 'Create beautiful, interactive onboarding tours for your website',
+  title: "TourGuide - Embeddable Onboarding Tours",
+  description:
+    "Create beautiful, interactive onboarding tours for your website",
 };
 
 export default function RootLayout({
@@ -21,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Toaster position="top-right" />
         {children}
       </body>
     </html>
