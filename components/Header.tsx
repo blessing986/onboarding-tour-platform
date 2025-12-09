@@ -2,9 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-// import { useAuth } from '@/lib/auth-context';
 import { Button } from '@/components/ui/button';
-import { Compass, LogOut, Menu, X } from 'lucide-react';
+import { Compass, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
@@ -94,7 +93,7 @@ export function Header() {
 
         {/* Sign In Button - Right */}
         <div className="hidden md:flex items-center">
-          <Link href="/auth/login">
+          <Link href="/login">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button size="sm" className="bg-linear-to-r from-brand-teal to-brand-sky hover:from-brand-teal/90 hover:to-brand-sky/90 text-white rounded-full px-6">
                 Sign In
