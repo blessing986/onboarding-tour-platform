@@ -47,7 +47,7 @@ const CreateTourModal = ({
 
     try {
       const { data, error } = await supabase
-        .from('tours')
+        .from('Tours')
         .insert({
           user_id: user!.id,
           name: newTourName,

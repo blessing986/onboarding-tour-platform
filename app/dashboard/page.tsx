@@ -32,6 +32,7 @@ import { useRouter } from 'next/navigation';
 import supabase from '@/supabase';
 import { Tour } from '@/types/tours';
 import { Badge } from '@/components/ui/badge';
+import { toast } from 'sonner';
 
 const fadeIn = {
   initial: { opacity: 0, y: 10 },
@@ -97,8 +98,9 @@ export default function DashboardPage() {
   const fetchTours = async () => {
     try {
       const { data, error } = await supabase
-        .from('tours')
+        .from('Tours')
         .select('*')
+        .eq('user_id', user?.id)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -114,7 +116,7 @@ export default function DashboardPage() {
     if (!confirm('Are you sure you want to delete this tour?')) return;
 
     try {
-      const { error } = await supabase.from('tours').delete().eq('id', tourId);
+      const { error } = await supabase.from('Tours').delete().eq('id', tourId);
 
       if (error) throw error;
       fetchTours();
@@ -125,13 +127,17 @@ export default function DashboardPage() {
 
   const toggleTourActive = async (tour: Tour) => {
     try {
-      const { error } = await supabase
-        .from('tours')
-        .update({ is_active: !tour.is_active })
-        .eq('id', tour.id);
+      if (!tour.steps || tour.steps.length < 5) {
+        toast.error('Tour steps must be 5 to be able to activate/diactivate');
+      } else {
+        const { error } = await supabase
+          .from('Tours')
+          .update({ is_active: !tour.is_active })
+          .eq('id', tour.id);
 
-      if (error) throw error;
-      fetchTours();
+        if (error) throw error;
+        fetchTours();
+      }
     } catch (err) {
       console.error('Error updating tour:', err);
     }
@@ -227,20 +233,19 @@ export default function DashboardPage() {
             ))}
           </motion.div>
 
-          {/* Tours List - Empty State */}
-          {tours.length === 0 ? (
-            <motion.div initial='initial' animate='animate' variants={fadeIn}>
-              <Card className='bg-white/80 backdrop-blur-sm border-2 border-white/50 shadow-xl overflow-hidden'>
-                <CardHeader className='bg-linear-to-r from-brand-sky/5 to-brand-blush/5 border-b'>
-                  <CardTitle className='flex items-center gap-2'>
-                    <Compass className='h-6 w-6 text-brand-teal' />
-                    Your Tours
-                  </CardTitle>
-                  <CardDescription>
-                    Create and manage your onboarding experiences
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className='p-12'>
+          <motion.div initial='initial' animate='animate' variants={fadeIn}>
+            <Card className='bg-white/80 backdrop-blur-sm border-2 border-white/50 shadow-xl overflow-hidden'>
+              <CardHeader className='bg-linear-to-r from-brand-sky/5 to-brand-blush/5 border-b'>
+                <CardTitle className='flex items-center gap-2'>
+                  <Compass className='h-6 w-6 text-brand-teal' />
+                  Your Tours
+                </CardTitle>
+                <CardDescription>
+                  Create and manage your onboarding experiences
+                </CardDescription>
+              </CardHeader>
+              <CardContent className='p-12'>
+                {tours.length === 0 ? (
                   <div className='text-center max-w-md mx-auto space-y-6'>
                     <div className='w-24 h-24 bg-linear-to-br from-brand-teal/10 to-brand-sky/10 rounded-full flex items-center justify-center mx-auto'>
                       <Compass className='h-12 w-12 text-brand-teal/60' />
@@ -300,70 +305,76 @@ export default function DashboardPage() {
                       </ul>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ) : (
-            <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6'>
-              {tours.map((tour) => (
-                <Card
-                  key={tour.id}
-                  className='hover:shadow-lg transition-shadow'
-                >
-                  <CardHeader>
-                    <div className='flex justify-between items-start mb-2'>
-                      <CardTitle className='text-xl'>{tour.name}</CardTitle>
-                      <Badge variant={tour.is_active ? 'default' : 'secondary'}>
-                        {tour.is_active ? 'Active' : 'Inactive'}
-                      </Badge>
-                    </div>
-                    <CardDescription>
-                      {tour.description || 'No description'}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className='flex flex-wrap gap-2 mb-4'>
-                      <Link href={`/dashboard/tours/${tour.id}`}>
-                        <Button size='sm' variant='outline'>
-                          <Edit className='h-4 w-4 mr-1' />
-                          Edit
-                        </Button>
-                      </Link>
-                      <Link href={`/dashboard/tours/${tour.id}/analytics`}>
-                        <Button size='sm' variant='outline'>
-                          <BarChart className='h-4 w-4 mr-1' />
-                          Analytics
-                        </Button>
-                      </Link>
-                      <Link href={`/dashboard/tours/${tour.id}/embed`}>
-                        <Button size='sm' variant='outline'>
-                          <Code className='h-4 w-4 mr-1' />
-                          Embed
-                        </Button>
-                      </Link>
-                    </div>
-                    <div className='flex gap-2'>
-                      <Button
-                        size='sm'
-                        variant={tour.is_active ? 'secondary' : 'default'}
-                        className='flex-1'
-                        onClick={() => toggleTourActive(tour)}
+                ) : (
+                  <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6'>
+                    {tours.map((tour) => (
+                      <Card
+                        key={tour.id}
+                        className='hover:shadow-lg transition-shadow'
                       >
-                        {tour.is_active ? 'Deactivate' : 'Activate'}
-                      </Button>
-                      <Button
-                        size='sm'
-                        variant='destructive'
-                        onClick={() => deleteTour(tour.id)}
-                      >
-                        <Trash2 className='h-4 w-4' />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
+                        <CardHeader>
+                          <div className='flex justify-between items-start mb-2'>
+                            <CardTitle className='text-xl'>
+                              {tour.name}
+                            </CardTitle>
+                            <Badge
+                              variant={tour.is_active ? 'default' : 'secondary'}
+                            >
+                              {tour.is_active ? 'Active' : 'Inactive'}
+                            </Badge>
+                          </div>
+                          <CardDescription>
+                            {tour.description || 'No description'}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div className='flex flex-wrap gap-2 mb-4'>
+                            <Link href={`/dashboard/tours/${tour.id}`}>
+                              <Button size='sm' variant='outline'>
+                                <Edit className='h-4 w-4 mr-1' />
+                                Edit
+                              </Button>
+                            </Link>
+                            <Link
+                              href={`/dashboard/tours/${tour.id}/analytics`}
+                            >
+                              <Button size='sm' variant='outline'>
+                                <BarChart className='h-4 w-4 mr-1' />
+                                Analytics
+                              </Button>
+                            </Link>
+                            <Link href={`/dashboard/tours/${tour.id}/embed`}>
+                              <Button size='sm' variant='outline'>
+                                <Code className='h-4 w-4 mr-1' />
+                                Embed
+                              </Button>
+                            </Link>
+                          </div>
+                          <div className='flex gap-2'>
+                            <Button
+                              size='sm'
+                              variant={tour.is_active ? 'secondary' : 'default'}
+                              className='flex-1'
+                              onClick={() => toggleTourActive(tour)}
+                            >
+                              {tour.is_active ? 'Deactivate' : 'Activate'}
+                            </Button>
+                            <Button
+                              size='sm'
+                              variant='destructive'
+                              onClick={() => deleteTour(tour.id)}
+                            >
+                              <Trash2 className='h-4 w-4 text-white' />
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
       </div>
     </>

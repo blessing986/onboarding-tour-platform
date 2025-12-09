@@ -3,9 +3,19 @@ export type Tour = {
   user_id: string;
   name: string;
   description: string;
+  steps: TourSteps[];
   is_active: boolean;
   created_at: string;
   updated_at: string;
+};
+
+export type TourSteps = {
+  id: string;
+  step_viewed: number;
+  title: string;
+  content: string;
+  target: string;
+  position: 'top' | 'bottom' | 'left' | 'right';
 };
 
 export type TourStep = {
