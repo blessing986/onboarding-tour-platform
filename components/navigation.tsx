@@ -24,7 +24,7 @@ export function Navigation() {
     >
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo - Left */}
-        <Link href="/" className="flex items-center space-x-2 group">
+        <Link href="/external-pages" className="flex items-center space-x-2 group">
           <motion.div
             whileHover={{ rotate: 180 }}
             transition={{ duration: 0.5 }}
@@ -38,7 +38,7 @@ export function Navigation() {
         <div className="hidden md:flex items-center space-x-8 absolute left-1/2 transform -translate-x-1/2">
           <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
             <Link
-              href="/"
+              href="/external-pages"
               className={`text-sm font-medium transition-colors hover:text-primary relative ${
                 isActive('/') ? 'text-primary' : 'text-muted-foreground'
               }`}
@@ -56,7 +56,7 @@ export function Navigation() {
           </motion.div>
           <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
             <Link
-              href="/about"
+              href="/external-pages/about"
               className={`text-sm font-medium transition-colors hover:text-primary relative ${
                 isActive('/about') ? 'text-primary' : 'text-muted-foreground'
               }`}
@@ -74,7 +74,7 @@ export function Navigation() {
           </motion.div>
           <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
             <Link
-              href="/docs"
+              href="/external-pages/docs"
               className={`text-sm font-medium transition-colors hover:text-primary relative ${
                 isActive('/docs') ? 'text-primary' : 'text-muted-foreground'
               }`}
