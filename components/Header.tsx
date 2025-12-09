@@ -8,7 +8,7 @@ import { Compass, LogOut, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
-export function Navigation() {
+export function Header() {
   const pathname = usePathname();
 //   const { user, signOut } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -24,7 +24,7 @@ export function Navigation() {
     >
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo - Left */}
-        <Link href="/external-pages" className="flex items-center space-x-2 group">
+        <Link href="/" className="flex items-center space-x-2 group">
           <motion.div
             whileHover={{ rotate: 180 }}
             transition={{ duration: 0.5 }}
@@ -38,7 +38,7 @@ export function Navigation() {
         <div className="hidden md:flex items-center space-x-8 absolute left-1/2 transform -translate-x-1/2">
           <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
             <Link
-              href="/external-pages"
+              href="/"
               className={`text-sm font-medium transition-colors hover:text-primary relative ${
                 isActive('/') ? 'text-primary' : 'text-muted-foreground'
               }`}
@@ -56,7 +56,7 @@ export function Navigation() {
           </motion.div>
           <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
             <Link
-              href="/external-pages/about"
+              href="/about"
               className={`text-sm font-medium transition-colors hover:text-primary relative ${
                 isActive('/about') ? 'text-primary' : 'text-muted-foreground'
               }`}
@@ -74,7 +74,7 @@ export function Navigation() {
           </motion.div>
           <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
             <Link
-              href="/external-pages/docs"
+              href="/docs"
               className={`text-sm font-medium transition-colors hover:text-primary relative ${
                 isActive('/docs') ? 'text-primary' : 'text-muted-foreground'
               }`}
@@ -94,9 +94,9 @@ export function Navigation() {
 
         {/* Sign In Button - Right */}
         <div className="hidden md:flex items-center">
-          <Link href="/login">
+          <Link href="/auth/login">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button size="sm" className="bg-linear-to-r from-brand-teal to-brand-sky hover:from-brand-teal/90 hover:to-brand-sky/90 text-white rounded-full px-6 cursor-pointer">
+              <Button size="sm" className="bg-linear-to-r from-brand-teal to-brand-sky hover:from-brand-teal/90 hover:to-brand-sky/90 text-white rounded-full px-6">
                 Sign In
               </Button>
             </motion.div>
