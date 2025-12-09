@@ -1,31 +1,19 @@
-import { Navigation } from '@/components/navigation';
-import './globals.css';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-// import { AuthProvider } from '@/lib/auth-context';
+import { Footer } from "@/components/Footer"
+import { Header } from "@/components/Header"
+import { ReactNode } from "react"
 
-
-
-const inter = Inter({ subsets: ['latin'] });
-
-export const metadata: Metadata = {
-  title: 'TourGuide - Embeddable Onboarding Tours',
-  description: 'Create beautiful, interactive onboarding tours for your website',
-};
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const layout = ({children}: {children: ReactNode}) => {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        {/* <AuthProvider> */}
-          <Navigation />
+    <>
+    {/* <AuthProvider> */}
+          <Header />
           <main className="pt-16">{children}</main>
         {/* </AuthProvider> */}
-      </body>
-    </html>
-  );
+          <Footer />
+
+    </>
+    
+  )
 }
+
+export default layout
