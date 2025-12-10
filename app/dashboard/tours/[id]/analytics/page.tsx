@@ -19,12 +19,8 @@ import { Tour } from '@/types/tours';
 import BackgroundDecoration from '@/components/dashboard/background-deco';
 import { motion } from 'framer-motion';
 
-type AnalyticsData = {
-  totalViews: number;
-  totalCompleted: number;
-  totalSkipped: number;
-  uniqueSessions: number;
-  stepViews: Record<string, number>;
+type AnalyticsData = Tour & {
+  completion_rate: number;
 };
 
 const fadeIn = {
@@ -40,13 +36,7 @@ export default function AnalyticsPage() {
   const tourId = params.id as string;
 
   const [tour, setTour] = useState<Tour | null>(null);
-  const [analytics, setAnalytics] = useState<AnalyticsData>({
-    totalViews: 0,
-    totalCompleted: 0,
-    totalSkipped: 0,
-    uniqueSessions: 0,
-    stepViews: {},
-  });
+  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -68,7 +58,7 @@ export default function AnalyticsPage() {
     // },
     {
       title: 'Completion Rate',
-      value: '0',
+      value: `${analytics?.completion_rate}%`,
       icon: CheckCircle2,
       color: 'from-brand-sky to-brand-blush',
       textColor: 'text-brand-sky',
@@ -76,7 +66,11 @@ export default function AnalyticsPage() {
     },
     {
       title: 'Skipped Rate',
-      value: '0%',
+      value: `${
+        Number(analytics?.completion_rate) === 0
+          ? 0
+          : 100 - Number(analytics?.completion_rate)
+      }%`,
       icon: XCircle,
       color: 'from-brand-sage to-brand-teal',
       textColor: 'text-brand-sage',
@@ -88,7 +82,12 @@ export default function AnalyticsPage() {
     try {
       const [tourData, analyticsData] = await Promise.all([
         supabase.from('Tours').select('*').eq('id', tourId).maybeSingle(),
-        supabase.from('TourAnalytics').select('*').eq('id', tourId),
+        supabase
+          .from('TourAnalytics')
+          .select('*')
+          .eq('id', tourId)
+          .eq('user_id', user?.id)
+          .maybeSingle(),
       ]);
 
       if (tourData.error) throw tourData.error;
@@ -99,34 +98,12 @@ export default function AnalyticsPage() {
 
       setTour(tourData.data);
 
-      if (analyticsData.data) {
-        const data = analyticsData.data;
-        const uniqueSessions = new Set(data.map((d) => d.session_id)).size;
-        const totalViews = data.filter(
-          (d) => d.event_type === 'started'
-        ).length;
-        const totalCompleted = data.filter(
-          (d) => d.event_type === 'completed'
-        ).length;
-        const totalSkipped = data.filter(
-          (d) => d.event_type === 'skipped'
-        ).length;
-
-        const stepViews: Record<string, number> = {};
-        data
-          .filter((d) => d.event_type === 'step_viewed' && d.step_id)
-          .forEach((d) => {
-            stepViews[d.step_id!] = (stepViews[d.step_id!] || 0) + 1;
-          });
-
-        setAnalytics({
-          totalViews,
-          totalCompleted,
-          totalSkipped,
-          uniqueSessions,
-          stepViews,
-        });
+      if (!analyticsData.data) {
+        return;
+      } else {
       }
+
+      setAnalytics(analyticsData.data);
     } catch (err) {
       console.error('Error fetching data:', err);
     } finally {
@@ -212,10 +189,12 @@ export default function AnalyticsPage() {
               <div className='space-y-4 grid md:grid-cols-2 lg:grid-cols-3 space-x-5'>
                 {tour.steps &&
                   tour.steps.map((step, index) => {
-                    const views = analytics.stepViews[step.id] || 0;
+                    const views = step.step_viewed;
                     const viewRate =
-                      analytics.totalViews > 0
-                        ? Math.round((views / analytics.totalViews) * 100)
+                      Number(analytics?.completion_rate) > 0
+                        ? Math.round(
+                            (views / Number(analytics?.completion_rate)) * 100
+                          )
                         : 0;
 
                     return (
@@ -251,7 +230,7 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
 
-        {analytics.totalViews === 0 && (
+        {analytics?.completion_rate === 0 && (
           <Card className='mt-6 border-blue-200 bg-blue-50 dark:bg-blue-950 dark:border-blue-900'>
             <CardContent className='p-6'>
               <h3 className='font-semibold mb-2'>No Analytics Data Yet</h3>
