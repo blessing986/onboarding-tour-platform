@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { ArrowLeft, Loader2, CheckCircle2, XCircle } from 'lucide-react';
+import { ArrowLeft, Loader2, CheckCircle2, Eye } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/context/auth-context';
 import { Tour, TourSteps } from '@/types/tours';
@@ -76,7 +76,7 @@ export default function AnalyticsPage() {
     {
       title: 'Completion Rate',
       value: `${Number(
-        stepPercentage?.reduce((sum, s) => sum + s.percentage, 0)
+        stepPercentage?.reduce((sum, s) => sum + Math.floor(s.percentage), 0)
       )}%`,
       icon: CheckCircle2,
       color: 'from-brand-sky to-brand-blush',
@@ -86,7 +86,7 @@ export default function AnalyticsPage() {
     {
       title: 'Total Views',
       value: `${tour?.steps[0].step_viewed}`,
-      icon: XCircle,
+      icon: Eye,
       color: 'from-brand-sage to-brand-teal',
       textColor: 'text-brand-sage',
       bgColor: 'bg-brand-sage/5',
@@ -260,7 +260,7 @@ export default function AnalyticsPage() {
                             </div>
                             <div className='text-right'>
                               <div className='text-lg font-bold text-brand-teal'>
-                                {viewRate}%
+                                {Math.floor(viewRate)}%
                               </div>
                               <p className='text-xs text-slate-400'>
                                 Retention
