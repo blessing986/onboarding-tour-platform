@@ -65,16 +65,30 @@ export default function SignUpPage() {
     setLoading(true);
 
     try {
-         await signup(data);
-        toast.success("Registration successful! Redirecting to dashboard...");
-        router.push("/dashboard");
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : "An error occurred while signing up. Please try again.";
-        setError(errorMessage);
-        toast.error(errorMessage);
-      } finally {
-        setLoading(false);
-      }
+      await signup(data);
+      toast.success("Registration successful! Redirecting to dashboard...", {
+        style: {
+          background: "#10b981",
+          color: "white",
+          border: "none",
+        },
+      });
+      router.push("/dashboard");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "An error occurred while signing up. Please try again.";
+      toast.error(errorMessage, {
+        style: {
+          background: "#ef4444",
+          color: "white",
+          border: "none",
+        },
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleGoogleAuth = async () => {
@@ -197,7 +211,7 @@ export default function SignUpPage() {
               )}
             </div>
 
-            <div className="relative my-6">
+            {/* <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
               </div>
@@ -215,7 +229,7 @@ export default function SignUpPage() {
             >
               <GoogleColoredIcon className="mr-2 h-4 w-4" />
               {loading ? "Signing up..." : "Sign up with Google"}
-            </Button>
+            </Button> */}
           </CardContent>
 
           <CardFooter className="flex flex-col space-y-4">
