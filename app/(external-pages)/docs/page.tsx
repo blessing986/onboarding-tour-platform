@@ -190,7 +190,7 @@ export default function DocsPage() {
                   </p>
                   <Link href="mailto:support@example.com">
                     <Button
-                      className="w-full bg-amber-500 hover:bg-amber-600 text-white font-medium cursor-pointer shadow-lg"
+                      className="w-full h-10 bg-amber-500 hover:bg-amber-600 text-white font-medium cursor-pointer shadow-lg rounded-full transition-all duration-300"
                       size="sm"
                     >
                       Contact Support
@@ -296,14 +296,14 @@ export default function DocsPage() {
                           <div className="flex flex-wrap gap-3">
                             <Button
                               onClick={() => setActiveSection("integration")}
-                              className="bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky hover:from-brand-blush/90 hover:to-brand-sky/90 text-white shadow-xl shadow-brand-teal/30 rounded-full"
+                              className="h-14 px-8 text-lg bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky hover:from-brand-blush/90 hover:via-brand-teal/90 hover:to-brand-sky/90 text-white shadow-xl shadow-brand-teal/30 rounded-full transition-all duration-300 cursor-pointer"
                             >
                               View Integration Guide
-                              <ChevronRight className="ml-2 h-4 w-4" />
+                              <ChevronRight className="ml-2 h-5 w-5" />
                             </Button>
                              {/* <Button
                               variant="outline"
-                              className="border-brand-teal/50 text-brand-teal hover:bg-brand-teal/10 rounded-full"
+                              className="h-14 px-8 text-lg border-2 border-brand-teal text-brand-teal hover:bg-brand-teal hover:text-white rounded-full shadow-lg transition-all duration-300 cursor-pointer"
                             >
                               Watch Video Tutorial
                             </Button> */}
@@ -662,7 +662,7 @@ export default App;`}</code>
                 </p>
                 <Link href="mailto:support@example.com">
                   <Button
-                    className="w-full bg-amber-500 hover:bg-amber-600 text-white font-medium cursor-pointer shadow-lg"
+                    className="w-full h-10 bg-amber-500 hover:bg-amber-600 text-white font-medium cursor-pointer shadow-lg rounded-full transition-all duration-300"
                     size="sm"
                   >
                     Contact Support

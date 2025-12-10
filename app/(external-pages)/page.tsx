@@ -1,9 +1,7 @@
 'use client';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
   Compass,
@@ -19,6 +17,7 @@ import {
 } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ProductTourIllustration } from '@/components/ProductTourIllustration';
+import { useRouter } from 'next/navigation';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 10 },
@@ -90,17 +89,11 @@ const CreativeFeatureCard = ({
           <div className="absolute bottom-2 left-2 w-12 h-12 bg-white/20 rounded-full" />
         </motion.div>
 
-        {/* Badges */}
-        <div className="absolute top-3 left-3 z-10">
-          <Badge className="bg-white/90 backdrop-blur-sm text-brand-teal hover:bg-white font-bold tracking-wider text-xs">
-          </Badge>
-        </div>
-
         {/* Wave Separator */}
         <div className="absolute -bottom-px left-0 w-full leading-0">
-          <svg className="w-full h-8 text-white fill-current opacity-90" viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
-          </svg>
+           <svg className="w-full h-8 text-white fill-current opacity-90" viewBox="0 0 1200 120" preserveAspectRatio="none">
+             <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+           </svg>
         </div>
       </div>
 
@@ -143,19 +136,18 @@ const CreativeFeatureCard = ({
 };
 
 export default function Home() {
+  const router = useRouter();
   const { scrollYProgress } = useScroll();
   const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 0.6]);
 
   return (
-    <div className="min-h-screen overflow-hidden bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900 selection:bg-brand-teal/20 selection:text-brand-teal">
+    <div className="relative w-full overflow-hidden bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900 selection:bg-brand-teal/20 selection:text-brand-teal">
 
-      {/* Animated Background with Waves - Parallax Effect */}
       <motion.div
-        className="fixed inset-0 -z-10 overflow-hidden"
+        className="absolute top-0 left-0 right-0 bottom-0 -z-10 overflow-hidden pointer-events-none"
         style={{ y: backgroundY, opacity }}
       >
-        {/* Gradient Orbs */}
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-brand-sky rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-brand-teal rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
         <div className="absolute -bottom-32 left-1/3 w-96 h-96 bg-brand-blush rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
@@ -179,8 +171,8 @@ export default function Home() {
             variants={fadeInUp}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <Badge variant="outline" className="text-sm hover:scale-105 transition-transform cursor-default border-brand-teal text-brand-teal bg-white/80 backdrop-blur-sm px-4 py-1.5 shadow-lg">
-              <Zap className="h-3 w-3 mr-2 fill-amber-400 text-amber-400" />
+            <Badge variant="outline" className="text-sm hover:scale-105 transition-transform cursor-default border-amber-500 text-slate-900 bg-amber-50/80 backdrop-blur-sm px-4 py-1.5 shadow-lg">
+              <Zap className="h-3 w-3 mr-2 fill-amber-500 text-amber-500" />
               Embeddable Onboarding Made Easy
             </Badge>
           </motion.div>
@@ -221,7 +213,7 @@ export default function Home() {
                 whileHover={{ scale: 1.08, y: -3 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                <Button size="lg" className="text-lg px-8 h-12 bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky hover:from-brand-blush/90 hover:to-brand-sky/90 text-white shadow-xl shadow-brand-blush/30 rounded-full">
+                <Button size="lg" className="text-lg px-8 h-14 bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky hover:from-brand-blush/90 hover:via-brand-teal/90 hover:to-brand-sky/90 text-white shadow-xl shadow-brand-blush/30 rounded-full transition-all duration-300 cursor-pointer">
                   Get Started Free
                   <motion.span
                     animate={{ x: [0, 5, 0] }}
@@ -232,12 +224,12 @@ export default function Home() {
                 </Button>
               </motion.div>
             </Link>
-            <Link href="/#features">
+            <Link href="/demo.html">
               <motion.div
                 whileHover={{ scale: 1.08, y: -3 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                <Button size="lg" variant="outline" className="text-lg px-8 h-12 border-brand-teal bg-white/80 hover:bg-white backdrop-blur-sm text-brand-teal rounded-full shadow-lg">
+                <Button size="lg" variant="outline" className="text-lg px-8 h-14 border-2 border-brand-teal bg-white/80 hover:bg-brand-teal hover:text-white backdrop-blur-sm text-brand-teal rounded-full shadow-lg transition-all duration-300 cursor-pointer">
                   <Play className="mr-2 h-4 w-4 fill-brand-teal" />
                   View Demo
                 </Button>
@@ -259,7 +251,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <section id="features" className="container mx-auto px-4 py-20">
+      <section id="features" className="container mx-auto px-4 py-12">
         <motion.div
           className="text-center mb-20"
           initial={{ opacity: 0, y: 20 }}
@@ -294,7 +286,7 @@ export default function Home() {
             icon={Zap}
             stickerText="FAST • QUICK • EASY"
             colorClass="text-amber-600"
-            bgClass="bg-amber-50"
+            bgClass="bg-amber-100"
             features={["No dependencies", "Lightweight bundle"]}
           />
 
@@ -340,55 +332,114 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <section id="how-it-works" className="container mx-auto p-4 relative">
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 1440 320" preserveAspectRatio="none">
-            <path fill="#f3e8ff" fillOpacity="0.3" d="M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,90.7C672,85,768,107,864,122.7C960,139,1056,149,1152,138.7C1248,128,1344,96,1392,80L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+      <section id="how-it-works" className="container mx-auto px-4 py-12 relative overflow-hidden">
+        <div className="absolute inset-0 -z-10">
+          <svg className="absolute top-0 left-0 w-full h-full opacity-30" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path fill="#f3e8ff" fillOpacity="0.5" d="M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,90.7C672,85,768,107,864,122.7C960,139,1056,149,1152,138.7C1248,128,1344,96,1392,80L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
           </svg>
         </div>
+
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2 className="text-4xl font-bold mb-6 text-slate-900">How It Works</h2>
+          <p className="text-2xl text-slate-600 max-w-2xl mx-auto">
+            Get Started in <span className="text-brand-teal ">3 Simple Steps</span>
+          </p>
+        </motion.div>
+
+        <div className="relative max-w-6xl mx-auto">
+          <div className="hidden md:block absolute top-12 left-[15%] right-[15%] h-1 bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky rounded-full -z-10 opacity-30" />
+
+          <div className="grid md:grid-cols-3 gap-12">
+            {[
+              {
+                step: "01",
+                title: "Build Visually",
+                desc: "Use our point-and-click editor to select elements on your site and add helpful tooltips.",
+                icon: Compass,
+                color: "text-brand-blush",
+                gradient: "from-brand-blush to-rose-400",
+                delay: 0
+              },
+              {
+                step: "02",
+                title: "Embed Snippet",
+                desc: "Copy a block of JavaScript code and paste it into your application's head tag.",
+                icon: Code,
+                color: "text-amber-600",
+                gradient: "from-amber-500 to-orange-400",
+                delay: 0.2
+              },
+              {
+                step: "03",
+                title: "Track & Optimize",
+                desc: "Watch as users engage with your tours. Analyze drop-off points and improve retention.",
+                icon: BarChart,
+                color: "text-brand-sky",
+                gradient: "from-brand-sky to-blue-500",
+                delay: 0.4
+              }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: item.delay }}
+                className="relative group"
+              >
+                {/* Card */}
+                <div className="flex flex-col items-center text-center">
+                  {/* Icon Circle */}
+                  <motion.div
+                    whileHover={{ scale: 1.1}}
+                    transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                    className={`w-24 h-24 rounded-full bg-linear-to-br ${item.gradient} p-1 shadow-xl mb-8 relative z-10`}
+                  >
+                    <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
+                      <item.icon className={`w-10 h-10 ${item.color}`} />
+                    </div>
+                    <div className={`absolute -top-2 -right-2 w-8 h-8 rounded-full bg-linear-to-r ${item.gradient} flex items-center justify-center text-white font-bold text-sm shadow-lg border-2 border-white`}>
+                      {item.step}
+                    </div>
+                  </motion.div>
+
+                  <div className="bg-white/60 backdrop-blur-sm border border-white/50 p-8 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 w-full">
+                    <h3 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-brand-teal transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-slate-600 leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
+          transition={{ delay: 0.6 }}
+          className="flex justify-center mt-16"
         >
-          <h2 className="text-4xl font-bold mb-4 text-slate-900">How It Works</h2>
-          <p className="text-xl text-slate-600">Get started in three simple steps</p>
+           <Link href="/docs">
+            <Button variant="outline" className="h-14 px-8 rounded-full border-2 border-brand-teal text-brand-teal hover:bg-brand-teal hover:text-white transition-all duration-300 text-lg font-semibold shadow-lg cursor-pointer">
+              Read Documentation
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+           </Link>
         </motion.div>
-
-        <div className="grid md:grid-cols-3 gap-12 max-w-5xl mx-auto relative">
-          <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-1 bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky rounded-full -z-10" />
-
-          {[
-            { step: 1, title: "Create Tour", desc: "Build your onboarding flow visually.", gradient: "from-brand-blush to-brand-teal" },
-            { step: 2, title: "Embed Script", desc: "Add one line of code to your app.", gradient: "from-brand-teal to-brand-sky" },
-            { step: 3, title: "Optimize", desc: "Track results and improve adoption.", gradient: "from-brand-sky to-brand-blush" }
-          ].map((item, i) => (
-            <motion.div
-              key={i}
-              className="text-center space-y-6 p-4"
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.3 }}
-            >
-              <motion.div
-                className={`w-16 h-16 mx-auto bg-linear-to-br ${item.gradient} text-white rounded-full flex items-center justify-center text-2xl font-bold shadow-2xl ring-4 ring-white`}
-                whileHover={{ scale: 1.2, rotate: 360 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                {item.step}
-              </motion.div>
-              <div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">{item.title}</h3>
-                <p className="text-slate-600">{item.desc}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
       </section>
 
-      <section className="container mx-auto px-4 py-20">
+      <section className="container mx-auto px-4 py-12">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -397,7 +448,6 @@ export default function Home() {
         >
           <Card className="max-w-5xl mx-auto overflow-hidden border-0 shadow-2xl rounded-3xl">
             <div className="bg-linear-to-br from-brand-teal via-brand-blush to-brand-sky p-12 md:p-20 text-center relative overflow-hidden">
-              {/* Animated Background Elements */}
               <motion.div
                 className="absolute top-10 right-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"
                 animate={{ scale: [1, 1.2, 1], x: [0, 50, 0] }}
@@ -440,8 +490,9 @@ export default function Home() {
                     whileHover={{ scale: 1.08, y: -3 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <Button size="lg" className="w-full sm:w-auto text-lg px-8 h-14 bg-white text-brand-teal hover:bg-brand-sky/60 border-0 rounded-full font-bold shadow-xl">
+                    <Button size="lg" className="w-full sm:w-auto text-lg px-8 h-14 bg-white text-brand-teal hover:bg-white/90 border-0 rounded-full font-bold shadow-xl transition-all duration-300 cursor-pointer">
                       Get Started
+                      <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </motion.div>
                 </Link>
