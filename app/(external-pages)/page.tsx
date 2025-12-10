@@ -201,7 +201,7 @@ export default function Home() {
             variants={fadeInUp}
           >
             Create beautiful, interactive onboarding tours that help new users discover
-            the power of your product. No coding required.
+            the power of your product.
           </motion.p>
 
           <motion.div
@@ -260,7 +260,7 @@ export default function Home() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-4xl font-bold mb-4 text-slate-900"> Our Features</h2>
-          <p className="text-xl text-slate-600">Everything you need to create amazing experiences</p>
+          <p className="text-xl text-slate-600">Everything you need to create amazing experiences for your users.</p>
         </motion.div>
 
         <motion.div
@@ -284,7 +284,7 @@ export default function Home() {
             title="Easy Integration"
             description="Add tours to any website with a simple script tag."
             icon={Zap}
-            stickerText="FAST • QUICK • EASY"
+            stickerText="FAST • EASY • FRIENDLY"
             colorClass="text-amber-600"
             bgClass="bg-amber-100"
             features={["No dependencies", "Lightweight bundle"]}
@@ -304,7 +304,7 @@ export default function Home() {
             title="Secure & Private"
             description="Enterprise-grade security with end-to-end encryption."
             icon={Shield}
-            stickerText="SAFE • SECURE • PROTECT"
+            stickerText="SAFE • SECURE • TRUST"
             colorClass="text-emerald-600"
             bgClass="bg-emerald-50"
             features={["End-to-end encryption", "Privacy-first design"]}
@@ -324,7 +324,7 @@ export default function Home() {
             title="Developer First"
             description="Built with a powerful API and TypeScript support."
             icon={Code}
-            stickerText="CODE • BUILD • SHIP"
+            stickerText="CODE • BUILD • LAUNCH"
             colorClass="text-slate-600"
             bgClass="bg-slate-100"
             features={["TypeScript support", "Comprehensive docs"]}
@@ -359,8 +359,8 @@ export default function Home() {
             {[
               {
                 step: "01",
-                title: "Build Visually",
-                desc: "Use our point-and-click editor to select elements on your site and add helpful tooltips.",
+                title: "Design the flow",
+                desc: "Customize your tour by defining its steps, content, and how it interacts with your UI.",
                 icon: Compass,
                 color: "text-brand-blush",
                 gradient: "from-brand-blush to-rose-400",
@@ -369,7 +369,7 @@ export default function Home() {
               {
                 step: "02",
                 title: "Embed Snippet",
-                desc: "Copy a block of JavaScript code and paste it into your application's head tag.",
+                desc: "Copy a block of JavaScript code and paste it into your application's codebase.",
                 icon: Code,
                 color: "text-amber-600",
                 gradient: "from-amber-500 to-orange-400",
