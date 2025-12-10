@@ -19,11 +19,10 @@ import {
   ChevronRight,
   Terminal,
   Layers,
-  Copy,
-  Check,
 } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { CodeBlock } from "./components/CodeBlock";
 
 const staggerContainer = {
   initial: {},
@@ -41,13 +40,6 @@ const fadeInUp = {
 
 export default function DocsPage() {
   const [activeSection, setActiveSection] = useState("quickstart");
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-
-  const copyToClipboard = (code: string, id: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCode(id);
-    setTimeout(() => setCopiedCode(null), 2000);
-  };
 
   const navigation = [
     { id: "quickstart", label: "Quick Start", icon: Rocket },
@@ -55,6 +47,59 @@ export default function DocsPage() {
     { id: "api", label: "API Reference", icon: Cog },
     { id: "examples", label: "Examples", icon: Layers },
   ];
+
+  const scriptTagCode = `<script src="https://embeddable-tour-platform.vercel.app/onboard.iife.js"></script>                    
+<script>
+  const widget = window.initOnboard({
+    tourId: 'demo-tour2',
+    resume: true,
+    onEvent: (e) => console.log('analytic', e)
+    //you can add a styles prop as well for styling
+    // styles: {
+      // tooltip: { ...},
+      // button: { ...},
+      // controls: { ...},
+      // progress: { ...},
+    // },
+  });
+  document.getElementById('btn').addEventListener('click', () => widget.start());
+</script>`;
+
+  const htmlExampleCode = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Widget Test</title>
+</head>
+
+<body>
+  <h1 id="logo">My Test Site</h1>
+  <div class="card" id="card">
+    <h1 className="logo" id="logo">Onboarding Widget Preview</h1>
+    <button class=".read-the-docs" id="btn">
+      Demo Button
+    </button>
+    <p id="text-p">
+      This screen exists ONLY for local development.
+      The real widget is embedded externally.  
+    </p>
+  </div>
+  <script src="https://embeddable-tour-platform.vercel.app/onboard.iife.js"></script>
+  <script>
+    const widget = window.initOnboard({
+      tourId: 'demo-tour2',
+      resume: true,
+      onEvent: (e) => console.log('analytic', e)
+      //you can add a styles prop as well for styling
+      // styles: {
+        // tooltip: { ...},
+        // button: { ...},
+      // },
+    });
+     document.getElementById('btn').addEventListener('click', () => widget.start());
+  </script>
+</body>
+</html>`;
 
   return (
     <div className="min-h-screen bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900">
@@ -119,7 +164,7 @@ export default function DocsPage() {
                       <button
                         key={item.id}
                         onClick={() => setActiveSection(item.id)}
-                        className={`w-full flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 rounded-2xl  transition-all duration-200 cursor-pointer ${
+                        className={`w-full flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 rounded-2xl transition-all duration-200 cursor-pointer ${
                           isActive
                             ? "bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky text-white shadow-xl shadow-brand-teal/30"
                             : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
@@ -127,9 +172,7 @@ export default function DocsPage() {
                       >
                         <Icon className="h-5 w-5" />
                         <span className="font-medium">{item.label}</span>
-                        {isActive && (
-                          <ChevronRight className="h-4 w-4 ml-auto" />
-                        )}
+                        {isActive && <ChevronRight className="h-4 w-4 ml-auto" />}
                       </button>
                     );
                   })}
@@ -247,8 +290,8 @@ export default function DocsPage() {
                         </CardHeader>
                         <CardContent>
                           <p className="text-slate-600 mb-4">
-                            Choose your preferred integration method below and
-                            follow the setup instructions.
+                            Choose your preferred integration method below and follow the
+                            setup instructions.
                           </p>
                           <div className="flex flex-wrap gap-3">
                             <Button
@@ -258,12 +301,12 @@ export default function DocsPage() {
                               View Integration Guide
                               <ChevronRight className="ml-2 h-4 w-4" />
                             </Button>
-                            <Button
+                             {/* <Button
                               variant="outline"
                               className="border-brand-teal/50 text-brand-teal hover:bg-brand-teal/10 rounded-full"
                             >
                               Watch Video Tutorial
-                            </Button>
+                            </Button> */}
                           </div>
                         </CardContent>
                       </Card>
@@ -308,50 +351,16 @@ export default function DocsPage() {
                               </div>
                             </div>
                             <p className="text-slate-600">
-                              Add this script before the closing &lt;/body&gt;
-                              tag:
+                              Add this script before the closing &lt;/body&gt; tag:
                             </p>
                             <div className="relative group">
                               <div className="absolute inset-0 bg-linear-to-r from-brand-teal/10 to-brand-sky/10 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                              <div className="relative bg-slate-50 border-2 border-slate-200 rounded-xl overflow-hidden">
-                                <div className="flex items-center justify-between px-4 py-2 bg-white border-b-2 border-slate-200">
-                                  <span className="text-xs font-medium text-slate-600">
-                                    HTML
-                                  </span>
-                                  <button
-                                    onClick={() =>
-                                      copyToClipboard(
-                                        `<script src="https://tourguide.app/widget.js"></script>\n<script>\n  TourGuide.init({\n    tourId: 'YOUR_TOUR_ID',\n    autoStart: true\n  });\n</script>`,
-                                        "script1"
-                                      )
-                                    }
-                                    className="flex items-center gap-2 text-xs text-slate-600 hover:text-brand-teal transition-colors cursor-pointer"
-                                  >
-                                    {copiedCode === "script1" ? (
-                                      <>
-                                        <Check className="h-3 w-3" />
-                                        Copied!
-                                      </>
-                                    ) : (
-                                      <>
-                                        <Copy className="h-3 w-3" />
-                                        Copy
-                                      </>
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="p-4 overflow-x-auto">
-                                  <pre className="text-sm text-slate-800">
-                                    <code>{`<script src="https://tourguide.app/widget.js"></script>
-                                  
-<script>
-  TourGuide.init({
-    tourId: 'YOUR_TOUR_ID',
-    autoStart: true
-  });
-</script>`}</code>
-                                  </pre>
-                                </div>
+                              <div className="p-4 overflow-x-auto">
+                                <CodeBlock
+                                  code={scriptTagCode}
+                                  language="html"
+                                  id="script1"
+                                />
                               </div>
                             </div>
                           </div>
@@ -363,42 +372,11 @@ export default function DocsPage() {
                             <p className="text-slate-600">
                               For modern JavaScript frameworks:
                             </p>
-                            <div className="relative group">
-                              <div className="absolute inset-0 bg-linear-to-r from-brand-teal/10 to-brand-sky/10 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                              <div className="relative bg-slate-50 border-2 border-slate-200 rounded-xl overflow-hidden">
-                                <div className="flex items-center justify-between px-4 py-2 bg-white border-b-2 border-slate-200">
-                                  <span className="text-xs font-medium text-slate-600">
-                                    BASH
-                                  </span>
-                                  <button
-                                    onClick={() =>
-                                      copyToClipboard(
-                                        `npm install @tourguide/widget`,
-                                        "npm"
-                                      )
-                                    }
-                                    className="flex items-center gap-2 text-xs text-slate-600 hover:text-brand-teal transition-colors cursor-pointer"
-                                  >
-                                    {copiedCode === "npm" ? (
-                                      <>
-                                        <Check className="h-3 w-3" />
-                                        Copied!
-                                      </>
-                                    ) : (
-                                      <>
-                                        <Copy className="h-3 w-3" />
-                                        Copy
-                                      </>
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="p-4">
-                                  <pre className="text-sm text-slate-800">
-                                    <code>npm install @tourguide/widget</code>
-                                  </pre>
-                                </div>
-                              </div>
-                            </div>
+                            <CodeBlock
+                              code="npm i embeddable-tour-platform"
+                              language="bash"
+                              id="npm-install"
+                            />
                           </div>
 
                           <div className="space-y-4">
@@ -409,22 +387,27 @@ export default function DocsPage() {
                               {[
                                 {
                                   option: "tourId",
-                                  desc: "Your unique tour identifier",
+                                  desc: "Unique identifier for your tour",
                                   required: true,
                                 },
                                 {
-                                  option: "autoStart",
-                                  desc: "Start automatically on page load",
+                                  option: "secret_key",
+                                  desc: "Authentication key for secure access",
+                                  required: true,
+                                },
+                                {
+                                  option: "resume",
+                                  desc: "Resume tour from the last completed step",
                                   required: false,
                                 },
                                 {
-                                  option: "showProgress",
-                                  desc: "Display step progress indicator",
+                                  option: "styles",
+                                  desc: "Custom styling for the tour UI",
                                   required: false,
                                 },
                                 {
-                                  option: "allowSkip",
-                                  desc: "Allow users to skip the tour",
+                                  option: "onEvent",
+                                  desc: "Callback for tracking tour events",
                                   required: false,
                                 },
                               ].map((item) => (
@@ -435,14 +418,9 @@ export default function DocsPage() {
                                   <code className="px-3 py-1.5 bg-white border-2 border-slate-200 rounded-lg text-brand-teal font-mono text-sm">
                                     {item.option}
                                   </code>
-                                  <span className="flex-1 text-slate-600">
-                                    {item.desc}
-                                  </span>
+                                  <span className="flex-1 text-slate-600">{item.desc}</span>
                                   {item.required && (
-                                    <Badge
-                                      variant="destructive"
-                                      className="text-xs"
-                                    >
+                                    <Badge variant="destructive" className="text-xs">
                                       Required
                                     </Badge>
                                   )}
@@ -465,15 +443,7 @@ export default function DocsPage() {
                         <CardContent className="space-y-3">
                           {[
                             { selector: "#elementId", desc: "Target by ID" },
-                            {
-                              selector: ".className",
-                              desc: "Target by class name",
-                            },
-                            {
-                              selector: '[data-tour="step-1"]',
-                              desc: "Target by data attribute",
-                              rec: true,
-                            },
+                            { selector: ".className", desc: "Target by class name" },
                           ].map((item) => (
                             <div
                               key={item.selector}
@@ -482,14 +452,7 @@ export default function DocsPage() {
                               <code className="px-3 py-1.5 bg-white border-2 border-slate-200 rounded-lg text-brand-teal font-mono text-sm">
                                 {item.selector}
                               </code>
-                              <span className="flex-1 text-slate-600">
-                                {item.desc}
-                              </span>
-                              {item.rec && (
-                                <Badge className="bg-brand-teal/20 text-brand-teal border-brand-teal/30">
-                                  Best Practice
-                                </Badge>
-                              )}
+                              <span className="flex-1 text-slate-600">{item.desc}</span>
                             </div>
                           ))}
                         </CardContent>
@@ -530,24 +493,14 @@ export default function DocsPage() {
                               code: "TourGuide.start();",
                             },
                             {
-                              method: "stop()",
-                              desc: "Stop the tour at any point",
-                              code: "TourGuide.stop();",
-                            },
-                            {
-                              method: "next()",
-                              desc: "Move to the next step",
-                              code: "TourGuide.next();",
-                            },
-                            {
-                              method: "previous()",
-                              desc: "Return to previous step",
-                              code: "TourGuide.previous();",
-                            },
-                            {
-                              method: "goToStep(index)",
+                              method: "goTo()",
                               desc: "Jump to specific step",
-                              code: "TourGuide.goToStep(3);",
+                              code: "TourGuide.goTo();",
+                            },
+                            {
+                              method: "destroy()",
+                              desc: "Stop the tour at any point",
+                              code: "TourGuide.destroy();",
                             },
                           ].map((item, idx) => (
                             <div key={idx} className="space-y-3">
@@ -557,45 +510,13 @@ export default function DocsPage() {
                                 </code>
                               </div>
                               <p className="text-slate-600">{item.desc}</p>
-                              <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-4">
-                                <pre className="text-sm text-slate-800">
-                                  <code>{item.code}</code>
-                                </pre>
-                              </div>
+                              <CodeBlock
+                                code={item.code}
+                                language="javascript"
+                                id={`api-${idx}`}
+                              />
                             </div>
                           ))}
-                        </CardContent>
-                      </Card>
-
-                      <Card className="bg-white/80 backdrop-blur-sm border-2 border-white/50 rounded-3xl shadow-lg">
-                        <CardHeader>
-                          <CardTitle className="text-slate-900">
-                            Event Listeners
-                          </CardTitle>
-                          <CardDescription className="text-slate-600">
-                            React to tour lifecycle events
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-4 overflow-x-auto">
-                            <pre className="text-sm text-slate-800">
-                              <code>{`TourGuide.on('start', () => {
-  console.log('Tour started');
-});
-
-TourGuide.on('complete', () => {
-  console.log('Tour completed');
-});
-
-TourGuide.on('skip', () => {
-  console.log('Tour skipped');
-});
-
-TourGuide.on('stepChange', (stepIndex) => {
-  console.log('Moved to step', stepIndex);
-});`}</code>
-                            </pre>
-                          </div>
                         </CardContent>
                       </Card>
                     </motion.div>
@@ -627,72 +548,18 @@ TourGuide.on('stepChange', (stepIndex) => {
                           </div>
                         </CardHeader>
                         <CardContent>
-                          <div className="bg-slate-50 border-2 border-slate-200 rounded-xl overflow-hidden">
-                            <div className="flex items-center justify-between px-4 py-2 bg-white border-b-2 border-slate-200">
-                              <span className="text-xs font-medium text-slate-600">
-                                HTML
-                              </span>
-                              <button
-                                onClick={() =>
-                                  copyToClipboard(
-                                    `<!DOCTYPE html>\n<html>\n<head>\n  <title>My App with TourGuide</title>\n</head>\n<body>\n  <nav id="main-nav">\n    <button data-tour="create-btn">Create</button>\n    <button data-tour="settings-btn">Settings</button>\n  </nav>\n\n  <main>\n    <div id="dashboard" data-tour="dashboard">\n      <h1>Welcome to My App</h1>\n    </div>\n  </main>\n\n  <script src="https://tourguide.app/widget.js"></script>\n  <script>\n    TourGuide.init({\n      tourId: 'your-tour-id',\n      autoStart: true\n    });\n\n    TourGuide.on('complete', () => {\n      console.log('Tour completed!');\n    });\n  </script>\n</body>\n</html>`,
-                                    "html-example"
-                                  )
-                                }
-                                className="flex items-center gap-2 text-xs text-slate-600 hover:text-brand-teal transition-colors cursor-pointer"
-                              >
-                                {copiedCode === "html-example" ? (
-                                  <>
-                                    <Check className="h-3 w-3" />
-                                    Copied!
-                                  </>
-                                ) : (
-                                  <>
-                                    <Copy className="h-3 w-3" />
-                                    Copy
-                                  </>
-                                )}
-                              </button>
-                            </div>
-                            <div className="p-4 overflow-x-auto">
-                              <pre className="text-sm text-slate-800">
-                                <code>{`<!DOCTYPE html>
-<html>
-<head>
-  <title>My App with TourGuide</title>
-</head>
-<body>
-  <nav id="main-nav">
-    <button data-tour="create-btn">Create</button>
-    <button data-tour="settings-btn">Settings</button>
-  </nav>
-
-  <main>
-    <div id="dashboard" data-tour="dashboard">
-      <h1>Welcome to My App</h1>
-    </div>
-  </main>
-
-  <script src="https://tourguide.app/widget.js"></script>
-  <script>
-    TourGuide.init({
-      tourId: 'your-tour-id',
-      autoStart: true
-    });
-
-    TourGuide.on('complete', () => {
-      console.log('Tour completed!');
-    });
-  </script>
-</body>
-</html>`}</code>
-                              </pre>
-                            </div>
+                          <div className="p-4 overflow-x-auto">
+                            <CodeBlock
+                              code={htmlExampleCode}
+                              language="html"
+                              id="html-example"
+                              showLineNumbers={true}
+                            />
                           </div>
                         </CardContent>
                       </Card>
 
-                      <Card className="bg-white/80 backdrop-blur-sm border-2 border-white/50 rounded-3xl shadow-2xl">
+                       {/* <Card className="bg-white/80 backdrop-blur-sm border-2 border-white/50 rounded-3xl shadow-2xl">
                         <CardHeader>
                           <div className="flex items-center gap-3">
                             <div className="p-2 bg-linear-to-br from-violet-500 to-fuchsia-500 rounded-lg">
@@ -777,7 +644,7 @@ export default App;`}</code>
                             </div>
                           </div>
                         </CardContent>
-                      </Card>
+                      </Card> */}
                     </motion.div>
                   )}
                 </AnimatePresence>
