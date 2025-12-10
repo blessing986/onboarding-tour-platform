@@ -23,6 +23,12 @@ import {
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { CodeBlock } from "./components/CodeBlock";
+import {
+  htmlExampleCode,
+  navigation,
+  reactExampleCode,
+  scriptTagCode,
+} from "./constants/constant";
 
 const staggerContainer = {
   initial: {},
@@ -40,66 +46,6 @@ const fadeInUp = {
 
 export default function DocsPage() {
   const [activeSection, setActiveSection] = useState("quickstart");
-
-  const navigation = [
-    { id: "quickstart", label: "Quick Start", icon: Rocket },
-    { id: "integration", label: "Integration", icon: Code2 },
-    { id: "api", label: "API Reference", icon: Cog },
-    { id: "examples", label: "Examples", icon: Layers },
-  ];
-
-  const scriptTagCode = `<script src="https://embeddable-tour-platform.vercel.app/onboard.iife.js"></script>                    
-<script>
-  const widget = window.initOnboard({
-    tourId: 'demo-tour2',
-    resume: true,
-    onEvent: (e) => console.log('analytic', e)
-    //you can add a styles prop as well for styling
-    // styles: {
-      // tooltip: { ...},
-      // button: { ...},
-      // controls: { ...},
-      // progress: { ...},
-    // },
-  });
-  document.getElementById('btn').addEventListener('click', () => widget.start());
-</script>`;
-
-  const htmlExampleCode = `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Widget Test</title>
-</head>
-
-<body>
-  <h1 id="logo">My Test Site</h1>
-  <div class="card" id="card">
-    <h1 className="logo" id="logo">Onboarding Widget Preview</h1>
-    <button class=".read-the-docs" id="btn">
-      Demo Button
-    </button>
-    <p id="text-p">
-      This screen exists ONLY for local development.
-      The real widget is embedded externally.  
-    </p>
-  </div>
-  <script src="https://embeddable-tour-platform.vercel.app/onboard.iife.js"></script>
-  <script>
-    const widget = window.initOnboard({
-      tourId: 'demo-tour2',
-      resume: true,
-      onEvent: (e) => console.log('analytic', e)
-      //you can add a styles prop as well for styling
-      // styles: {
-        // tooltip: { ...},
-        // button: { ...},
-      // },
-    });
-     document.getElementById('btn').addEventListener('click', () => widget.start());
-  </script>
-</body>
-</html>`;
 
   return (
     <div className="min-h-screen bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900">
@@ -172,7 +118,9 @@ export default function DocsPage() {
                       >
                         <Icon className="h-5 w-5" />
                         <span className="font-medium">{item.label}</span>
-                        {isActive && <ChevronRight className="h-4 w-4 ml-auto" />}
+                        {isActive && (
+                          <ChevronRight className="h-4 w-4 ml-auto" />
+                        )}
                       </button>
                     );
                   })}
@@ -290,8 +238,8 @@ export default function DocsPage() {
                         </CardHeader>
                         <CardContent>
                           <p className="text-slate-600 mb-4">
-                            Choose your preferred integration method below and follow the
-                            setup instructions.
+                            Choose your preferred integration method below and
+                            follow the setup instructions.
                           </p>
                           <div className="flex flex-wrap gap-3">
                             <Button
@@ -301,7 +249,7 @@ export default function DocsPage() {
                               View Integration Guide
                               <ChevronRight className="ml-2 h-5 w-5" />
                             </Button>
-                             {/* <Button
+                            {/* <Button
                               variant="outline"
                               className="h-14 px-8 text-lg border-2 border-brand-teal text-brand-teal hover:bg-brand-teal hover:text-white rounded-full shadow-lg transition-all duration-300 cursor-pointer"
                             >
@@ -351,7 +299,8 @@ export default function DocsPage() {
                               </div>
                             </div>
                             <p className="text-slate-600">
-                              Add this script before the closing &lt;/body&gt; tag:
+                              Add this script before the closing &lt;/body&gt;
+                              tag:
                             </p>
                             <div className="relative group">
                               <div className="absolute inset-0 bg-linear-to-r from-brand-teal/10 to-brand-sky/10 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -369,9 +318,7 @@ export default function DocsPage() {
                             <h3 className="text-xl font-semibold text-slate-900">
                               NPM Package
                             </h3>
-                            <p className="text-slate-600">
-                              Using react:
-                            </p>
+                            <p className="text-slate-600">Using react:</p>
                             <CodeBlock
                               code="npm i embeddable-tour-platform"
                               language="bash"
@@ -418,9 +365,14 @@ export default function DocsPage() {
                                   <code className="px-3 py-1.5 bg-white border-2 border-slate-200 rounded-lg text-brand-teal font-mono text-sm">
                                     {item.option}
                                   </code>
-                                  <span className="flex-1 text-slate-600">{item.desc}</span>
+                                  <span className="flex-1 text-slate-600">
+                                    {item.desc}
+                                  </span>
                                   {item.required && (
-                                    <Badge variant="destructive" className="text-xs">
+                                    <Badge
+                                      variant="destructive"
+                                      className="text-xs"
+                                    >
                                       Required
                                     </Badge>
                                   )}
@@ -443,7 +395,10 @@ export default function DocsPage() {
                         <CardContent className="space-y-3">
                           {[
                             { selector: "#elementId", desc: "Target by ID" },
-                            { selector: ".className", desc: "Target by class name" },
+                            {
+                              selector: ".className",
+                              desc: "Target by class name",
+                            },
                           ].map((item) => (
                             <div
                               key={item.selector}
@@ -452,7 +407,9 @@ export default function DocsPage() {
                               <code className="px-3 py-1.5 bg-white border-2 border-slate-200 rounded-lg text-brand-teal font-mono text-sm">
                                 {item.selector}
                               </code>
-                              <span className="flex-1 text-slate-600">{item.desc}</span>
+                              <span className="flex-1 text-slate-600">
+                                {item.desc}
+                              </span>
                             </div>
                           ))}
                         </CardContent>
@@ -559,7 +516,7 @@ export default function DocsPage() {
                         </CardContent>
                       </Card>
 
-                       {/* <Card className="bg-white/80 backdrop-blur-sm border-2 border-white/50 rounded-3xl shadow-2xl">
+                      <Card className="bg-white/80 backdrop-blur-sm border-2 border-white/50 rounded-3xl shadow-2xl">
                         <CardHeader>
                           <div className="flex items-center gap-3">
                             <div className="p-2 bg-linear-to-br from-violet-500 to-fuchsia-500 rounded-lg">
@@ -576,75 +533,14 @@ export default function DocsPage() {
                           </div>
                         </CardHeader>
                         <CardContent>
-                          <div className="bg-slate-50 border-2 border-slate-200 rounded-xl overflow-hidden">
-                            <div className="flex items-center justify-between px-4 py-2 bg-white border-b-2 border-slate-200">
-                              <span className="text-xs font-medium text-slate-600">
-                                JSX
-                              </span>
-
-                              <button
-                                onClick={() =>
-                                  copyToClipboard(
-                                    `import { useEffect } from 'react';\nimport TourGuide from '@tourguide/widget';\n\nfunction App() {\n  useEffect(() => {\n    TourGuide.init({\n      tourId: 'your-tour-id',\n      autoStart: false\n    });\n\n    const hasSeenTour = localStorage.getItem('hasSeenTour');\n    if (!hasSeenTour) {\n      TourGuide.start();\n      TourGuide.on('complete', () => {\n        localStorage.setItem('hasSeenTour', 'true');\n      });\n    }\n\n    return () => TourGuide.destroy();\n  }, []);\n\n  return (\n    <div>\n      <header data-tour="header">\n        <h1>My React App</h1>\n      </header>\n      <button data-tour="action-button">\n        Take Action\n      </button>\n    </div>\n  );\n}\n\nexport default App;`,
-                                    "react-example"
-                                  )
-                                }
-                                className="flex items-center gap-2 text-xs text-slate-600 hover:text-brand-teal transition-colors cursor-pointer"
-                              >
-                                {copiedCode === "react-example" ? (
-                                  <>
-                                    <Check className="h-3 w-3" />
-                                    Copied!
-                                  </>
-                                ) : (
-                                  <>
-                                    <Copy className="h-3 w-3" />
-                                    Copy
-                                  </>
-                                )}
-                              </button>
-                            </div>
-                            <div className="p-4 overflow-x-auto">
-                              <pre className="text-sm text-slate-800">
-                                <code>{`import { useEffect } from 'react';
-import TourGuide from '@tourguide/widget';
-
-function App() {
-  useEffect(() => {
-    TourGuide.init({
-      tourId: 'your-tour-id',
-      autoStart: false
-    });
-
-    const hasSeenTour = localStorage.getItem('hasSeenTour');
-    if (!hasSeenTour) {
-      TourGuide.start();
-      TourGuide.on('complete', () => {
-        localStorage.setItem('hasSeenTour', 'true');
-      });
-    }
-
-    return () => TourGuide.destroy();
-  }, []);
-
-  return (
-    <div>
-      <header data-tour="header">
-        <h1>My React App</h1>
-      </header>
-      <button data-tour="action-button">
-        Take Action
-      </button>
-    </div>
-  );
-}
-
-export default App;`}</code>
-                              </pre>
-                            </div>
-                          </div>
+                          <CodeBlock
+                            code={reactExampleCode}
+                            language="jsx"
+                            id="react-example"
+                            showLineNumbers={true}
+                          />
                         </CardContent>
-                      </Card> */}
+                      </Card>
                     </motion.div>
                   )}
                 </AnimatePresence>
