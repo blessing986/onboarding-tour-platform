@@ -2,63 +2,74 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Demo Page</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="min-h-screen bg-linear-to-br from-slate-50 to-slate-100">
+<body class="bg-linear-to-br from-slate-50 to-slate-100 min-h-screen">
+
+  <!-- Back Button -->
+  <div class="p-4">
+    <a href="/" class="inline-block px-4 py-2 bg-teal-500 text-white rounded-full shadow hover:bg-teal-600">
+      ← Back to Home
+    </a>
+  </div>
 
   <!-- HEADER -->
   <header class="bg-white shadow-sm border-b sticky top-0 z-50" data-tour="header" id="header">
-    <div class="container mx-auto px-4 py-4">
+    <div class="max-w-6xl mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
+
+        <!-- Logo + Nav -->
         <div class="flex items-center gap-8">
-          <h1 class="text-2xl font-bold bg-linear-to-r from-brand-teal to-brand-sky bg-clip-text text-transparent">
+          <h1 class="text-2xl font-bold bg-linear-to-r from-teal-600 to-sky-500 bg-clip-text text-transparent">
             ShopStyle
           </h1>
 
           <nav class="hidden md:flex gap-6">
-            <a href="#" class="text-slate-600 hover:text-brand-teal transition-colors">New</a>
-            <a href="#" class="text-slate-600 hover:text-brand-teal transition-colors">Men</a>
-            <a href="#" class="text-slate-600 hover:text-brand-teal transition-colors">Women</a>
-            <a href="#" class="text-slate-600 hover:text-brand-teal transition-colors">Sale</a>
+            <a href="#" class="text-slate-600 hover:text-teal-600 transition">New</a>
+            <a href="#" class="text-slate-600 hover:text-teal-600 transition">Men</a>
+            <a href="#" class="text-slate-600 hover:text-teal-600 transition">Women</a>
+            <a href="#" class="text-slate-600 hover:text-teal-600 transition">Sale</a>
           </nav>
         </div>
 
-        <div class="flex items-center gap-4">
-          <!-- <button class="relative" data-tour="wishlist-button" id="wishlist-btn"> -->
-            <!-- Heart Icon -->
-            <span>❤️</span>
+        <!-- Icons -->
+        <div class="flex items-center gap-6">
+
+          <!-- Wishlist -->
+          <div class="relative cursor-pointer" data-tour="wishlist-button" id="wishlist-btn">
+            <span class="text-2xl">❤️</span>
             <span
-              class="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center bg-pink-400 text-white text-xs rounded-full">
+              class="absolute -top-1 -right-2 bg-pink-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full shadow">
               3
             </span>
-          <!-- </button> -->
+          </div>
 
-          <!-- <button class="relative" data-tour="cart-button" id="cart-btn"> -->
-            <!-- Cart Icon -->
-            <span>🛒</span>
+          <!-- Cart -->
+          <div class="relative cursor-pointer" data-tour="cart-button" id="cart-btn">
+            <span class="text-2xl">🛒</span>
             <span
-              class="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center bg-teal-500 text-white text-xs rounded-full">
+              class="absolute -top-1 -right-2 bg-teal-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full shadow">
               2
             </span>
-          <!-- </button> -->
-        </div>
+          </div>
 
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- MAIN -->
-  <main class="container mx-auto px-4 py-8">
+  <!-- MAIN CONTENT -->
+  <main class="max-w-6xl mx-auto px-4 py-8">
 
     <!-- Breadcrumb -->
     <div class="flex items-center gap-2 text-sm text-slate-600 mb-8">
-      <a href="#" class="hover:text-brand-teal">Home</a>
+      <a href="#" class="hover:text-teal-600">Home</a>
       <span>›</span>
-      <a href="#" class="hover:text-brand-teal">Men</a>
+      <a href="#" class="hover:text-teal-600">Men</a>
       <span>›</span>
       <span class="text-slate-900">Classic Denim Jacket</span>
     </div>
@@ -66,13 +77,13 @@
     <div class="grid lg:grid-cols-2 gap-12">
 
       <!-- Product Images -->
-      <div class="space-y-4" id="product-gallery">
-        <div class="border-2 border-slate-200 rounded-3xl overflow-hidden" data-tour="product-image"
+      <div class="space-y-4">
+        <div class="border-2 border-slate-200 rounded-3xl overflow-hidden shadow-sm" data-tour="product-image"
           id="product-image">
           <div class="aspect-square bg-slate-200 flex items-center justify-center relative">
-            <div class="text-slate-400 text-6xl">🧥</div>
+            <div class="text-slate-400 text-6xl" id="product-gallery">🧥</div>
 
-            <span class="absolute top-4 right-4 bg-amber-500 text-white px-2 py-1 rounded text-sm"
+            <span class="absolute top-4 right-4 bg-amber-500 text-white px-3 py-1 rounded-full text-xs shadow"
               data-tour="product-badge">
               20% OFF
             </span>
@@ -88,15 +99,13 @@
       </div>
 
       <!-- Product Details -->
-      <div class="space-y-6" id="product-details">
+      <div class="space-y-6">
 
         <div>
           <h1 class="text-4xl font-bold text-slate-900 mb-2">Classic Denim Jacket</h1>
 
-          <div class="flex items-center gap-4 mb-4">
-            <div class="flex gap-1">
-              ⭐⭐⭐⭐⭐
-            </div>
+          <div class="flex items-center gap-4 mb-4" id="product-details">
+            <div class="flex gap-1">⭐⭐⭐⭐⭐</div>
             <span class="text-slate-600">4.8 (324 reviews)</span>
           </div>
 
@@ -110,8 +119,8 @@
         <!-- Description -->
         <div class="border-t border-b border-slate-200 py-6">
           <p class="text-slate-600">
-            A timeless classic reimagined for modern style. This premium denim jacket is comfortable,
-            durable and pairs with any outfit.
+            A timeless classic reimagined for modern style. This premium denim jacket is comfortable, durable and pairs
+            with any outfit.
           </p>
         </div>
 
@@ -122,13 +131,13 @@
             <a href="#" class="text-sm text-teal-500 underline">Size Guide</a>
           </div>
 
-          <!-- <div class="flex gap-3">
-            <button class="w-14 h-14 border-2 border-slate-200 rounded-xl">XS</button>
-            <button class="w-14 h-14 border-2 border-slate-200 rounded-xl">S</button>
-            <button class="w-14 h-14 border-2 border-slate-200 rounded-xl">M</button>
-            <button class="w-14 h-14 border-2 border-slate-200 rounded-xl">L</button>
-            <button class="w-14 h-14 border-2 border-slate-200 rounded-xl">XL</button>
-          </div> -->
+          <div class="flex gap-3">
+            <button class="w-14 h-14 border-2 border-slate-200 rounded-xl hover:border-teal-500">XS</button>
+            <button class="w-14 h-14 border-2 border-slate-200 rounded-xl hover:border-teal-500">S</button>
+            <button class="w-14 h-14 border-2 border-slate-200 rounded-xl hover:border-teal-500">M</button>
+            <button class="w-14 h-14 border-2 border-slate-200 rounded-xl hover:border-teal-500">L</button>
+            <button class="w-14 h-14 border-2 border-slate-200 rounded-xl hover:border-teal-500">XL</button>
+          </div>
         </div>
 
         <!-- Quantity -->
@@ -136,11 +145,11 @@
           <label class="font-semibold block mb-3">Quantity</label>
 
           <div class="flex items-center gap-4">
-            <!-- <div class="flex items-center border-2 border-slate-200 rounded-xl overflow-hidden">
+            <div class="flex items-center border-2 border-slate-200 rounded-xl overflow-hidden">
               <button class="px-4 py-2 border-r">-</button>
               <span class="w-12 text-center font-semibold">1</span>
               <button class="px-4 py-2 border-l">+</button>
-            </div> -->
+            </div>
 
             <span class="text-sm text-slate-600">Only 12 items left in stock</span>
           </div>
@@ -148,27 +157,29 @@
 
         <!-- Action Buttons -->
         <div class="flex gap-3" data-tour="action-buttons" id="action-buttons">
-          <!-- <button class="flex-1 h-14 bg-teal-500 text-white rounded-full text-lg">
+          <button class="flex-1 h-14 bg-teal-500 text-white rounded-full text-lg shadow hover:bg-teal-600">
             Add to Cart
           </button>
 
-          <button class="h-14 w-14 border rounded-full">❤️</button>
-          <button class="h-14 w-14 border rounded-full">↗</button> -->
+          <button class="h-14 w-14 border rounded-full flex items-center justify-center">❤️</button>
+          <button class="h-14 w-14 border rounded-full flex items-center justify-center">↗</button>
         </div>
 
         <!-- Features -->
         <div class="grid grid-cols-3 gap-4">
-          <div class="border-2 border-slate-100 p-4 text-center">
+          <div class="border-2 border-slate-100 p-4 rounded-xl text-center shadow-sm bg-white">
             🚚
             <p class="text-xs font-medium">Free Shipping</p>
             <p class="text-xs text-slate-600">On orders $50+</p>
           </div>
-          <div class="border-2 border-slate-100 p-4 text-center">
+
+          <div class="border-2 border-slate-100 p-4 rounded-xl text-center shadow-sm bg-white">
             🔒
             <p class="text-xs font-medium">Secure Payment</p>
             <p class="text-xs text-slate-600">100% Protected</p>
           </div>
-          <div class="border-2 border-slate-100 p-4 text-center">
+
+          <div class="border-2 border-slate-100 p-4 rounded-xl text-center shadow-sm bg-white">
             ⏳
             <p class="text-xs font-medium">Easy Returns</p>
             <p class="text-xs text-slate-600">30-day policy</p>
@@ -178,52 +189,86 @@
       </div>
     </div>
 
-    <!-- Reviews -->
-    <div class="mt-16" id="reviews-section">
-      <h2 class="text-3xl font-bold mb-8">Customer Reviews</h2>
-
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="border-2 border-slate-100 p-6 rounded-2xl">
-          <div class="flex items-center gap-3 mb-3">
-            <div class="w-12 h-12 rounded-full bg-teal-200 flex items-center justify-center text-teal-700">
-              S
-            </div>
-            <div>
-              <p class="font-semibold">Sarah M.</p>
-              ⭐⭐⭐⭐⭐
-            </div>
+  <!-- Reviews Section -->
+  <div class="mt-16">
+    <h2 class="text-3xl font-bold mb-8">Customer Reviews</h2>
+  
+    <!-- Static reviews -->
+    <div class="grid md:grid-cols-2 gap-6 mb-8">
+      <div class="border-2 border-slate-100 p-6 rounded-2xl bg-white shadow">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-12 h-12 rounded-full bg-teal-200 flex items-center justify-center text-teal-700 font-semibold">
+            S
           </div>
-          <p>Absolutely love this jacket! The fit is perfect and the quality is outstanding.</p>
-        </div>
-
-        <div class="border-2 border-slate-100 p-6 rounded-2xl">
-          <div class="flex items-center gap-3 mb-3">
-            <div class="w-12 h-12 rounded-full bg-teal-200 flex items-center justify-center text-teal-700">
-            </div>
-            <div>
-              <p class="font-semibold">John D.</p>
-              ⭐⭐⭐⭐☆
-            </div>
+          <div>
+            <p class="font-semibold">Sarah M.</p>
+            ⭐⭐⭐⭐⭐
           </div>
-          <p>Great jacket, runs slightly large but very comfortable and stylish.</p>
         </div>
-
+        <p class="text-slate-700">Absolutely love this jacket! The fit is perfect and the quality is outstanding.</p>
+      </div>
+  
+      <div class="border-2 border-slate-100 p-6 rounded-2xl bg-white shadow">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-12 h-12 rounded-full bg-teal-200 flex items-center justify-center text-teal-700 font-semibold">
+            J
+          </div>
+          <div>
+            <p class="font-semibold">John D.</p>
+            ⭐⭐⭐⭐☆
+          </div>
+        </div>
+        <p class="text-slate-700">Great jacket, runs slightly large but very comfortable and stylish.</p>
       </div>
     </div>
+  
+    <!-- Widget container -->
+    <div id="review-widget-container" class="border-2 border-teal-200 p-6 rounded-2xl bg-white shadow-md">
+      <!-- Widget will render here -->
+    </div>
+  </div>
+
 
   </main>
 
-  <div id="tourguide-widget-root"></div>
-    <script src="https://embeddable-tour-platform.vercel.app/onboard.iife.js"></script>
-    <script>  
-        const widget = window.initOnboard({
-        tourId: '12',
-        secret_key: "25a70b72-d19b-4758-91a4-ff0d98d90609",
-        resume: true,
-        onEvent: (e) => console.log('analytic', e)
-        });
-        widget.start();
-    </script>
+  <script src="https://embeddable-tour-platform.vercel.app/onboard.iife.js"></script>
+  <script>
+    const widget = window.initOnboard({
+      tourId: 13,
+      secret_key: "33705fc3-019d-43d2-a41a-89947fa0236d",
+      resume: true,
+      onEvent: (e) => console.log('analytic', e),
+       styles: {
+        tooltip: {
+          background: 'linear-gradient(145deg, #38bdf8, #14b8a6)',
+          color: '#ffffff',
+          borderRadius: '1rem',
+          padding: '0.75rem 1rem',
+          fontSize: '0.875rem'
+        },
+        button: {
+          background: '#14b8a6', 
+          color: '#ffffff',
+          borderRadius: '9999px',
+          padding: '0.5rem 1rem',
+          fontWeight: '600'
+        },
+        controls: {
+          color: '#14b8a6',
+          borderRadius: '0.75rem',
+          padding: '0.25rem 0.5rem'
+        },
+        progress: {
+          color: '#fff',
+          height: '0.25rem',
+          borderRadius: '0.25rem',
+          paddingBottom: '1rem',
+        }
+      },
+    });
+    widget.start();
+  </script>
 
 </body>
+
 </html>
