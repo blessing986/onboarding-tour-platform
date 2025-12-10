@@ -16,7 +16,7 @@ import { ArrowLeft, Loader2, CheckCircle2, XCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/context/auth-context';
 import { Tour } from '@/types/tours';
-import BackgroundDecoration from '@/components/dashboard/background-deco';
+// import BackgroundDecoration from '@/components/dashboard/background-deco'; // Replaced with inline styles
 import { motion } from 'framer-motion';
 
 type AnalyticsData = Tour & {
@@ -113,8 +113,8 @@ export default function AnalyticsPage() {
 
   if (authLoading || loading) {
     return (
-      <div className='min-h-screen flex items-center justify-center'>
-        <Loader2 className='h-8 w-8 animate-spin' />
+      <div className='min-h-screen flex items-center justify-center bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20'>
+        <Loader2 className='h-8 w-8 animate-spin text-brand-teal' />
       </div>
     );
   }
@@ -124,12 +124,21 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <div className='min-h-screen bg-linear-to-br from-brand-sky/10 via-white to-brand-sage/10'>
-      <BackgroundDecoration />
-      <div className='container mx-auto px-4 py-8 max-w-5xl'>
+    <div className='relative min-h-screen w-full overflow-hidden bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900 selection:bg-brand-teal/20 selection:text-brand-teal'>
+      <div className='absolute top-0 left-0 right-0 bottom-0 -z-10 overflow-hidden pointer-events-none'>
+        <div className='absolute top-0 left-1/4 w-96 h-96 bg-brand-sky rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob'></div>
+        <div className='absolute top-0 right-1/4 w-96 h-96 bg-brand-teal rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000'></div>
+        <div className='absolute -bottom-32 left-1/3 w-96 h-96 bg-brand-blush rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000'></div>
+      </div>
+
+      <div className='container mx-auto px-4 py-8 max-w-5xl relative z-10'>
         <div className='mb-6'>
           <Link href={`/dashboard`}>
-            <Button variant='ghost' size='sm'>
+            <Button
+              variant='ghost'
+              size='sm'
+              className='rounded-full border-2 border-brand-teal/20 text-slate-700 hover:border-brand-teal hover:text-brand-teal hover:bg-white bg-white/50 backdrop-blur-sm transition-all duration-300'
+            >
               <ArrowLeft className='mr-2 h-4 w-4' />
               Back to Dashboard
             </Button>
@@ -137,33 +146,39 @@ export default function AnalyticsPage() {
         </div>
 
         <div className='mb-8'>
-          <h1 className='text-4xl font-bold bg-linear-to-r from-brand-teal via-brand-blush to-brand-sky bg-clip-text text-transparent mb-2'>
+          <h1 className='text-4xl md:text-5xl font-bold bg-linear-to-r from-brand-teal via-brand-blush to-brand-sky bg-clip-text text-transparent mb-2'>
             {tour.name}
           </h1>
-          <p className='text-muted-foreground'>
+          <p className='text-xl text-slate-600'>
             Analytics and performance insights
           </p>
         </div>
 
-        <div className='grid md:grid-cols-2 gap-6 mb-8'>
+        <div className='grid md:grid-cols-3 gap-6 mb-8'>
           {stats.map((s, i) => {
             return (
-              <motion.div key={i} variants={fadeIn}>
+              <motion.div
+                key={i}
+                variants={fadeIn}
+                initial='initial'
+                animate='animate'
+                transition={{ delay: i * 0.1 }}
+              >
                 <Card
-                  className={`${s.bgColor} backdrop-blur-sm border-2 border-white/50 shadow-lg transition-all duration-300 overflow-hidden`}
+                  className={`rounded-3xl border-2 border-white/50 bg-white/80 backdrop-blur-sm shadow-xl hover:shadow-2xl hover:border-brand-teal/30 transition-all duration-300 h-full`}
                 >
                   <CardContent className='p-6'>
                     <div className='flex items-start justify-between mb-4'>
                       <div
-                        className={`w-14 h-14 rounded-xl bg-linear-to-br ${s.color} flex items-center justify-center shadow-lg`}
+                        className={`w-14 h-14 rounded-2xl bg-linear-to-br ${s.color} flex items-center justify-center shadow-lg`}
                       >
                         <s.icon className='h-7 w-7 text-white' />
                       </div>
                     </div>
-                    <h3 className='text-sm font-medium text-slate-600 mb-1'>
+                    <h3 className='text-sm font-bold uppercase tracking-wide text-slate-500 mb-1'>
                       {s.title}
                     </h3>
-                    <p className='text-4xl font-bold text-slate-900 mb-2'>
+                    <p className='text-4xl font-extrabold text-slate-900 mb-2'>
                       {s.value}
                     </p>
                   </CardContent>
@@ -173,20 +188,22 @@ export default function AnalyticsPage() {
           })}
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Step Performance</CardTitle>
-            <CardDescription>
+        <Card className='rounded-3xl border-2 border-white/50 bg-white/80 backdrop-blur-sm shadow-xl transition-all duration-300'>
+          <CardHeader className='border-b border-slate-100/50 pb-6'>
+            <CardTitle className='text-xl font-bold text-slate-900'>
+              Step Performance
+            </CardTitle>
+            <CardDescription className='text-slate-600'>
               View count for each step in your tour
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className='pt-8'>
             {!tour.steps || tour.steps.length === 0 ? (
-              <p className='text-muted-foreground text-center py-8'>
+              <p className='text-slate-500 text-center py-8 text-lg'>
                 No steps configured yet
               </p>
             ) : (
-              <div className='space-y-4 grid md:grid-cols-2 lg:grid-cols-3 space-x-5'>
+              <div className='space-y-4 grid md:grid-cols-2 lg:grid-cols-3 md:space-y-0 gap-6'>
                 {tour.steps &&
                   tour.steps.map((step, index) => {
                     const views = step.step_viewed;
@@ -198,31 +215,56 @@ export default function AnalyticsPage() {
                         : 0;
 
                     return (
-                      <div key={step.id} className='border rounded-lg p-4'>
-                        <div className='flex items-start justify-between mb-2'>
-                          <div className='flex-1'>
-                            <div className='flex items-center gap-2 mb-1'>
-                              <Badge variant='outline'>Step {index + 1}</Badge>
-                              <h4 className='font-semibold'>{step.title}</h4>
+                      <motion.div
+                        whileHover={{ y: -4 }}
+                        key={step.id}
+                        className='group flex flex-col justify-between rounded-2xl border border-white/60 bg-white/40 p-5 shadow-sm hover:shadow-md hover:border-brand-teal/30 transition-all duration-300'
+                      >
+                        <div className='mb-4'>
+                          <div className='flex items-center gap-2 mb-3'>
+                            <Badge
+                              variant='outline'
+                              className='bg-white border-brand-teal/20 text-brand-teal shadow-xs'
+                            >
+                              Step {index + 1}
+                            </Badge>
+                          </div>
+                          <h4 className='font-bold text-slate-800 line-clamp-1'>
+                            {step.title}
+                          </h4>
+                          <p className='text-xs text-slate-500 mt-1 line-clamp-2 min-h-[2.5em]'>
+                            {step.content}
+                          </p>
+                        </div>
+                        <div className='mt-auto'>
+                          <div className='flex items-end justify-between mb-2'>
+                            <div>
+                              <div className='text-2xl font-bold text-slate-900'>
+                                {views}
+                              </div>
+                              <p className='text-xs font-semibold text-slate-400 uppercase tracking-wider'>
+                                Views
+                              </p>
                             </div>
-                            <p className='text-sm text-muted-foreground'>
-                              {step.content}
-                            </p>
+                            <div className='text-right'>
+                              <div className='text-lg font-bold text-brand-teal'>
+                                {viewRate}%
+                              </div>
+                              <p className='text-xs text-slate-400'>
+                                Retention
+                              </p>
+                            </div>
                           </div>
-                          <div className='text-right ml-4'>
-                            <div className='text-2xl font-bold'>{views}</div>
-                            <p className='text-xs text-muted-foreground'>
-                              {viewRate}% reached
-                            </p>
+                          <div className='w-full bg-slate-100 rounded-full h-2 mt-1 overflow-hidden shadow-inner'>
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={{ width: `${viewRate}%` }}
+                              transition={{ duration: 1, delay: 0.2 }}
+                              className='bg-linear-to-r from-brand-teal to-brand-sky h-2 rounded-full'
+                            />
                           </div>
                         </div>
-                        <div className='w-full bg-muted rounded-full h-2 mt-3'>
-                          <div
-                            className='bg-blue-600 h-2 rounded-full transition-all'
-                            style={{ width: `${viewRate}%` }}
-                          />
-                        </div>
-                      </div>
+                      </motion.div>
                     );
                   })}
               </div>
@@ -239,7 +281,10 @@ export default function AnalyticsPage() {
                 tour is active and properly embedded on your website.
               </p>
               <Link href={`/dashboard/tours/${tourId}/embed`}>
-                <Button variant='outline' size='sm'>
+                <Button
+                  size='lg'
+                  className='bg-white text-brand-teal hover:bg-white/90 border-0 rounded-full shadow-lg font-bold px-8 h-12'
+                >
                   View Embed Code
                 </Button>
               </Link>

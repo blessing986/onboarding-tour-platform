@@ -32,13 +32,6 @@ export function Footer() {
                 ]
               },
               {
-                header: "Resources",
-                links: [
-                  { name: "API Reference", href: "/docs/api" },
-                  { name: "Guides", href: "/docs/api/examples" }
-                ]
-              },
-              {
                 header: "Company",
                 links: [
                   { name: "About Us", href: "/about#team" },

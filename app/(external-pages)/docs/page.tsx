@@ -19,42 +19,33 @@ import {
   ChevronRight,
   Terminal,
   Layers,
-  Copy,
-  Check,
 } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { CodeBlock } from "./components/CodeBlock";
+import {
+  htmlExampleCode,
+  navigation,
+  reactExampleCode,
+  scriptTagCode,
+} from "./constants/constant";
 
 const staggerContainer = {
-  initial: {},
   animate: {
     transition: {
-      staggerChildren: 0.15,
-    },
-  },
+      staggerChildren: 0.05
+    }
+  }
 };
 
 const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
+  initial: { opacity: 0, y: 10 },
   animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.3 }
 };
 
 export default function DocsPage() {
   const [activeSection, setActiveSection] = useState("quickstart");
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-
-  const copyToClipboard = (code: string, id: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCode(id);
-    setTimeout(() => setCopiedCode(null), 2000);
-  };
-
-  const navigation = [
-    { id: "quickstart", label: "Quick Start", icon: Rocket },
-    { id: "integration", label: "Integration", icon: Code2 },
-    { id: "api", label: "API Reference", icon: Cog },
-    { id: "examples", label: "Examples", icon: Layers },
-  ];
 
   return (
     <div className="min-h-screen bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900">
@@ -66,21 +57,18 @@ export default function DocsPage() {
       </div>
 
       <div className="relative">
-        <div className="container mx-auto px-4 py-8 sm:py-12 md:py-20">
+        <div className="container mx-auto px-4 py-8 sm:py-12 md:py-12">
           <div className="max-w-7xl mx-auto">
             <motion.div
-              className="text-center mb-10 sm:mb-14 lg:mb-16 space-y-4 sm:space-y-6"
+              className="text-center mb-10 sm:mb-14 lg:mb-16 space-y-4 sm:space-y-6 lg:space-y-8"
               initial="initial"
               animate="animate"
               variants={staggerContainer}
             >
               {/* Badge */}
-              <motion.div variants={fadeInUp}>
-                <Badge
-                  variant="outline"
-                  className="text-sm hover:scale-105 transition-transform cursor-default border-brand-teal text-brand-teal bg-white/80 backdrop-blur-sm px-4 py-1.5 shadow-lg"
-                >
-                  <BookOpen className="h-4 w-4 mr-2 text-brand-teal" />
+              <motion.div variants={fadeInUp}  transition={{ type: "spring", stiffness: 300 }}>
+                 <Badge variant="outline" className="text-sm hover:scale-105 transition-transform cursor-default border-amber-500 text-slate-900 bg-amber-50/80 backdrop-blur-sm px-4 py-1.5 shadow-lg">
+                  <BookOpen className="h-3 w-3 mr-2 text-amber-500" />
                   Developer Documentation
                 </Badge>
               </motion.div>
@@ -102,7 +90,7 @@ export default function DocsPage() {
               </motion.h1>
 
               <motion.p
-                className="text-xl md:text-2xl text-slate-600 max-w-2xl mx-auto leading-relaxed"
+                className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed"
                 variants={fadeInUp}
               >
                 Everything you need to create powerful onboarding experiences
@@ -119,7 +107,7 @@ export default function DocsPage() {
                       <button
                         key={item.id}
                         onClick={() => setActiveSection(item.id)}
-                        className={`w-full flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 rounded-2xl  transition-all duration-200 cursor-pointer ${
+                        className={`w-full flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 rounded-2xl transition-all duration-200 cursor-pointer ${
                           isActive
                             ? "bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky text-white shadow-xl shadow-brand-teal/30"
                             : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
@@ -147,7 +135,7 @@ export default function DocsPage() {
                   </p>
                   <Link href="mailto:support@example.com">
                     <Button
-                      className="w-full bg-amber-500 hover:bg-amber-600 text-white font-medium cursor-pointer shadow-lg"
+                      className="w-full h-10 bg-amber-500 hover:bg-amber-600 text-white font-medium cursor-pointer shadow-lg rounded-full transition-all duration-300"
                       size="sm"
                     >
                       Contact Support
@@ -253,17 +241,19 @@ export default function DocsPage() {
                           <div className="flex flex-wrap gap-3">
                             <Button
                               onClick={() => setActiveSection("integration")}
-                              className="bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky hover:from-brand-blush/90 hover:to-brand-sky/90 text-white shadow-xl shadow-brand-teal/30 rounded-full"
+                              className="h-14 px-8 text-lg bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky hover:from-brand-blush/90 hover:via-brand-teal/90 hover:to-brand-sky/90 text-white shadow-xl shadow-brand-teal/30 rounded-full transition-all duration-300 cursor-pointer"
                             >
                               View Integration Guide
-                              <ChevronRight className="ml-2 h-4 w-4" />
+                              <ChevronRight className="ml-2 h-5 w-5" />
                             </Button>
-                            <Button
+                            <Link href="/demo.html">
+                             <Button
                               variant="outline"
-                              className="border-brand-teal/50 text-brand-teal hover:bg-brand-teal/10 rounded-full"
+                              className="h-14 px-8 text-lg border-2 border-brand-teal text-brand-teal hover:bg-brand-teal hover:text-white rounded-full shadow-lg transition-all duration-300 cursor-pointer"
                             >
-                              Watch Video Tutorial
-                            </Button>
+                              View Demo
+                              </Button>
+                              </Link>
                           </div>
                         </CardContent>
                       </Card>
@@ -313,45 +303,12 @@ export default function DocsPage() {
                             </p>
                             <div className="relative group">
                               <div className="absolute inset-0 bg-linear-to-r from-brand-teal/10 to-brand-sky/10 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                              <div className="relative bg-slate-50 border-2 border-slate-200 rounded-xl overflow-hidden">
-                                <div className="flex items-center justify-between px-4 py-2 bg-white border-b-2 border-slate-200">
-                                  <span className="text-xs font-medium text-slate-600">
-                                    HTML
-                                  </span>
-                                  <button
-                                    onClick={() =>
-                                      copyToClipboard(
-                                        `<script src="https://tourguide.app/widget.js"></script>\n<script>\n  TourGuide.init({\n    tourId: 'YOUR_TOUR_ID',\n    autoStart: true\n  });\n</script>`,
-                                        "script1"
-                                      )
-                                    }
-                                    className="flex items-center gap-2 text-xs text-slate-600 hover:text-brand-teal transition-colors cursor-pointer"
-                                  >
-                                    {copiedCode === "script1" ? (
-                                      <>
-                                        <Check className="h-3 w-3" />
-                                        Copied!
-                                      </>
-                                    ) : (
-                                      <>
-                                        <Copy className="h-3 w-3" />
-                                        Copy
-                                      </>
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="p-4 overflow-x-auto">
-                                  <pre className="text-sm text-slate-800">
-                                    <code>{`<script src="https://tourguide.app/widget.js"></script>
-                                  
-<script>
-  TourGuide.init({
-    tourId: 'YOUR_TOUR_ID',
-    autoStart: true
-  });
-</script>`}</code>
-                                  </pre>
-                                </div>
+                              <div className="p-4 overflow-x-auto">
+                                <CodeBlock
+                                  code={scriptTagCode}
+                                  language="html"
+                                  id="script1"
+                                />
                               </div>
                             </div>
                           </div>
@@ -360,45 +317,12 @@ export default function DocsPage() {
                             <h3 className="text-xl font-semibold text-slate-900">
                               NPM Package
                             </h3>
-                            <p className="text-slate-600">
-                              For modern JavaScript frameworks:
-                            </p>
-                            <div className="relative group">
-                              <div className="absolute inset-0 bg-linear-to-r from-brand-teal/10 to-brand-sky/10 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                              <div className="relative bg-slate-50 border-2 border-slate-200 rounded-xl overflow-hidden">
-                                <div className="flex items-center justify-between px-4 py-2 bg-white border-b-2 border-slate-200">
-                                  <span className="text-xs font-medium text-slate-600">
-                                    BASH
-                                  </span>
-                                  <button
-                                    onClick={() =>
-                                      copyToClipboard(
-                                        `npm install @tourguide/widget`,
-                                        "npm"
-                                      )
-                                    }
-                                    className="flex items-center gap-2 text-xs text-slate-600 hover:text-brand-teal transition-colors cursor-pointer"
-                                  >
-                                    {copiedCode === "npm" ? (
-                                      <>
-                                        <Check className="h-3 w-3" />
-                                        Copied!
-                                      </>
-                                    ) : (
-                                      <>
-                                        <Copy className="h-3 w-3" />
-                                        Copy
-                                      </>
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="p-4">
-                                  <pre className="text-sm text-slate-800">
-                                    <code>npm install @tourguide/widget</code>
-                                  </pre>
-                                </div>
-                              </div>
-                            </div>
+                            <p className="text-slate-600">Using react:</p>
+                            <CodeBlock
+                              code="npm i embeddable-tour-platform"
+                              language="bash"
+                              id="npm-install"
+                            />
                           </div>
 
                           <div className="space-y-4">
@@ -409,22 +333,27 @@ export default function DocsPage() {
                               {[
                                 {
                                   option: "tourId",
-                                  desc: "Your unique tour identifier",
+                                  desc: "Unique identifier for your tour",
                                   required: true,
                                 },
                                 {
-                                  option: "autoStart",
-                                  desc: "Start automatically on page load",
+                                  option: "secret_key",
+                                  desc: "Authentication key for secure access",
+                                  required: true,
+                                },
+                                {
+                                  option: "resume",
+                                  desc: "Resume tour from the last completed step",
                                   required: false,
                                 },
                                 {
-                                  option: "showProgress",
-                                  desc: "Display step progress indicator",
+                                  option: "styles",
+                                  desc: "Custom styling for the tour UI",
                                   required: false,
                                 },
                                 {
-                                  option: "allowSkip",
-                                  desc: "Allow users to skip the tour",
+                                  option: "onEvent",
+                                  desc: "Callback for tracking tour events",
                                   required: false,
                                 },
                               ].map((item) => (
@@ -469,11 +398,6 @@ export default function DocsPage() {
                               selector: ".className",
                               desc: "Target by class name",
                             },
-                            {
-                              selector: '[data-tour="step-1"]',
-                              desc: "Target by data attribute",
-                              rec: true,
-                            },
                           ].map((item) => (
                             <div
                               key={item.selector}
@@ -485,11 +409,6 @@ export default function DocsPage() {
                               <span className="flex-1 text-slate-600">
                                 {item.desc}
                               </span>
-                              {item.rec && (
-                                <Badge className="bg-brand-teal/20 text-brand-teal border-brand-teal/30">
-                                  Best Practice
-                                </Badge>
-                              )}
                             </div>
                           ))}
                         </CardContent>
@@ -530,24 +449,14 @@ export default function DocsPage() {
                               code: "TourGuide.start();",
                             },
                             {
-                              method: "stop()",
-                              desc: "Stop the tour at any point",
-                              code: "TourGuide.stop();",
-                            },
-                            {
-                              method: "next()",
-                              desc: "Move to the next step",
-                              code: "TourGuide.next();",
-                            },
-                            {
-                              method: "previous()",
-                              desc: "Return to previous step",
-                              code: "TourGuide.previous();",
-                            },
-                            {
-                              method: "goToStep(index)",
+                              method: "goTo()",
                               desc: "Jump to specific step",
-                              code: "TourGuide.goToStep(3);",
+                              code: "TourGuide.goTo();",
+                            },
+                            {
+                              method: "destroy()",
+                              desc: "Stop the tour at any point",
+                              code: "TourGuide.destroy();",
                             },
                           ].map((item, idx) => (
                             <div key={idx} className="space-y-3">
@@ -557,45 +466,13 @@ export default function DocsPage() {
                                 </code>
                               </div>
                               <p className="text-slate-600">{item.desc}</p>
-                              <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-4">
-                                <pre className="text-sm text-slate-800">
-                                  <code>{item.code}</code>
-                                </pre>
-                              </div>
+                              <CodeBlock
+                                code={item.code}
+                                language="javascript"
+                                id={`api-${idx}`}
+                              />
                             </div>
                           ))}
-                        </CardContent>
-                      </Card>
-
-                      <Card className="bg-white/80 backdrop-blur-sm border-2 border-white/50 rounded-3xl shadow-lg">
-                        <CardHeader>
-                          <CardTitle className="text-slate-900">
-                            Event Listeners
-                          </CardTitle>
-                          <CardDescription className="text-slate-600">
-                            React to tour lifecycle events
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-4 overflow-x-auto">
-                            <pre className="text-sm text-slate-800">
-                              <code>{`TourGuide.on('start', () => {
-  console.log('Tour started');
-});
-
-TourGuide.on('complete', () => {
-  console.log('Tour completed');
-});
-
-TourGuide.on('skip', () => {
-  console.log('Tour skipped');
-});
-
-TourGuide.on('stepChange', (stepIndex) => {
-  console.log('Moved to step', stepIndex);
-});`}</code>
-                            </pre>
-                          </div>
                         </CardContent>
                       </Card>
                     </motion.div>
@@ -627,67 +504,13 @@ TourGuide.on('stepChange', (stepIndex) => {
                           </div>
                         </CardHeader>
                         <CardContent>
-                          <div className="bg-slate-50 border-2 border-slate-200 rounded-xl overflow-hidden">
-                            <div className="flex items-center justify-between px-4 py-2 bg-white border-b-2 border-slate-200">
-                              <span className="text-xs font-medium text-slate-600">
-                                HTML
-                              </span>
-                              <button
-                                onClick={() =>
-                                  copyToClipboard(
-                                    `<!DOCTYPE html>\n<html>\n<head>\n  <title>My App with TourGuide</title>\n</head>\n<body>\n  <nav id="main-nav">\n    <button data-tour="create-btn">Create</button>\n    <button data-tour="settings-btn">Settings</button>\n  </nav>\n\n  <main>\n    <div id="dashboard" data-tour="dashboard">\n      <h1>Welcome to My App</h1>\n    </div>\n  </main>\n\n  <script src="https://tourguide.app/widget.js"></script>\n  <script>\n    TourGuide.init({\n      tourId: 'your-tour-id',\n      autoStart: true\n    });\n\n    TourGuide.on('complete', () => {\n      console.log('Tour completed!');\n    });\n  </script>\n</body>\n</html>`,
-                                    "html-example"
-                                  )
-                                }
-                                className="flex items-center gap-2 text-xs text-slate-600 hover:text-brand-teal transition-colors cursor-pointer"
-                              >
-                                {copiedCode === "html-example" ? (
-                                  <>
-                                    <Check className="h-3 w-3" />
-                                    Copied!
-                                  </>
-                                ) : (
-                                  <>
-                                    <Copy className="h-3 w-3" />
-                                    Copy
-                                  </>
-                                )}
-                              </button>
-                            </div>
-                            <div className="p-4 overflow-x-auto">
-                              <pre className="text-sm text-slate-800">
-                                <code>{`<!DOCTYPE html>
-<html>
-<head>
-  <title>My App with TourGuide</title>
-</head>
-<body>
-  <nav id="main-nav">
-    <button data-tour="create-btn">Create</button>
-    <button data-tour="settings-btn">Settings</button>
-  </nav>
-
-  <main>
-    <div id="dashboard" data-tour="dashboard">
-      <h1>Welcome to My App</h1>
-    </div>
-  </main>
-
-  <script src="https://tourguide.app/widget.js"></script>
-  <script>
-    TourGuide.init({
-      tourId: 'your-tour-id',
-      autoStart: true
-    });
-
-    TourGuide.on('complete', () => {
-      console.log('Tour completed!');
-    });
-  </script>
-</body>
-</html>`}</code>
-                              </pre>
-                            </div>
+                          <div className="p-4 overflow-x-auto">
+                            <CodeBlock
+                              code={htmlExampleCode}
+                              language="html"
+                              id="html-example"
+                              showLineNumbers={true}
+                            />
                           </div>
                         </CardContent>
                       </Card>
@@ -709,73 +532,12 @@ TourGuide.on('stepChange', (stepIndex) => {
                           </div>
                         </CardHeader>
                         <CardContent>
-                          <div className="bg-slate-50 border-2 border-slate-200 rounded-xl overflow-hidden">
-                            <div className="flex items-center justify-between px-4 py-2 bg-white border-b-2 border-slate-200">
-                              <span className="text-xs font-medium text-slate-600">
-                                JSX
-                              </span>
-
-                              <button
-                                onClick={() =>
-                                  copyToClipboard(
-                                    `import { useEffect } from 'react';\nimport TourGuide from '@tourguide/widget';\n\nfunction App() {\n  useEffect(() => {\n    TourGuide.init({\n      tourId: 'your-tour-id',\n      autoStart: false\n    });\n\n    const hasSeenTour = localStorage.getItem('hasSeenTour');\n    if (!hasSeenTour) {\n      TourGuide.start();\n      TourGuide.on('complete', () => {\n        localStorage.setItem('hasSeenTour', 'true');\n      });\n    }\n\n    return () => TourGuide.destroy();\n  }, []);\n\n  return (\n    <div>\n      <header data-tour="header">\n        <h1>My React App</h1>\n      </header>\n      <button data-tour="action-button">\n        Take Action\n      </button>\n    </div>\n  );\n}\n\nexport default App;`,
-                                    "react-example"
-                                  )
-                                }
-                                className="flex items-center gap-2 text-xs text-slate-600 hover:text-brand-teal transition-colors cursor-pointer"
-                              >
-                                {copiedCode === "react-example" ? (
-                                  <>
-                                    <Check className="h-3 w-3" />
-                                    Copied!
-                                  </>
-                                ) : (
-                                  <>
-                                    <Copy className="h-3 w-3" />
-                                    Copy
-                                  </>
-                                )}
-                              </button>
-                            </div>
-                            <div className="p-4 overflow-x-auto">
-                              <pre className="text-sm text-slate-800">
-                                <code>{`import { useEffect } from 'react';
-import TourGuide from '@tourguide/widget';
-
-function App() {
-  useEffect(() => {
-    TourGuide.init({
-      tourId: 'your-tour-id',
-      autoStart: false
-    });
-
-    const hasSeenTour = localStorage.getItem('hasSeenTour');
-    if (!hasSeenTour) {
-      TourGuide.start();
-      TourGuide.on('complete', () => {
-        localStorage.setItem('hasSeenTour', 'true');
-      });
-    }
-
-    return () => TourGuide.destroy();
-  }, []);
-
-  return (
-    <div>
-      <header data-tour="header">
-        <h1>My React App</h1>
-      </header>
-      <button data-tour="action-button">
-        Take Action
-      </button>
-    </div>
-  );
-}
-
-export default App;`}</code>
-                              </pre>
-                            </div>
-                          </div>
+                          <CodeBlock
+                            code={reactExampleCode}
+                            language="jsx"
+                            id="react-example"
+                            showLineNumbers={true}
+                          />
                         </CardContent>
                       </Card>
                     </motion.div>
@@ -795,7 +557,7 @@ export default App;`}</code>
                 </p>
                 <Link href="mailto:support@example.com">
                   <Button
-                    className="w-full bg-amber-500 hover:bg-amber-600 text-white font-medium cursor-pointer shadow-lg"
+                    className="w-full h-10 bg-amber-500 hover:bg-amber-600 text-white font-medium cursor-pointer shadow-lg rounded-full transition-all duration-300"
                     size="sm"
                   >
                     Contact Support
