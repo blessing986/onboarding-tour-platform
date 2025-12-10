@@ -28,16 +28,35 @@ export default function EmbedPage() {
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
 
-  const embedCode = `
-  <script src="https://embeddable-tour-platform.vercel.app/onboard.iife.js"></script>
-  <script>
-    const widget = initOnboard({
+  const widgetFunction = `
+  const widget = initOnboard({
       tourId: ${tour?.id},
       secret_key: '${user?.id}',
       resume: true
     });
+`;
+
+  const embedCode = `
+  <script src="https://embeddable-tour-platform.vercel.app/onboard.iife.js"></script>
+  <script>
+    ${widgetFunction}
   </script>  
     `;
+
+  const npmCode = `npm i embeddable-tour-platform
+`;
+
+  const reactCode = `import { useEffect } from 'react';
+
+function App() {
+  useEffect(() => {
+    ${widgetFunction}
+
+    widget?.start()
+  }, []);
+
+  return <div>Your App Content</div>;
+}`;
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -151,6 +170,80 @@ export default function EmbedPage() {
               <div className='bg-slate-950 text-slate-50 p-4 rounded-lg overflow-x-auto'>
                 <pre className='text-sm'>
                   <code>{embedCode}</code>
+                </pre>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <div className='flex justify-between items-start'>
+                <div>
+                  <CardTitle>NPM Package</CardTitle>
+                  <CardDescription>
+                    Install and use the TourGuide widget as an NPM package
+                  </CardDescription>
+                </div>
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={() => copyToClipboard(npmCode)}
+                >
+                  {copied ? (
+                    <>
+                      <CheckCircle2 className='mr-2 h-4 w-4' />
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <Copy className='mr-2 h-4 w-4' />
+                      Copy
+                    </>
+                  )}
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className='bg-slate-950 text-slate-50 p-4 rounded-lg overflow-x-auto'>
+                <pre className='text-sm'>
+                  <code>{npmCode}</code>
+                </pre>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <div className='flex justify-between items-start'>
+                <div>
+                  <CardTitle>React Integration Example</CardTitle>
+                  <CardDescription>
+                    Example of using TourGuide in a React application
+                  </CardDescription>
+                </div>
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={() => copyToClipboard(reactCode)}
+                >
+                  {copied ? (
+                    <>
+                      <CheckCircle2 className='mr-2 h-4 w-4' />
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <Copy className='mr-2 h-4 w-4' />
+                      Copy
+                    </>
+                  )}
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className='bg-slate-950 text-slate-50 p-4 rounded-lg overflow-x-auto'>
+                <pre className='text-sm'>
+                  <code>{reactCode}</code>
                 </pre>
               </div>
             </CardContent>
