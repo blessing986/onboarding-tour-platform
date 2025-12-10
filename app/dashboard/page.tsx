@@ -170,7 +170,7 @@ export default function DashboardPage() {
               <Button
                 onClick={async () => await logout()}
                 variant={'destructive'}
-                className='text-white'
+                className="rounded-full bg-rose-600/90 text-white shadow-lg hover:shadow-rose-500 hover:scale-105 transition-all duration-300 px-6 border-0"
               >
                 <LogOut className='mr-2 h-5 w-5' />
                 Logout
