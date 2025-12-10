@@ -18,11 +18,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ArrowLeft, Compass, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GoogleColoredIcon from "../assets/google-colored-icon";
 import { googleAuth, login } from "@/api/actions/auth";
 import { toast } from "sonner";
 import { Eye, EyeOff } from "lucide-react";
+import { Header } from "@/components/Header";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -85,16 +86,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900">
-      <div className="w-full max-w-md space-y-4">
-        <Button
-          variant="outline"
-          onClick={() => router.back()}
-          className="border-teal-500/30 text-teal-600 hover:bg-teal-500/10 px-6 h-11 rounded-full text-base bg-white/50 backdrop-blur-sm shadow-sm"
-        >
-          <ArrowLeft className="mr-2 h-5 w-5" />
-          Go Back
-        </Button>
+    <>
+      <Header />
+
+      <div className="min-h-screen flex items-center justify-center px-4 bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
@@ -213,6 +208,6 @@ export default function LoginPage() {
           </form>
         </Card>
       </div>
-    </div>
+    </>
   );
 }
