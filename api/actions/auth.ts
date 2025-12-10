@@ -1,4 +1,4 @@
-import supabase from '@/supabase';
+import supabase from "@/supabase";
 
 export async function signup({
   email,
@@ -62,9 +62,9 @@ export async function logout() {
 
 export async function googleAuth() {
   await supabase.auth.signInWithOAuth({
-    provider: 'google',
+    provider: "google",
     options: {
-      redirectTo: '/dashboard',
+      redirectTo: "https://onboarding-tour-platform.vercel.app/dashboard",
     },
   });
 }
