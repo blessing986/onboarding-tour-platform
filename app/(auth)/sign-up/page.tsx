@@ -23,6 +23,7 @@ import GoogleColoredIcon from "../assets/google-colored-icon";
 import { googleAuth, signup } from "@/api/actions/auth";
 import { toast } from "sonner";
 import { Eye, EyeOff } from "lucide-react";
+import { motion } from "framer-motion"
 import { Header } from "@/components/Header";
 
 const signupSchema = z
@@ -101,120 +102,106 @@ export default function SignUpPage() {
   };
 
   return (
-    <>
-      <Header />
-      <div className="min-h-screen flex items-center justify-center px-4 bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <div className="flex justify-center mb-4">
-              <Compass className="h-12 w-12 text-blue-600" />
+    <div className="relative min-h-screen flex items-center justify-center px-4 bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900 overflow-hidden">
+      <Header/>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="relative w-full max-w-md rounded-3xl bg-white/70 backdrop-blur-xl shadow-2xl border border-white/50 p-8"
+      >
+        <div className="text-center mb-6">
+          <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-linear-to-br from-brand-teal to-brand-sky flex items-center justify-center shadow-lg">
+            <Compass className="h-8 w-8 text-white" />
+          </div>
+          <h2 className="text-3xl font-bold text-slate-900">Create an Account</h2>
+          <p className="text-slate-600 mt-1">Join TourGuide and get started</p>
+        </div>
+
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+
+          {/* EMAIL */}
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-slate-700">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              {...form.register("email")}
+              disabled={loading}
+              className="bg-white/70 backdrop-blur-sm"
+            />
+            {form.formState.errors.email && (
+              <p className="text-red-500 text-sm">
+                {form.formState.errors.email.message}
+              </p>
+            )}
+          </div>
+
+          {/* PASSWORD */}
+          <div className="space-y-2">
+            <Label htmlFor="password" className="text-slate-700">Password</Label>
+
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Create a password"
+                {...form.register("password")}
+                disabled={loading}
+                className="pr-10 bg-white/70 backdrop-blur-sm"
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? <EyeOff className="h-5 w-5"/> : <Eye className="h-5 w-5"/>}
+              </button>
             </div>
-            <CardTitle className="text-2xl">Create an Account</CardTitle>
-            <CardDescription>
-              Sign up for your TourGuide account
-            </CardDescription>
-          </CardHeader>
 
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <CardContent className="space-y-4">
-              {error && (
-                <Alert variant="destructive">
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
+            {form.formState.errors.password && (
+              <p className="text-red-500 text-sm">
+                {form.formState.errors.password.message}
+              </p>
+            )}
+          </div>
 
-              {/* EMAIL */}
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  {...form.register("email")}
-                  disabled={loading}
-                />
-                {form.formState.errors.email && (
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.email.message}
-                  </p>
-                )}
-              </div>
+          {/* CONFIRM PASSWORD */}
+          <div className="space-y-2">
+            <Label htmlFor="confirmPassword" className="text-slate-700">Confirm Password</Label>
 
-              {/* PASSWORD */}
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+            <div className="relative">
+              <Input
+                id="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm your password"
+                {...form.register("confirmPassword")}
+                disabled={loading}
+                className="pr-10 bg-white/70 backdrop-blur-sm"
+              />
 
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Create a password"
-                    {...form.register("password")}
-                    disabled={loading}
-                    className="pr-10"
-                  />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {showConfirmPassword ? <EyeOff className="h-5 w-5"/> : <Eye className="h-5 w-5"/>}
+              </button>
+            </div>
 
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
-                    tabIndex={-1}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-5 w-5" />
-                    ) : (
-                      <Eye className="h-5 w-5" />
-                    )}
-                  </button>
-                </div>
-
-                {form.formState.errors.password && (
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.password.message}
-                  </p>
-                )}
-              </div>
-
-              {/* CONFIRM PASSWORD */}
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-
-                <div className="relative">
-                  <Input
-                    id="confirmPassword"
-                    type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Confirm your password"
-                    {...form.register("confirmPassword", {
-                      validate: (value) => {
-                        return form.getValues().password === value
-                          ? true
-                          : "Passwords don't match";
-                      },
-                    })}
-                    disabled={loading}
-                    className="pr-10"
-                  />
-
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword((prev) => !prev)}
-                    className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
-                    tabIndex={-1}
-                  >
-                    {showConfirmPassword ? (
-                      <EyeOff className="h-5 w-5" />
-                    ) : (
-                      <Eye className="h-5 w-5" />
-                    )}
-                  </button>
-                </div>
-
-                {form.formState.errors.confirmPassword && (
-                  <p className="text-red-500 text-sm">
-                    {form.formState.errors.confirmPassword.message}
-                  </p>
-                )}
-              </div>
+            {form.formState.errors.confirmPassword && (
+              <p className="text-red-500 text-sm">
+                {form.formState.errors.confirmPassword.message}
+              </p>
+            )}
+          </div>
 
               <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
@@ -227,44 +214,39 @@ export default function SignUpPage() {
                 </div>
               </div>
 
-              <Button
-                variant="outline"
-                type="button"
-                onClick={handleGoogleAuth}
-                className="w-full cursor-pointer hover:bg-white/10 transition-colors"
-                size={"lg"}
-              >
-                <GoogleColoredIcon className="mr-2 h-4 w-4" />
-                {loading ? "Signing up..." : "Sign up with Google"}
-              </Button>
-            </CardContent>
+            <Button
+              variant="outline"
+              type="button"
+              onClick={handleGoogleAuth}
+              className="w-full cursor-pointer hover:bg-white/10 transition-colors"
+              size={"lg"}
+            >
+              <GoogleColoredIcon className="mr-2 h-4 w-4" />
+              {loading ? "Signing up..." : "Sign up with Google"}
+            </Button>
+            <Button
+            type="submit"
+            className="w-full h-12 text-white text-lg bg-linear-to-r from-brand-teal via-brand-blush to-brand-sky hover:opacity-90 shadow-xl cursor-pointer rounded-full"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-5 w-5 animate-spin"/> Creating account...
+              </>
+            ) : (
+              "Sign Up"
+            )}
+          </Button>
 
-            <CardFooter className="flex flex-col space-y-4">
-              <Button
-                type="submit"
-                className="w-full bg-linear-to-r from-brand-teal to-brand-sky hover:from-brand-teal/90 hover:to-brand-sky/90 text-white cursor-pointer"
-                disabled={loading}
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Creating account...
-                  </>
-                ) : (
-                  "Sign Up"
-                )}
-              </Button>
-
-              <p className="text-sm text-muted-foreground text-center">
-                Already have an account?{" "}
-                <Link href="/login" className="text-primary hover:underline">
-                  Sign in
-                </Link>
-              </p>
-            </CardFooter>
-          </form>
-        </Card>
-      </div>
-    </>
+          <p className="text-center text-sm text-slate-600">
+            Already have an account?{" "}
+            <Link href="/login" className="text-brand-teal font-medium hover:underline">
+              Sign in
+            </Link>
+          </p>
+        </form>
+      </motion.div>
+    </div>
   );
+
 }
