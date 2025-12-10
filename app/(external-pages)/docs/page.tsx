@@ -370,7 +370,7 @@ export default function DocsPage() {
                               NPM Package
                             </h3>
                             <p className="text-slate-600">
-                              For modern JavaScript frameworks:
+                              Using react:
                             </p>
                             <CodeBlock
                               code="npm i embeddable-tour-platform"
