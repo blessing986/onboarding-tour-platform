@@ -13,6 +13,10 @@ The Onboarding Tour Platform provides businesses with an easy-to-use system for 
 - **@enesi_dev**
 - **@mz_b**
 
+## Live Site
+**Live Site**: [onboarding-tour-platform.vercel.app](https://onboarding-tour-platform.vercel.app)
+  
+
 ## Features
 
 ### External Pages
@@ -185,8 +189,6 @@ The project is deployed on **Vercel**:
 2. Connect the repository to Vercel
 3. Add environment variables in Vercel dashboard
 4. Deploy automatically on push to main branch
-
-**Live Site**: [onboarding-tour-platform.vercel.app](https://onboarding-tour-platform.vercel.app)
 
 ## API Documentation
 
