@@ -166,8 +166,8 @@ export default function AboutPage() {
 
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-linear-to-br from-amber-100 to-orange-100 flex items-center justify-center">
-                        <Lightbulb className="h-6 w-6 text-amber-600" />
+                      <div className="w-12 h-12 rounded-xl bg-linear-to-br from-amber-100/20 to-orange-100/20 flex items-center justify-center">
+                        <Lightbulb className="h-6 w-6 text-amber-500" />
                       </div>
                       <h4 className="text-xl font-semibold text-slate-900">Innovation</h4>
                     </div>
@@ -186,7 +186,7 @@ export default function AboutPage() {
                 
                 <div className="space-y-4 relative z-10">
                   <h2 className="text-3xl font-bold text-slate-900">The Team Behind TourGuide</h2>
-                  <p className="text-slate-600 max-w-2xl mx-auto">
+                  <p className="text-slate-600 max-w-2xl mx-auto" id="team-members">
                     Built with passion by a dedicated team of developers, designers, and problem solvers.
                   </p>
                 </div>
@@ -248,13 +248,13 @@ export default function AboutPage() {
                   <div>
                     <h4 className="font-semibold mb-3 text-slate-900 text-lg">Authentication</h4>
                     <div className="flex flex-wrap gap-2">
-                      <Badge className="bg-brand-sky/40 text-brand-teal hover:bg-brand-sky/60 border-0 transition-colors duration-300">Supabase Auth</Badge>
+                      <Badge className="bg-brand-sky/20 text-brand-teal hover:bg-brand-sky/60 border-0 transition-colors duration-300">Supabase Auth</Badge>
                     </div>
                   </div>
                   <div>
                     <h4 className="font-semibold mb-3 text-slate-900 text-lg">Deployment</h4>
                     <div className="flex flex-wrap gap-2">
-                      <Badge className="bg-brand-sage/40 text-brand-sage hover:bg-brand-sage/50 border-0 transition-colors duration-300">Vercel</Badge>
+                      <Badge className="bg-brand-sage/20 text-brand-sage hover:bg-brand-sage/50 border-0 transition-colors duration-300">Vercel</Badge>
                     </div>
                   </div>
                 </div>

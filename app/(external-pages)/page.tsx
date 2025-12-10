@@ -302,7 +302,7 @@ export default function Home() {
               variants={fadeInUp}
             >
               Create beautiful, interactive onboarding tours that help new users
-              discover the power of your product. No coding required.
+              discover the power of your product.
             </motion.p>
 
             <motion.div
