@@ -12,19 +12,15 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { ArrowLeft, Loader2, CheckCircle2, XCircle, Eye, BarChart3 } from 'lucide-react';
+import { ArrowLeft, Loader2, CheckCircle2, XCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/context/auth-context';
 import { Tour } from '@/types/tours';
 // import BackgroundDecoration from '@/components/dashboard/background-deco'; // Replaced with inline styles
 import { motion } from 'framer-motion';
 
-type AnalyticsData = {
-  totalViews: number;
-  totalCompleted: number;
-  totalSkipped: number;
-  uniqueSessions: number;
-  stepViews: Record<string, number>;
+type AnalyticsData = Tour & {
+  completion_rate: number;
 };
 
 const fadeIn = {
@@ -40,13 +36,7 @@ export default function AnalyticsPage() {
   const tourId = params.id as string;
 
   const [tour, setTour] = useState<Tour | null>(null);
-  const [analytics, setAnalytics] = useState<AnalyticsData>({
-    totalViews: 0,
-    totalCompleted: 0,
-    totalSkipped: 0,
-    uniqueSessions: 0,
-    stepViews: {},
-  });
+  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -68,7 +58,7 @@ export default function AnalyticsPage() {
     // },
     {
       title: 'Completion Rate',
-      value: '0',
+      value: `${analytics?.completion_rate}%`,
       icon: CheckCircle2,
       color: 'from-brand-sky to-brand-blush',
       textColor: 'text-brand-sky',
@@ -76,7 +66,11 @@ export default function AnalyticsPage() {
     },
     {
       title: 'Skipped Rate',
-      value: '0%',
+      value: `${
+        Number(analytics?.completion_rate) === 0
+          ? 0
+          : 100 - Number(analytics?.completion_rate)
+      }%`,
       icon: XCircle,
       color: 'from-brand-sage to-brand-teal',
       textColor: 'text-brand-sage',
@@ -88,7 +82,12 @@ export default function AnalyticsPage() {
     try {
       const [tourData, analyticsData] = await Promise.all([
         supabase.from('Tours').select('*').eq('id', tourId).maybeSingle(),
-        supabase.from('TourAnalytics').select('*').eq('id', tourId),
+        supabase
+          .from('TourAnalytics')
+          .select('*')
+          .eq('id', tourId)
+          .eq('user_id', user?.id)
+          .maybeSingle(),
       ]);
 
       if (tourData.error) throw tourData.error;
@@ -99,34 +98,12 @@ export default function AnalyticsPage() {
 
       setTour(tourData.data);
 
-      if (analyticsData.data) {
-        const data = analyticsData.data;
-        const uniqueSessions = new Set(data.map((d) => d.session_id)).size;
-        const totalViews = data.filter(
-          (d) => d.event_type === 'started'
-        ).length;
-        const totalCompleted = data.filter(
-          (d) => d.event_type === 'completed'
-        ).length;
-        const totalSkipped = data.filter(
-          (d) => d.event_type === 'skipped'
-        ).length;
-
-        const stepViews: Record<string, number> = {};
-        data
-          .filter((d) => d.event_type === 'step_viewed' && d.step_id)
-          .forEach((d) => {
-            stepViews[d.step_id!] = (stepViews[d.step_id!] || 0) + 1;
-          });
-
-        setAnalytics({
-          totalViews,
-          totalCompleted,
-          totalSkipped,
-          uniqueSessions,
-          stepViews,
-        });
+      if (!analyticsData.data) {
+        return;
+      } else {
       }
+
+      setAnalytics(analyticsData.data);
     } catch (err) {
       console.error('Error fetching data:', err);
     } finally {
@@ -148,16 +125,20 @@ export default function AnalyticsPage() {
 
   return (
     <div className='relative min-h-screen w-full overflow-hidden bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900 selection:bg-brand-teal/20 selection:text-brand-teal'>
-        <div className="absolute top-0 left-0 right-0 bottom-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-brand-sky rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-brand-teal rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-32 left-1/3 w-96 h-96 bg-brand-blush rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+      <div className='absolute top-0 left-0 right-0 bottom-0 -z-10 overflow-hidden pointer-events-none'>
+        <div className='absolute top-0 left-1/4 w-96 h-96 bg-brand-sky rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob'></div>
+        <div className='absolute top-0 right-1/4 w-96 h-96 bg-brand-teal rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000'></div>
+        <div className='absolute -bottom-32 left-1/3 w-96 h-96 bg-brand-blush rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000'></div>
       </div>
 
       <div className='container mx-auto px-4 py-8 max-w-5xl relative z-10'>
         <div className='mb-6'>
           <Link href={`/dashboard`}>
-            <Button variant='ghost' size='sm' className="rounded-full border-2 border-brand-teal/20 text-slate-700 hover:border-brand-teal hover:text-brand-teal hover:bg-white bg-white/50 backdrop-blur-sm transition-all duration-300">
+            <Button
+              variant='ghost'
+              size='sm'
+              className='rounded-full border-2 border-brand-teal/20 text-slate-700 hover:border-brand-teal hover:text-brand-teal hover:bg-white bg-white/50 backdrop-blur-sm transition-all duration-300'
+            >
               <ArrowLeft className='mr-2 h-4 w-4' />
               Back to Dashboard
             </Button>
@@ -173,10 +154,16 @@ export default function AnalyticsPage() {
           </p>
         </div>
 
-        <div className='grid md:grid-cols-3 gap-6 mb-8'>
+        <div className='grid md:grid-cols-2 gap-6 mb-8'>
           {stats.map((s, i) => {
             return (
-              <motion.div key={i} variants={fadeIn} initial="initial" animate="animate" transition={{ delay: i * 0.1 }}>
+              <motion.div
+                key={i}
+                variants={fadeIn}
+                initial='initial'
+                animate='animate'
+                transition={{ delay: i * 0.1 }}
+              >
                 <Card
                   className={`rounded-3xl border-2 border-white/50 bg-white/80 backdrop-blur-sm shadow-xl hover:shadow-2xl hover:border-brand-teal/30 transition-all duration-300 h-full`}
                 >
@@ -201,14 +188,16 @@ export default function AnalyticsPage() {
           })}
         </div>
 
-        <Card className="rounded-3xl border-2 border-white/50 bg-white/80 backdrop-blur-sm shadow-xl transition-all duration-300">
-          <CardHeader className="border-b border-slate-100/50 pb-6">
-            <CardTitle className="text-xl font-bold text-slate-900">Step Performance</CardTitle>
-            <CardDescription className="text-slate-600">
+        <Card className='rounded-3xl border-2 border-white/50 bg-white/80 backdrop-blur-sm shadow-xl transition-all duration-300'>
+          <CardHeader className='border-b border-slate-100/50 pb-6'>
+            <CardTitle className='text-xl font-bold text-slate-900'>
+              Step Performance
+            </CardTitle>
+            <CardDescription className='text-slate-600'>
               View count for each step in your tour
             </CardDescription>
           </CardHeader>
-          <CardContent className="pt-8">
+          <CardContent className='pt-8'>
             {!tour.steps || tour.steps.length === 0 ? (
               <p className='text-slate-500 text-center py-8 text-lg'>
                 No steps configured yet
@@ -217,50 +206,63 @@ export default function AnalyticsPage() {
               <div className='space-y-4 grid md:grid-cols-2 lg:grid-cols-3 md:space-y-0 gap-6'>
                 {tour.steps &&
                   tour.steps.map((step, index) => {
-                    const views = analytics.stepViews[step.id] || 0;
+                    const views = step.step_viewed;
                     const viewRate =
-                      analytics.totalViews > 0
-                        ? Math.round((views / analytics.totalViews) * 100)
+                      Number(analytics?.completion_rate) > 0
+                        ? Math.round(
+                            (views / Number(analytics?.completion_rate)) * 100
+                          )
                         : 0;
 
                     return (
-                      <motion.div 
+                      <motion.div
                         whileHover={{ y: -4 }}
-                        key={step.id} 
+                        key={step.id}
                         className='group flex flex-col justify-between rounded-2xl border border-white/60 bg-white/40 p-5 shadow-sm hover:shadow-md hover:border-brand-teal/30 transition-all duration-300'
                       >
                         <div className='mb-4'>
-                            <div className='flex items-center gap-2 mb-3'>
-                                <Badge variant='outline' className="bg-white border-brand-teal/20 text-brand-teal shadow-xs">
-                                    Step {index + 1}
-                                </Badge>
-                            </div>
-                            <h4 className='font-bold text-slate-800 line-clamp-1'>{step.title}</h4>
-                            <p className='text-xs text-slate-500 mt-1 line-clamp-2 min-h-[2.5em]'>
-                                {step.content}
-                            </p>
+                          <div className='flex items-center gap-2 mb-3'>
+                            <Badge
+                              variant='outline'
+                              className='bg-white border-brand-teal/20 text-brand-teal shadow-xs'
+                            >
+                              Step {index + 1}
+                            </Badge>
+                          </div>
+                          <h4 className='font-bold text-slate-800 line-clamp-1'>
+                            {step.title}
+                          </h4>
+                          <p className='text-xs text-slate-500 mt-1 line-clamp-2 min-h-[2.5em]'>
+                            {step.content}
+                          </p>
                         </div>
-                        <div className="mt-auto">
-                            <div className='flex items-end justify-between mb-2'>
-                                <div>
-                                    <div className='text-2xl font-bold text-slate-900'>{views}</div>
-                                    <p className='text-xs font-semibold text-slate-400 uppercase tracking-wider'>
-                                        Views
-                                    </p>
-                                </div>
-                                <div className='text-right'>
-                                    <div className='text-lg font-bold text-brand-teal'>{viewRate}%</div>
-                                    <p className='text-xs text-slate-400'>Retention</p>
-                                </div>
+                        <div className='mt-auto'>
+                          <div className='flex items-end justify-between mb-2'>
+                            <div>
+                              <div className='text-2xl font-bold text-slate-900'>
+                                {views}
+                              </div>
+                              <p className='text-xs font-semibold text-slate-400 uppercase tracking-wider'>
+                                Views
+                              </p>
                             </div>
-                            <div className='w-full bg-slate-100 rounded-full h-2 mt-1 overflow-hidden shadow-inner'>
+                            <div className='text-right'>
+                              <div className='text-lg font-bold text-brand-teal'>
+                                {viewRate}%
+                              </div>
+                              <p className='text-xs text-slate-400'>
+                                Retention
+                              </p>
+                            </div>
+                          </div>
+                          <div className='w-full bg-slate-100 rounded-full h-2 mt-1 overflow-hidden shadow-inner'>
                             <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${viewRate}%` }}
-                                transition={{ duration: 1, delay: 0.2 }}
-                                className='bg-linear-to-r from-brand-teal to-brand-sky h-2 rounded-full'
+                              initial={{ width: 0 }}
+                              animate={{ width: `${viewRate}%` }}
+                              transition={{ duration: 1, delay: 0.2 }}
+                              className='bg-linear-to-r from-brand-teal to-brand-sky h-2 rounded-full'
                             />
-                            </div>
+                          </div>
                         </div>
                       </motion.div>
                     );
@@ -270,21 +272,19 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
 
-        {analytics.totalViews === 0 && (
-          <Card className='mt-8 rounded-3xl border-0 bg-linear-to-r from-brand-sky via-blue-500 to-brand-teal text-white shadow-xl overflow-hidden relative'>
-             <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
-             
-            <CardContent className='p-8 md:p-12 relative z-10 flex flex-col items-center text-center'>
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-4 backdrop-blur-md">
-                 <Eye className="w-8 h-8 text-white" />
-              </div>
-              <h3 className='text-2xl font-bold mb-3'>No Analytics Data Yet</h3>
-              <p className='text-white/90 max-w-lg leading-relaxed mb-8 text-lg'>
+        {analytics?.completion_rate === 0 && (
+          <Card className='mt-6 border-blue-200 bg-blue-50 dark:bg-blue-950 dark:border-blue-900'>
+            <CardContent className='p-6'>
+              <h3 className='font-semibold mb-2'>No Analytics Data Yet</h3>
+              <p className='text-sm text-muted-foreground mb-4'>
                 Your tour hasn&apos;t received any views yet. Make sure your
                 tour is active and properly embedded on your website.
               </p>
               <Link href={`/dashboard/tours/${tourId}/embed`}>
-                <Button size="lg" className='bg-white text-brand-teal hover:bg-white/90 border-0 rounded-full shadow-lg font-bold px-8 h-12'>
+                <Button
+                  size='lg'
+                  className='bg-white text-brand-teal hover:bg-white/90 border-0 rounded-full shadow-lg font-bold px-8 h-12'
+                >
                   View Embed Code
                 </Button>
               </Link>

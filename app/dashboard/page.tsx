@@ -73,8 +73,8 @@ export default function DashboardPage() {
     //   bgColor: 'bg-brand-sky/5',
     // },
     {
-      title: 'Completion Rate',
-      value: '0%',
+      title: 'Inactive Tours',
+      value: tours.filter((t) => !t.is_active).length,
       icon: CheckCircle,
       color: 'from-brand-sage to-brand-teal',
       textColor: 'text-brand-sage',
