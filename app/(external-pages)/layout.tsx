@@ -4,15 +4,15 @@ import { ReactNode } from "react"
 
 const layout = ({children}: {children: ReactNode}) => {
   return (
-    <>
-    {/* <AuthProvider> */}
-          <Header />
-          <main className="pt-16">{children}</main>
-        {/* </AuthProvider> */}
-          <Footer />
+    <div className="flex flex-col min-h-screen">
+      
+      <Header />
+      <main className="flex-1 pt-16">
+        {children}
+      </main>
+      <Footer />
 
-    </>
-    
+    </div>
   )
 }
 

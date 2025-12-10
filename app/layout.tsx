@@ -17,10 +17,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <Toaster position="top-right" />
+        <Toaster position="top-right" /> 
         {children}
+        <script src="https://embeddable-tour-platform.vercel.app/onboard.iife.js"></script>
       </body>
     </html>
   );
