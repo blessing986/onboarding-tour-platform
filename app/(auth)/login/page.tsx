@@ -46,22 +46,35 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (data: LoginFormType) => {
-  setError("");
-  setLoading(true);
+    setError("");
+    setLoading(true);
 
-  try {
-    const res = await login(data);
-    console.log(res);
-    toast.success("Login successful! Redirecting to dashboard...");
-    router.push("/dashboard");
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "An error occurred while logging in. Please try again.";
-    setError(errorMessage);
-    toast.error(errorMessage);
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      await login(data);
+      toast.success("Login successful! Redirecting to dashboard...", {
+        style: {
+          background: "#10b981",
+          color: "white",
+          border: "none",
+        },
+      });
+      router.push("/dashboard");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "An error occurred while logging in. Please try again.";
+      toast.error(errorMessage, {
+        style: {
+          background: "#ef4444",
+          color: "white",
+          border: "none",
+        },
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleGoogleAuth = async () => {
     try {
@@ -142,7 +155,7 @@ export default function LoginPage() {
               )}
             </div>
 
-            <div className="relative my-6">
+            {/* <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
               </div>
@@ -160,7 +173,7 @@ export default function LoginPage() {
             >
               <GoogleColoredIcon className="mr-2 h-4 w-4" />
               {loading ? "Signing in..." : "Sign in with Google"}
-            </Button>
+            </Button> */}
           </CardContent>
 
           <CardFooter className="flex flex-col space-y-4">
