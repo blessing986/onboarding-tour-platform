@@ -45,6 +45,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/context/auth-context';
 import { Tour, TourSteps } from '@/types/tours';
 import { toast } from 'sonner';
+import BackgroundDecoration from '@/components/dashboard/background-deco';
 
 export default function TourEditorPage() {
   const router = useRouter();
@@ -62,13 +63,13 @@ export default function TourEditorPage() {
   const [stepForm, setStepForm] = useState({
     title: '',
     content: '',
-    target_selector: '',
+    target: '',
     position: 'bottom' as 'top' | 'bottom' | 'left' | 'right',
   });
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push('/auth/login');
+      router.push('/login');
     } else if (user && tourId) {
       fetchTour();
     }
@@ -127,7 +128,7 @@ export default function TourEditorPage() {
     setStepForm({
       title: '',
       content: '',
-      target_selector: '',
+      target: '',
       position: 'bottom',
     });
     setShowAddStepDialog(true);
@@ -138,7 +139,7 @@ export default function TourEditorPage() {
     setStepForm({
       title: step.title,
       content: step.content,
-      target_selector: step.target,
+      target: step.target,
       position: step.position,
     });
     setShowAddStepDialog(true);
@@ -218,7 +219,7 @@ export default function TourEditorPage() {
         const newStep = {
           id: crypto.randomUUID(),
           ...stepForm,
-          steps_viewed: 0,
+          step_viewed: 0,
         };
 
         updatedSteps.push(newStep);
@@ -333,7 +334,8 @@ export default function TourEditorPage() {
   }
 
   return (
-    <div className='min-h-screen bg-muted/30'>
+    <div className='min-h-screen bg-linear-to-br from-brand-sky/10 via-white to-brand-sage/10'>
+      <BackgroundDecoration />
       <div className='container mx-auto px-4 py-8 max-w-5xl'>
         <div className='mb-6'>
           <Link href='/dashboard'>
@@ -547,9 +549,9 @@ export default function TourEditorPage() {
               <Input
                 id='targetSelector'
                 placeholder='e.g., #dashboard or .welcome-button'
-                value={stepForm.target_selector}
+                value={stepForm.target}
                 onChange={(e) =>
-                  setStepForm({ ...stepForm, target_selector: e.target.value })
+                  setStepForm({ ...stepForm, target: e.target.value })
                 }
               />
               <p className='text-xs text-muted-foreground mt-1'>

@@ -10,18 +10,16 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
-  Eye,
   CheckCircle,
-  Clock,
   Compass,
   Plus,
-  TrendingUp,
   Users,
   Code,
   Trash2,
   Edit,
   BarChart,
   Loader2,
+  LogOut,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import BackgroundDecoration from '@/components/dashboard/background-deco';
@@ -33,51 +31,13 @@ import supabase from '@/supabase';
 import { Tour } from '@/types/tours';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
+import { logout } from '@/api/actions/auth';
 
 const fadeIn = {
   initial: { opacity: 0, y: 10 },
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.3 },
 };
-
-const stats = [
-  {
-    title: 'Active Tours',
-    value: '0',
-    icon: Compass,
-    change: 'Get started',
-    color: 'from-brand-teal to-brand-sky',
-    textColor: 'text-brand-teal',
-    bgColor: 'bg-brand-teal/5',
-  },
-  {
-    title: 'Total Views',
-    value: '0',
-    icon: Eye,
-    change: 'Coming soon',
-    color: 'from-brand-sky to-brand-blush',
-    textColor: 'text-brand-sky',
-    bgColor: 'bg-brand-sky/5',
-  },
-  {
-    title: 'Completion Rate',
-    value: '0%',
-    icon: CheckCircle,
-    change: 'No data yet',
-    color: 'from-brand-sage to-brand-teal',
-    textColor: 'text-brand-sage',
-    bgColor: 'bg-brand-sage/5',
-  },
-  {
-    title: 'Avg. Time',
-    value: '0m',
-    icon: Clock,
-    change: 'Start tracking',
-    color: 'from-brand-blush to-brand-teal',
-    textColor: 'text-brand-blush',
-    bgColor: 'bg-brand-blush/5',
-  },
-];
 
 export default function DashboardPage() {
   const [openCreateTourDialog, setOpenCreateTourDialog] = useState(false);
@@ -89,11 +49,38 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push('/auth/login');
+      router.push('/login');
     } else if (user) {
       fetchTours();
     }
   }, [user, authLoading, router]);
+
+  const stats = [
+    {
+      title: 'Active Tours',
+      value: tours.filter((t) => t.is_active).length,
+      icon: Compass,
+      color: 'from-brand-teal to-brand-sky',
+      textColor: 'text-brand-teal',
+      bgColor: 'bg-brand-teal/5',
+    },
+    // {
+    //   title: 'Total Views',
+    //   value: '0',
+    //   icon: Eye,
+    //   color: 'from-brand-sky to-brand-blush',
+    //   textColor: 'text-brand-sky',
+    //   bgColor: 'bg-brand-sky/5',
+    // },
+    {
+      title: 'Completion Rate',
+      value: '0%',
+      icon: CheckCircle,
+      color: 'from-brand-sage to-brand-teal',
+      textColor: 'text-brand-sage',
+      bgColor: 'bg-brand-sage/5',
+    },
+  ];
 
   const fetchTours = async () => {
     try {
@@ -113,8 +100,6 @@ export default function DashboardPage() {
   };
 
   const deleteTour = async (tourId: string) => {
-    if (!confirm('Are you sure you want to delete this tour?')) return;
-
     try {
       const { error } = await supabase.from('Tours').delete().eq('id', tourId);
 
@@ -163,7 +148,6 @@ export default function DashboardPage() {
       />
 
       <div className='min-h-screen bg-linear-to-br from-brand-sky/10 via-white to-brand-sage/10'>
-        {/* Background Decoration */}
         <BackgroundDecoration />
 
         <div className='container mx-auto px-4 py-8'>
@@ -184,18 +168,19 @@ export default function DashboardPage() {
                 </p>
               </div>
               <Button
-                onClick={() => setOpenCreateTourDialog(true)}
-                className='bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky hover:from-brand-blush/90 hover:to-brand-sky/90 text-white px-6 h-12 rounded-full shadow-lg shadow-brand-blush/20'
+                onClick={async () => await logout()}
+                variant={'destructive'}
+                className='text-white'
               >
-                <Plus className='mr-2 h-5 w-5' />
-                Create New Tour
+                <LogOut className='mr-2 h-5 w-5' />
+                Logout
               </Button>
             </div>
           </motion.div>
 
           {/* Stats Grid */}
           <motion.div
-            className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'
+            className='grid grid-cols-1 md:grid-cols-2 gap-6 mb-8'
             initial='initial'
             animate='animate'
             variants={{
@@ -205,7 +190,7 @@ export default function DashboardPage() {
             {stats.map((stat, i) => (
               <motion.div key={i} variants={fadeIn}>
                 <Card
-                  className={`${stat.bgColor} backdrop-blur-sm border-2 border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden hover:scale-105`}
+                  className={`${stat.bgColor} backdrop-blur-sm border-2 border-white/50 shadow-lg transition-all duration-300 overflow-hidden`}
                 >
                   <CardContent className='p-6'>
                     <div className='flex items-start justify-between mb-4'>
@@ -221,12 +206,6 @@ export default function DashboardPage() {
                     <p className='text-4xl font-bold text-slate-900 mb-2'>
                       {stat.value}
                     </p>
-                    <p
-                      className={`text-xs ${stat.textColor} font-medium flex items-center gap-1`}
-                    >
-                      <TrendingUp className='h-3 w-3' />
-                      {stat.change}
-                    </p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -235,15 +214,25 @@ export default function DashboardPage() {
 
           <motion.div initial='initial' animate='animate' variants={fadeIn}>
             <Card className='bg-white/80 backdrop-blur-sm border-2 border-white/50 shadow-xl overflow-hidden'>
-              <CardHeader className='bg-linear-to-r from-brand-sky/5 to-brand-blush/5 border-b'>
-                <CardTitle className='flex items-center gap-2'>
-                  <Compass className='h-6 w-6 text-brand-teal' />
-                  Your Tours
-                </CardTitle>
-                <CardDescription>
-                  Create and manage your onboarding experiences
-                </CardDescription>
+              <CardHeader className='bg-linear-to-r from-brand-sky/5 to-brand-blush/5 border-b flex flex-col gap-5 md:flex-row md:justify-between'>
+                <div>
+                  <CardTitle className='flex items-center gap-2'>
+                    <Compass className='h-6 w-6 text-brand-teal' />
+                    Your Tours
+                  </CardTitle>
+                  <CardDescription>
+                    Create and manage your onboarding experiences
+                  </CardDescription>
+                </div>
+                <Button
+                  onClick={() => setOpenCreateTourDialog(true)}
+                  className='bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky hover:from-brand-blush/90 hover:to-brand-sky/90 text-white px-6 h-12 rounded-full shadow-lg shadow-brand-blush/20'
+                >
+                  <Plus className='mr-2 h-5 w-5' />
+                  Create New Tour
+                </Button>
               </CardHeader>
+
               <CardContent className='p-12'>
                 {tours.length === 0 ? (
                   <div className='text-center max-w-md mx-auto space-y-6'>
