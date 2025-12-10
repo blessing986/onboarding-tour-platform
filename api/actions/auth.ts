@@ -1,4 +1,4 @@
-import supabase from "@/supabase";
+import supabase from '@/supabase';
 
 export async function signup({
   email,
@@ -61,7 +61,10 @@ export async function logout() {
 }
 
 export async function googleAuth() {
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
+  await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: '/dashboard',
+    },
   });
 }
