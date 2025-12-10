@@ -15,7 +15,7 @@ import {
 import { ArrowLeft, Loader2, CheckCircle2, XCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/context/auth-context';
-import { Tour } from '@/types/tours';
+import { Tour, TourSteps } from '@/types/tours';
 // import BackgroundDecoration from '@/components/dashboard/background-deco'; // Replaced with inline styles
 import { motion } from 'framer-motion';
 
@@ -38,6 +38,7 @@ export default function AnalyticsPage() {
   const [tour, setTour] = useState<Tour | null>(null);
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [stepPercentage, setStepsPercentage] = useState<TourSteps[]>();
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -46,6 +47,22 @@ export default function AnalyticsPage() {
       fetchData();
     }
   }, [user, authLoading, tourId, router]);
+
+  function calculateNormalizedPercentages(steps: TourSteps[]) {
+    const total = steps.reduce((sum, s) => sum + s.step_viewed, 0);
+
+    if (total === 0) {
+      return steps.map((step) => ({
+        ...step,
+        percentage: 0,
+      }));
+    }
+
+    return steps.map((step) => ({
+      ...step,
+      percentage: Number(((step.step_viewed / total) * 100).toFixed(2)),
+    }));
+  }
 
   const stats = [
     // {
@@ -58,19 +75,17 @@ export default function AnalyticsPage() {
     // },
     {
       title: 'Completion Rate',
-      value: `${analytics?.completion_rate}%`,
+      value: `${Number(
+        stepPercentage?.reduce((sum, s) => sum + s.percentage, 0)
+      )}%`,
       icon: CheckCircle2,
       color: 'from-brand-sky to-brand-blush',
       textColor: 'text-brand-sky',
       bgColor: 'bg-brand-sky/5',
     },
     {
-      title: 'Skipped Rate',
-      value: `${
-        Number(analytics?.completion_rate) === 0
-          ? 0
-          : 100 - Number(analytics?.completion_rate)
-      }%`,
+      title: 'Total Views',
+      value: `${tour?.steps[0].step_viewed}`,
       icon: XCircle,
       color: 'from-brand-sage to-brand-teal',
       textColor: 'text-brand-sage',
@@ -97,6 +112,8 @@ export default function AnalyticsPage() {
       }
 
       setTour(tourData.data);
+      const stepsDetails = calculateNormalizedPercentages(tourData.data.steps);
+      setStepsPercentage(stepsDetails);
 
       if (!analyticsData.data) {
         return;
@@ -204,15 +221,10 @@ export default function AnalyticsPage() {
               </p>
             ) : (
               <div className='space-y-4 grid md:grid-cols-2 lg:grid-cols-3 md:space-y-0 gap-6'>
-                {tour.steps &&
-                  tour.steps.map((step, index) => {
+                {stepPercentage &&
+                  stepPercentage.map((step, index) => {
                     const views = step.step_viewed;
-                    const viewRate =
-                      Number(analytics?.completion_rate) > 0
-                        ? Math.round(
-                            (views / Number(analytics?.completion_rate)) * 100
-                          )
-                        : 0;
+                    const viewRate = step.percentage;
 
                     return (
                       <motion.div
