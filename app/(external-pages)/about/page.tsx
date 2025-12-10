@@ -32,8 +32,7 @@ export default function AboutPage() {
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 0.6]);
 
   return (
-    <div className="relative w-full bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900 selection:bg-brand-teal/20 selection:text-brand-teal">
-
+      <div className="flex flex-col min-h-screen relative w-full overflow-hidden bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900 selection:bg-brand-teal/20 selection:text-brand-teal">
       <motion.div
         className="absolute top-0 left-0 right-0 bottom-0 -z-10 overflow-hidden pointer-events-none"
         style={{ y: backgroundY, opacity }}
