@@ -31,17 +31,17 @@ import {
 } from "./constants/constant";
 
 const staggerContainer = {
-  initial: {},
   animate: {
     transition: {
-      staggerChildren: 0.15,
-    },
-  },
+      staggerChildren: 0.05
+    }
+  }
 };
 
 const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
+  initial: { opacity: 0, y: 10 },
   animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.3 }
 };
 
 export default function DocsPage() {
@@ -57,21 +57,18 @@ export default function DocsPage() {
       </div>
 
       <div className="relative">
-        <div className="container mx-auto px-4 py-8 sm:py-12 md:py-20">
+        <div className="container mx-auto px-4 py-8 sm:py-12 md:py-12">
           <div className="max-w-7xl mx-auto">
             <motion.div
-              className="text-center mb-10 sm:mb-14 lg:mb-16 space-y-4 sm:space-y-6"
+              className="text-center mb-10 sm:mb-14 lg:mb-16 space-y-4 sm:space-y-6 lg:space-y-8"
               initial="initial"
               animate="animate"
               variants={staggerContainer}
             >
               {/* Badge */}
-              <motion.div variants={fadeInUp}>
-                <Badge
-                  variant="outline"
-                  className="text-sm hover:scale-105 transition-transform cursor-default border-brand-teal text-brand-teal bg-white/80 backdrop-blur-sm px-4 py-1.5 shadow-lg"
-                >
-                  <BookOpen className="h-4 w-4 mr-2 text-brand-teal" />
+              <motion.div variants={fadeInUp}  transition={{ type: "spring", stiffness: 300 }}>
+                 <Badge variant="outline" className="text-sm hover:scale-105 transition-transform cursor-default border-amber-500 text-slate-900 bg-amber-50/80 backdrop-blur-sm px-4 py-1.5 shadow-lg">
+                  <BookOpen className="h-3 w-3 mr-2 text-amber-500" />
                   Developer Documentation
                 </Badge>
               </motion.div>
@@ -93,7 +90,7 @@ export default function DocsPage() {
               </motion.h1>
 
               <motion.p
-                className="text-xl md:text-2xl text-slate-600 max-w-2xl mx-auto leading-relaxed"
+                className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed"
                 variants={fadeInUp}
               >
                 Everything you need to create powerful onboarding experiences
@@ -249,12 +246,14 @@ export default function DocsPage() {
                               View Integration Guide
                               <ChevronRight className="ml-2 h-5 w-5" />
                             </Button>
-                            {/* <Button
+                            <Link href="/demo.html">
+                             <Button
                               variant="outline"
                               className="h-14 px-8 text-lg border-2 border-brand-teal text-brand-teal hover:bg-brand-teal hover:text-white rounded-full shadow-lg transition-all duration-300 cursor-pointer"
                             >
-                              Watch Video Tutorial
-                            </Button> */}
+                              View Demo
+                              </Button>
+                              </Link>
                           </div>
                         </CardContent>
                       </Card>
