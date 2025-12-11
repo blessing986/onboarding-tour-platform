@@ -67,7 +67,7 @@ export default function DocsPage() {
             >
               {/* Badge */}
               <motion.div variants={fadeInUp}  transition={{ type: "spring", stiffness: 300 }}>
-                 <Badge variant="outline" className="text-sm hover:scale-105 transition-transform cursor-default border-amber-500 text-slate-900 bg-amber-50/80 backdrop-blur-sm px-4 py-1.5 shadow-lg">
+                 <Badge variant="outline" className="text-sm hover:scale-105 transition-transform cursor-default border-amber-500 text-slate-900 bg-amber-50/80 px-4 py-1.5">
                   <BookOpen className="h-3 w-3 mr-2 text-amber-500" />
                   Developer Documentation
                 </Badge>
@@ -75,11 +75,11 @@ export default function DocsPage() {
 
               {/* Heading */}
               <motion.h1
-                className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight"
+                className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight "
                 variants={fadeInUp}
               >
                 <motion.span
-                  className="bg-linear-to-r from-brand-teal via-brand-blush to-brand-sky bg-clip-text text-transparent inline-block"
+                  className="text-[#20063B] bg-clip-text inline-block"
                   animate={{
                     backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
                   }}
@@ -99,7 +99,7 @@ export default function DocsPage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6 lg:gap-8">
               <aside className="lg:sticky lg:top-20 h-fit space-y-6">
-                <div className="bg-white/80 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-2 shadow-xl">
+                <div className="bg-white/80 border-2 border-white/50 rounded-3xl p-2">
                   {navigation.map((item) => {
                     const Icon = item.icon;
                     const isActive = activeSection === item.id;
@@ -109,7 +109,7 @@ export default function DocsPage() {
                         onClick={() => setActiveSection(item.id)}
                         className={`w-full flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 rounded-2xl transition-all duration-200 cursor-pointer ${
                           isActive
-                            ? "bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky text-white shadow-xl shadow-brand-teal/30"
+                            ? "bg-[#2A1E5C] hover:bg-[#2A1E5C]/80 text-white "
                             : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                         }`}
                       >
@@ -123,7 +123,7 @@ export default function DocsPage() {
                   })}
                 </div>
 
-                <div className="hidden lg:block bg-linear-to-br from-amber-500/10 to-orange-500/10 border-2 border-amber-500/20 rounded-3xl p-6 space-y-3 shadow-lg">
+                <div className="hidden lg:block bg-linear-to-br from-amber-500/10 to-orange-500/10 border-2 border-amber-500/20 rounded-3xl p-6 space-y-3">
                   <div className="flex items-center gap-2">
                     <div className="p-2 bg-amber-500/20 rounded-lg">
                       <Terminal className="h-4 w-4 text-amber-600" />
@@ -135,7 +135,7 @@ export default function DocsPage() {
                   </p>
                   <Link href="mailto:support@example.com">
                     <Button
-                      className="w-full h-10 bg-amber-500 hover:bg-amber-600 text-white font-medium cursor-pointer shadow-lg rounded-full transition-all duration-300"
+                      className="w-full h-10 bg-amber-500 hover:bg-amber-600 text-white font-medium cursor-pointer rounded-full transition-all duration-300"
                       size="sm"
                     >
                       Contact Support
@@ -155,10 +155,10 @@ export default function DocsPage() {
                       transition={{ duration: 0.35, ease: "easeOut" }}
                       className="space-y-6"
                     >
-                      <Card className="bg-white/80 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-hidden rounded-3xl">
+                      <Card className="bg-white/80 border-2 border-white/50 overflow-hidden rounded-3xl">
                         <CardHeader className="border-b border-brand-blush/30 bg-linear-to-r from-brand-sky/20 to-brand-blush/20">
                           <div className="flex items-center gap-3">
-                            <div className="p-3 bg-linear-to-br from-brand-teal to-brand-sky rounded-xl shadow-lg shadow-brand-teal/25">
+                            <div className="p-3 bg-[#2A1E5C] rounded-xl">
                               <Rocket className="h-6 w-6 text-white" />
                             </div>
                             <div>
@@ -202,7 +202,7 @@ export default function DocsPage() {
                               <div key={idx} className="group relative">
                                 <div className="flex gap-4 sm:gap-6">
                                   <div className="relative">
-                                    <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-linear-to-br from-brand-teal to-brand-sky flex items-center justify-center shadow-lg shadow-brand-teal/25 group-hover:scale-110 transition-transform duration-300">
+                                    <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-[#2A1E5C] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                                       <span className="text-xl font-bold text-white">
                                         {item.step}
                                       </span>
@@ -212,7 +212,7 @@ export default function DocsPage() {
                                     )}
                                   </div>
                                   <div className="flex-1 pt-2 space-y-2">
-                                    <h3 className="text-xl font-semibold text-slate-900 group-hover:text-brand-teal transition-colors">
+                                    <h3 className="text-xl font-semibold text-slate-900 group-hover:text-[#2A1E5C] transition-colors">
                                       {item.title}
                                     </h3>
                                     <p className="text-slate-600 leading-relaxed">
@@ -226,7 +226,7 @@ export default function DocsPage() {
                         </CardContent>
                       </Card>
 
-                      <Card className="bg-white/80 backdrop-blur-sm border-2 border-white/50 rounded-3xl shadow-lg">
+                      <Card className="bg-white/80 border-2 border-white/50 rounded-3xl">
                         <CardHeader>
                           <CardTitle className="text-slate-900 flex items-center gap-2">
                             <Play className="h-5 w-5 text-brand-teal" />
@@ -241,7 +241,7 @@ export default function DocsPage() {
                           <div className="flex flex-wrap gap-3">
                             <Button
                               onClick={() => setActiveSection("integration")}
-                              className="h-14 px-8 text-lg bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky hover:from-brand-blush/90 hover:via-brand-teal/90 hover:to-brand-sky/90 text-white shadow-xl shadow-brand-teal/30 rounded-full transition-all duration-300 cursor-pointer"
+                              className="h-14 px-8 text-lg bg-[#2A1E5C] hover:bg-[#2A1E5C]/80 text-white rounded-full transition-all duration-300 cursor-pointer"
                             >
                               View Integration Guide
                               <ChevronRight className="ml-2 h-5 w-5" />
@@ -249,7 +249,7 @@ export default function DocsPage() {
                             <Link href="/demo.html">
                              <Button
                               variant="outline"
-                              className="h-14 px-8 text-lg border-2 border-brand-teal text-brand-teal hover:bg-brand-teal hover:text-white rounded-full shadow-lg transition-all duration-300 cursor-pointer"
+                              className="h-14 px-8 text-lg border-2 border-[#2A1E5C] text-[#2A1E5C] hover:text-white hover:bg-[#2A1E5C] transition-colors rounded-full duration-300 cursor-pointer"
                             >
                               View Demo
                               </Button>
@@ -269,10 +269,10 @@ export default function DocsPage() {
                       transition={{ duration: 0.35, ease: "easeOut" }}
                       className="space-y-6"
                     >
-                      <Card className="bg-white/80 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-hidden rounded-3xl">
+                      <Card className="bg-white/80 border-2 border-white/50 overflow-hidden rounded-3xl">
                         <CardHeader className="border-b border-brand-blush/30 bg-linear-to-r from-brand-sky/20 to-brand-blush/20">
                           <div className="flex items-center gap-3">
-                            <div className="p-3 bg-linear-to-br from-orange-500 to-amber-500 rounded-xl shadow-lg shadow-orange-500/25">
+                            <div className="p-3 bg-[#2A1E5C] rounded-xl">
                               <Code2 className="h-6 w-6 text-white" />
                             </div>
                             <div>
@@ -382,7 +382,7 @@ export default function DocsPage() {
                         </CardContent>
                       </Card>
 
-                      <Card className="bg-white/80 backdrop-blur-sm border-2 border-white/50 rounded-3xl shadow-lg">
+                      <Card className="bg-white/80 border-2 border-white/50 rounded-3xl">
                         <CardHeader>
                           <CardTitle className="text-slate-900">
                             Element Targeting
@@ -425,10 +425,10 @@ export default function DocsPage() {
                       transition={{ duration: 0.35, ease: "easeOut" }}
                       className="space-y-6"
                     >
-                      <Card className="bg-white/80 backdrop-blur-sm border-2 border-white/50 shadow-2xl overflow-hidden rounded-3xl">
+                      <Card className="bg-white/80 border-2 border-white/50 overflow-hidden rounded-3xl">
                         <CardHeader className="border-b border-brand-blush/30 bg-linear-to-r from-brand-sky/20 to-brand-blush/20">
                           <div className="flex items-center gap-3">
-                            <div className="p-3 bg-linear-to-br from-emerald-500 to-teal-500 rounded-xl shadow-lg shadow-emerald-500/25">
+                            <div className="p-3 bg-[#2A1E5C] rounded-xl">
                               <Cog className="h-6 w-6 text-white" />
                             </div>
                             <div>
@@ -487,10 +487,10 @@ export default function DocsPage() {
                       transition={{ duration: 0.35, ease: "easeOut" }}
                       className="space-y-6"
                     >
-                      <Card className="bg-white/80 backdrop-blur-sm border-2 border-white/50 shadow-2xl rounded-3xl">
+                      <Card className="bg-white/80 border-2 border-white/50 rounded-3xl">
                         <CardHeader>
                           <div className="flex items-center gap-3">
-                            <div className="p-2 bg-linear-to-br from-violet-500 to-fuchsia-500 rounded-lg">
+                            <div className="p-2 bg-[#2A1E5C] rounded-lg">
                               <Layers className="h-5 w-5 text-white" />
                             </div>
                             <div>
@@ -515,10 +515,10 @@ export default function DocsPage() {
                         </CardContent>
                       </Card>
 
-                      <Card className="bg-white/80 backdrop-blur-sm border-2 border-white/50 rounded-3xl shadow-2xl">
+                      <Card className="bg-white/80 border-2 border-white/50 rounded-3xl">
                         <CardHeader>
                           <div className="flex items-center gap-3">
-                            <div className="p-2 bg-linear-to-br from-violet-500 to-fuchsia-500 rounded-lg">
+                            <div className="p-2 bg-[#2A1E5C] rounded-lg">
                               <Code2 className="h-5 w-5 text-white" />
                             </div>
                             <div>
@@ -545,7 +545,7 @@ export default function DocsPage() {
                 </AnimatePresence>
               </main>
 
-              <div className="lg:hidden bg-linear-to-br from-amber-500/10 to-orange-500/10 border-2 border-amber-500/20 rounded-3xl p-6 space-y-3 shadow-lg">
+              <div className="lg:hidden bg-linear-to-br from-amber-500/10 to-orange-500/10 border-2 border-amber-500/20 rounded-3xl p-6 space-y-3">
                 <div className="flex items-center gap-2">
                   <div className="p-2 bg-amber-500/20 rounded-lg">
                     <Terminal className="h-4 w-4 text-amber-600" />
@@ -557,7 +557,7 @@ export default function DocsPage() {
                 </p>
                 <Link href="mailto:support@example.com">
                   <Button
-                    className="w-full h-10 bg-amber-500 hover:bg-amber-600 text-white font-medium cursor-pointer shadow-lg rounded-full transition-all duration-300"
+                    className="w-full h-10 bg-amber-500 hover:bg-amber-600 text-white font-medium cursor-pointer rounded-full transition-all duration-300"
                     size="sm"
                   >
                     Contact Support

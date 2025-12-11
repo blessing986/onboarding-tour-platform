@@ -28,23 +28,23 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4 text-slate-900">Product</h4>
             <ul className="space-y-2 text-sm text-slate-600">
-              <li><Link href="/#features" className="hover:text-brand-teal transition-colors">Features</Link></li>
-              <li><Link href="/sign-up" className="hover:text-brand-teal transition-colors">Get Started</Link></li>
+              <li><Link href="/#features" className="hover:text-[#2A1E5C] transition-colors">Features</Link></li>
+              <li><Link href="/sign-up" className="hover:text-[#2A1E5C] transition-colors">Get Started</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-semibold mb-4 text-slate-900">Company</h4>
             <ul className="space-y-2 text-sm text-slate-600">
-              <li><Link href="/about#team" className="hover:text-brand-teal transition-colors">About Us</Link></li>
-              <li><Link href="/about#team-members" className="hover:text-brand-teal transition-colors">Contact</Link></li>
+              <li><Link href="/about#team" className="hover:text-[#2A1E5C] transition-colors">About Us</Link></li>
+              <li><Link href="/about#team-members" className="hover:text-[#2A1E5C] transition-colors">Contact</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-semibold mb-4 text-slate-900">Resources</h4>
             <ul className="space-y-2 text-sm text-slate-600">
-              <li><Link href="/demo.html" className="hover:text-brand-teal transition-colors">Demo</Link></li>
-              <li><Link href="/docs" className="hover:text-brand-teal transition-colors">Documentation</Link></li>
+              <li><Link href="/demo.html" className="hover:text-[#2A1E5C] transition-colors">Demo</Link></li>
+              <li><Link href="/docs" className="hover:text-[#2A1E5C] transition-colors">Documentation</Link></li>
             </ul>
           </div>
         </div>
