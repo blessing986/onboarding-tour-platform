@@ -5,14 +5,6 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,8 +15,7 @@ import GoogleColoredIcon from "../assets/google-colored-icon";
 import { googleAuth, signup } from "@/api/actions/auth";
 import { toast } from "sonner";
 import { Eye, EyeOff } from "lucide-react";
-import { motion } from "framer-motion"
-import { Header } from "@/components/Header";
+import { motion } from "framer-motion";
 
 const signupSchema = z
   .object({
@@ -102,161 +93,177 @@ export default function SignUpPage() {
   };
 
   return (
-     <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900">
       <div className="w-full max-w-md space-y-4">
-        <Link href="/">
-          <Button
-            variant="outline"
-            className="border-teal-500/30 text-teal-600 hover:bg-teal-500/10 px-6 h-11 rounded-full text-base bg-white/50 backdrop-blur-sm shadow-sm mt-6 mb-4"
-          >
-            <ArrowLeft className="mr-2 h-5 w-5" />
-            Go Back
-          </Button>
-        </Link>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="relative w-full max-w-md rounded-3xl bg-white/70 backdrop-blur-xl shadow-2xl border border-white/50 p-8"
-      >
-        <div className="text-center mb-6">
-          <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-linear-to-br from-brand-teal to-brand-sky flex items-center justify-center shadow-lg">
-            <Compass className="h-8 w-8 text-white" />
-          </div>
-          <h2 className="text-3xl font-bold text-slate-900">Create an Account</h2>
-          <p className="text-slate-600 mt-1">Join TourGuide and get started</p>
-        </div>
-
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {error && (
-            <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-
-          {/* EMAIL */}
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-slate-700">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              {...form.register("email")}
-              disabled={loading}
-              className="bg-white/70 backdrop-blur-sm"
-            />
-            {form.formState.errors.email && (
-              <p className="text-red-500 text-sm">
-                {form.formState.errors.email.message}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="relative w-full max-w-md rounded-3xl bg-white/70 backdrop-blur-xl shadow-sm border border-white/50 p-8"
+        >
+          <div className="text-center mb-6">
+            <Link href="/">
+              <p className="flex items-center justify-start text-base text-[#2A1E5C] font-medium hover:font-semibold transition-all cursor-pointer group">
+                <ArrowLeft className="mr-2 h-5 w-5 group-hover:-translate-x-1 group-hover:scale-110 transition-all duration-200" />
+                Go back
               </p>
-            )}
+            </Link>
+            <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-[#2A1E5C] flex items-center justify-center">
+              <Compass className="h-8 w-8 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold text-[#2A1E5C]">
+              Create an Account
+            </h2>
+            <p className="text-slate-600 mt-1">
+              Join TourGuide and get started
+            </p>
           </div>
 
-          {/* PASSWORD */}
-          <div className="space-y-2">
-            <Label htmlFor="password" className="text-slate-700">Password</Label>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {error && (
+              <Alert variant="destructive">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
 
-            <div className="relative">
+            {/* EMAIL */}
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-slate-700">
+                Email
+              </Label>
               <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Create a password"
-                {...form.register("password")}
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                {...form.register("email")}
                 disabled={loading}
-                className="pr-10 bg-white/70 backdrop-blur-sm"
+                className="bg-white/70 rounded-xl py-6 px-4"
               />
-
-              <button
-                type="button"
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-              >
-                {showPassword ? <EyeOff className="h-5 w-5"/> : <Eye className="h-5 w-5"/>}
-              </button>
+              {form.formState.errors.email && (
+                <p className="text-red-500 text-sm">
+                  {form.formState.errors.email.message}
+                </p>
+              )}
             </div>
 
-            {form.formState.errors.password && (
-              <p className="text-red-500 text-sm">
-                {form.formState.errors.password.message}
-              </p>
-            )}
-          </div>
+            {/* PASSWORD */}
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-slate-700">
+                Password
+              </Label>
 
-          {/* CONFIRM PASSWORD */}
-          <div className="space-y-2">
-            <Label htmlFor="confirmPassword" className="text-slate-700">Confirm Password</Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Create a password"
+                  {...form.register("password")}
+                  disabled={loading}
+                  className="bg-white/70 rounded-xl py-6 px-4"
+                />
 
-            <div className="relative">
-              <Input
-                id="confirmPassword"
-                type={showConfirmPassword ? "text" : "password"}
-                placeholder="Confirm your password"
-                {...form.register("confirmPassword")}
-                disabled={loading}
-                className="pr-10 bg-white/70 backdrop-blur-sm"
-              />
-
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword((prev) => !prev)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-              >
-                {showConfirmPassword ? <EyeOff className="h-5 w-5"/> : <Eye className="h-5 w-5"/>}
-              </button>
-            </div>
-
-            {form.formState.errors.confirmPassword && (
-              <p className="text-red-500 text-sm">
-                {form.formState.errors.confirmPassword.message}
-              </p>
-            )}
-          </div>
-
-              <div className="relative my-6">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-white px-2 text-muted-foreground">
-                    or
-                  </span>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
               </div>
+
+              {form.formState.errors.password && (
+                <p className="text-red-500 text-sm">
+                  {form.formState.errors.password.message}
+                </p>
+              )}
+            </div>
+
+            {/* CONFIRM PASSWORD */}
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword" className="text-slate-700">
+                Confirm Password
+              </Label>
+
+              <div className="relative">
+                <Input
+                  id="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Confirm your password"
+                  {...form.register("confirmPassword")}
+                  disabled={loading}
+                  className="bg-white/70 rounded-xl py-6 px-4"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
+
+              {form.formState.errors.confirmPassword && (
+                <p className="text-red-500 text-sm">
+                  {form.formState.errors.confirmPassword.message}
+                </p>
+              )}
+            </div>
+
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-white px-2 text-muted-foreground">or</span>
+              </div>
+            </div>
 
             <Button
               variant="outline"
               type="button"
               onClick={handleGoogleAuth}
-              className="w-full cursor-pointer hover:bg-white/10 transition-colors"
+              className="w-full cursor-pointer hover:bg-white/10 hover:text-[#2A1E5C] transition-colors"
               size={"lg"}
             >
               <GoogleColoredIcon className="mr-2 h-4 w-4" />
               {loading ? "Signing up..." : "Sign up with Google"}
             </Button>
             <Button
-            type="submit"
-            className="w-full h-12 text-white text-lg bg-linear-to-r from-brand-teal via-brand-blush to-brand-sky hover:opacity-90 shadow-xl cursor-pointer rounded-full"
-            disabled={loading}
-          >
-            {loading ? (
-              <>
-                <Loader2 className="mr-2 h-5 w-5 animate-spin"/> Creating account...
-              </>
-            ) : (
-              "Sign Up"
-            )}
-          </Button>
+              type="submit"
+              className="w-full h-12 text-white text-lg bg-[#2A1E5C] hover:bg-[#2A1E5C]/80 cursor-pointer rounded-full"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Creating
+                  account...
+                </>
+              ) : (
+                "Sign Up"
+              )}
+            </Button>
 
-          <p className="text-center text-sm text-slate-600">
-            Already have an account?{" "}
-            <Link href="/login" className="text-brand-teal font-medium hover:underline">
-              Sign in
-            </Link>
-          </p>
-        </form>
+            <p className="text-center text-sm text-slate-600">
+              Already have an account?{" "}
+              <Link
+                href="/login"
+                className="text-[#2A1E5C] font-medium hover:underline"
+              >
+                Sign in
+              </Link>
+            </p>
+          </form>
         </motion.div>
-        </div>
+      </div>
     </div>
   );
-
 }
