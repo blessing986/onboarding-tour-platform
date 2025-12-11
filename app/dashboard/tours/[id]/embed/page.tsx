@@ -27,6 +27,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useAuth } from '@/context/auth-context';
 import { Tour } from '@/types/tours';
 // import BackgroundDecoration from '@/components/dashboard/background-deco'; // Commented out to use the CSS background instead
+import { DashboardHeader } from '@/components/DashboardHeader';
 
 export default function EmbedPage() {
   const router = useRouter();
@@ -40,6 +41,16 @@ export default function EmbedPage() {
 
   const widgetFunction = `
   const widget = window.initOnboard({
+      tourId: ${tour?.id},
+      secret_key: '${user?.id}',
+      resume: true
+    });
+
+  widget?.start()
+`;
+
+  const widgetFunctionReact = `
+  const widget = initOnboard({
       tourId: ${tour?.id},
       secret_key: '${user?.id}',
       resume: true
@@ -62,9 +73,8 @@ export default function EmbedPage() {
 
 function App() {
   useEffect(() => {
-    ${widgetFunction}
+    ${widgetFunctionReact}
 
-    widget?.start()
   }, []);
 
   return <div>Your App Content</div>;
@@ -122,14 +132,16 @@ function App() {
   const subTextStyle = 'text-slate-600 leading-relaxed';
 
   return (
-    <div className='relative min-h-screen w-full overflow-hidden bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900 selection:bg-brand-teal/20 selection:text-brand-teal'>
-      <div className='absolute top-0 left-0 right-0 bottom-0 -z-10 overflow-hidden pointer-events-none'>
-        <div className='absolute top-0 left-1/4 w-96 h-96 bg-brand-sky rounded-full mix-blend-multiply filter blur-3xl opacity-30'></div>
-        <div className='absolute top-0 right-1/4 w-96 h-96 bg-brand-teal rounded-full mix-blend-multiply filter blur-3xl opacity-30'></div>
-        <div className='absolute -bottom-32 left-1/3 w-96 h-96 bg-brand-blush rounded-full mix-blend-multiply filter blur-3xl opacity-30'></div>
-      </div>
+    <>
+      <DashboardHeader />
+      <div className='relative min-h-screen w-full overflow-hidden bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900 selection:bg-brand-teal/20 selection:text-brand-teal pt-16'>
+        <div className='absolute top-0 left-0 right-0 bottom-0 -z-10 overflow-hidden pointer-events-none'>
+          <div className='absolute top-0 left-1/4 w-96 h-96 bg-brand-sky rounded-full mix-blend-multiply filter blur-3xl opacity-30'></div>
+          <div className='absolute top-0 right-1/4 w-96 h-96 bg-brand-teal rounded-full mix-blend-multiply filter blur-3xl opacity-30'></div>
+          <div className='absolute -bottom-32 left-1/3 w-96 h-96 bg-brand-blush rounded-full mix-blend-multiply filter blur-3xl opacity-30'></div>
+        </div>
 
-      <div className='container mx-auto px-4 py-12 max-w-5xl relative z-10'>
+        <div className='container mx-auto px-4 py-12 max-w-5xl relative z-10'>
         <div className='mb-6'>
           <Link href={`/dashboard`}>
             <Button
@@ -383,6 +395,7 @@ function App() {
           </Card>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

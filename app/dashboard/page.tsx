@@ -19,7 +19,6 @@ import {
   Edit,
   BarChart,
   Loader2,
-  LogOut,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import BackgroundDecoration from '@/components/dashboard/background-deco';
@@ -31,7 +30,7 @@ import supabase from '@/supabase';
 import { Tour } from '@/types/tours';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
-import { logout } from '@/api/actions/auth';
+import { DashboardHeader } from '@/components/DashboardHeader';
 
 const fadeIn = {
   initial: { opacity: 0, y: 10 },
@@ -142,41 +141,17 @@ export default function DashboardPage() {
 
   return (
     <>
+      <DashboardHeader />
+
       <CreateTourModal
         showNewTourDialog={openCreateTourDialog}
         setShowNewTourDialog={setOpenCreateTourDialog}
       />
 
-      <div className='min-h-screen bg-linear-to-br from-brand-sky/10 via-white to-brand-sage/10'>
+      <div className='min-h-screen bg-linear-to-br from-brand-sky/10 via-white to-brand-sage/10 pt-16'>
         <BackgroundDecoration />
 
         <div className='container mx-auto px-4 py-8'>
-          {/* Header */}
-          <motion.div
-            className='mb-8'
-            initial='initial'
-            animate='animate'
-            variants={fadeIn}
-          >
-            <div className='flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
-              <div>
-                <h1 className='text-4xl font-bold bg-linear-to-r from-brand-teal via-brand-blush to-brand-sky bg-clip-text text-transparent mb-2'>
-                  Dashboard
-                </h1>
-                <p className='text-slate-600'>
-                  Manage your onboarding tours and track performance
-                </p>
-              </div>
-              <Button
-                onClick={async () => await logout()}
-                variant={'destructive'}
-                className='rounded-full bg-rose-600/90 text-white shadow-lg hover:shadow-rose-500 hover:scale-105 transition-all duration-300 px-6 border-0'
-              >
-                <LogOut className='mr-2 h-5 w-5' />
-                Logout
-              </Button>
-            </div>
-          </motion.div>
 
           {/* Stats Grid */}
           <motion.div
