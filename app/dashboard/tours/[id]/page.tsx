@@ -47,6 +47,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/context/auth-context';
 import { Tour, TourSteps } from '@/types/tours';
 import { toast } from 'sonner';
+import { DashboardHeader } from '@/components/DashboardHeader';
 
 export default function TourEditorPage() {
   const router = useRouter();
@@ -146,7 +147,7 @@ export default function TourEditorPage() {
     setShowAddStepDialog(true);
   };
 
-  const saveStep = async () => {
+  const saveStep = async (keepOpen = false) => {
     setError('');
 
     if (!stepForm.title.trim() || !stepForm.content.trim()) {
@@ -195,9 +196,22 @@ export default function TourEditorPage() {
 
       if (updateError) throw updateError;
 
-      setShowAddStepDialog(false);
       await fetchTour();
       toast.success(editingStep ? 'Step updated!' : 'Step added!');
+
+      // Reset form or close modal after successful save
+      if (keepOpen && !editingStep) {
+        // Reset form for adding another step
+        setStepForm({
+          title: '',
+          content: '',
+          target: '',
+          position: 'bottom',
+        });
+        setError('');
+      } else {
+        setShowAddStepDialog(false);
+      }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to save step');
     } finally {
@@ -287,14 +301,16 @@ export default function TourEditorPage() {
   }
 
   return (
-    <div className='min-h-screen bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 relative overflow-hidden'>
-      <div className='absolute top-0 left-0 right-0 bottom-0 -z-10 overflow-hidden pointer-events-none'>
-        <div className='absolute top-20 left-1/4 w-96 h-96 bg-brand-sky rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob'></div>
-        <div className='absolute top-40 right-1/4 w-96 h-96 bg-brand-teal rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000'></div>
-        <div className='absolute bottom-20 left-1/3 w-96 h-96 bg-brand-blush rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000'></div>
-      </div>
+    <>
+      <DashboardHeader />
+      <div className='min-h-screen bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 relative overflow-hidden pt-16'>
+        <div className='absolute top-0 left-0 right-0 bottom-0 -z-10 overflow-hidden pointer-events-none'>
+          <div className='absolute top-20 left-1/4 w-96 h-96 bg-brand-sky rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob'></div>
+          <div className='absolute top-40 right-1/4 w-96 h-96 bg-brand-teal rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000'></div>
+          <div className='absolute bottom-20 left-1/3 w-96 h-96 bg-brand-blush rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000'></div>
+        </div>
 
-      <div className='container mx-auto px-4 py-8 max-w-5xl relative z-10'>
+        <div className='container mx-auto px-4 py-8 max-w-5xl relative z-10'>
         <div className='mb-8'>
           <div className='mb-6'>
             <Link href={`/dashboard`}>
@@ -402,7 +418,7 @@ export default function TourEditorPage() {
 
         <Card className='border-2 border-white/50 bg-white/80 backdrop-blur-sm shadow-xl'>
           <CardHeader className='bg-linear-to-br from-brand-sky/10 via-brand-blush/10 to-brand-teal/10 border-b border-white/50'>
-            <div className='flex justify-between items-center'>
+            <div className='flex flex-col md:flex-row md:justify-between md:items-center gap-4'>
               <div>
                 <CardTitle className='text-2xl flex items-center gap-2'>
                   <GripVertical className='h-6 w-6 text-brand-sky' />
@@ -414,7 +430,7 @@ export default function TourEditorPage() {
               </div>
               <Button
                 onClick={openAddStepDialog}
-                className='bg-linear-to-r from-brand-blush to-brand-teal hover:from-brand-blush/90 hover:to-brand-teal/90 text-white shadow-lg'
+                className='bg-linear-to-r from-brand-blush to-brand-teal hover:from-brand-blush/90 hover:to-brand-teal/90 text-white shadow-lg z-10 relative shrink-0'
               >
                 <Plus className='mr-2 h-4 w-4' />
                 Add Step
@@ -424,9 +440,12 @@ export default function TourEditorPage() {
           <CardContent className='p-6'>
             {!tour.steps || tour.steps.length === 0 ? (
               <div className='text-center py-12 border-2 border-dashed border-brand-teal/30 rounded-2xl bg-linear-to-br from-brand-sky/5 to-brand-blush/5'>
-                <div className='w-20 h-20 mx-auto mb-6 rounded-full bg-linear-to-br from-brand-teal to-brand-sky flex items-center justify-center'>
+                <button
+                  onClick={openAddStepDialog}
+                  className='w-20 h-20 mx-auto mb-6 rounded-full bg-linear-to-br from-brand-teal to-brand-sky flex items-center justify-center hover:scale-110 transition-transform duration-300 cursor-pointer shadow-lg hover:shadow-xl'
+                >
                   <Plus className='h-10 w-10 text-white' />
-                </div>
+                </button>
                 <p className='text-slate-600 mb-6 text-lg'>
                   No steps added yet. Create at least 5 steps for your tour.
                 </p>
@@ -473,8 +492,8 @@ export default function TourEditorPage() {
                         </div>
 
                         <div className='flex-1 min-w-0'>
-                          <div className='flex items-start justify-between mb-3'>
-                            <div className='flex-1'>
+                          <div className='flex items-start justify-between gap-4 mb-3'>
+                            <div className='flex-1 min-w-0'>
                               <div className='flex items-center gap-2 mb-2'>
                                 <Badge
                                   variant='outline'
@@ -482,20 +501,20 @@ export default function TourEditorPage() {
                                 >
                                   Step {index + 1}
                                 </Badge>
-                                <h4 className='font-bold text-lg text-slate-900'>
+                                <h4 className='font-bold text-lg text-slate-900 truncate'>
                                   {step.title}
                                 </h4>
                               </div>
-                              <p className='text-sm text-slate-600 mb-3 leading-relaxed'>
+                              <p className='text-sm text-slate-600 mb-3 leading-relaxed wrap-break-word'>
                                 {step.content}
                               </p>
                               {step.target && (
-                                <code className='text-xs bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-lg inline-block'>
+                                <code className='text-xs bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-lg inline-block break-all'>
                                   {step.target}
                                 </code>
                               )}
                             </div>
-                            <div className='flex gap-2 ml-4'>
+                            <div className='flex gap-2 shrink-0'>
                               <Button
                                 size='sm'
                                 variant='outline'
@@ -508,7 +527,7 @@ export default function TourEditorPage() {
                                 size='sm'
                                 variant='destructive'
                                 onClick={() => deleteStep(step.id)}
-                                className='hover:bg-red-50 hover:border-red-500 hover:text-red-500'
+                                className='text-white hover:bg-red-100 hover:border-red-500 hover:text-red-500'
                               >
                                 <Trash2 className='h-4 w-4' />
                               </Button>
@@ -577,7 +596,7 @@ export default function TourEditorPage() {
                   setStepForm({ ...stepForm, content: e.target.value })
                 }
                 rows={4}
-                className='mt-2 border-2 focus:border-brand-teal'
+                className='mt-2 border-2 focus:border-brand-teal h-24 resize-none'
               />
             </div>
             <div>
@@ -630,8 +649,28 @@ export default function TourEditorPage() {
             >
               Cancel
             </Button>
+            {!editingStep && (
+              <Button
+                onClick={() => saveStep(true)}
+                disabled={savingStep}
+                variant='outline'
+                className='border-brand-teal text-brand-teal hover:bg-brand-teal/10'
+              >
+                {savingStep ? (
+                  <>
+                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Plus className='mr-2 h-4 w-4' />
+                    Save & Add Another
+                  </>
+                )}
+              </Button>
+            )}
             <Button
-              onClick={saveStep}
+              onClick={() => saveStep(false)}
               disabled={savingStep}
               className='bg-linear-to-r from-brand-teal to-brand-sky text-white shadow-lg hover:from-brand-teal/90 hover:to-brand-sky/90'
             >
@@ -643,13 +682,14 @@ export default function TourEditorPage() {
               ) : (
                 <>
                   <Save className='mr-2 h-4 w-4' />
-                  Save Step
+                  {editingStep ? 'Update Step' : 'Save Step'}
                 </>
               )}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+      </div>
+    </>
   );
 }
