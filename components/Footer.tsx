@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 export function Footer() {
   return (
-    <footer className="border-t border-slate-200 py-14 bg-linear-to-br from-brand-blush/10 via-brand-sky/10 to-brand-sage/10 backdrop-blur-sm">
+    <footer className="border-t border-gray-100 py-14 bg-linear-to-br from-brand-blush/10 via-brand-sky/10 to-brand-sage/10 backdrop-blur-sm">
       <div className="container mx-auto px-6">
         <div className="grid gap-10 md:grid-cols-4">
           <div className="space-y-4 max-w-xs">
@@ -15,9 +15,9 @@ export function Footer() {
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
               >
-                <Compass className="h-7 w-7 text-brand-teal" />
+                <Compass className="h-7 w-7 text-[#2A1E5C]" />
               </motion.div>
-              <span className="font-bold text-2xl bg-linear-to-r from-brand-teal to-brand-sky bg-clip-text text-transparent">
+              <span className="font-bold text-2xl bg-linear-to-br from-[#2A1E5C] via-[#2A1E5Cee] to-[#2A1E5Ccc] bg-clip-text text-transparent">
                 TourGuide
               </span>
             </div>

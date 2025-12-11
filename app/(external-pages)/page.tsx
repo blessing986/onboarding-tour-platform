@@ -11,13 +11,13 @@ import {
   Code,
   Layers,
   ArrowRight,
-  CheckCircle2,
   Play,
 } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ProductTourIllustration } from '@/components/ProductTourIllustration';
 import Script from 'next/script';
 import { useState } from 'react';
+import { CreativeFeatureCard } from '@/components/dashboard/creative-feature-card';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60, scale: 0.9 },
@@ -33,137 +33,8 @@ const staggerContainer = {
   },
 };
 
-const CircularText = ({
-  text,
-  className,
-  id,
-}: {
-  text: string;
-  className?: string;
-  id: string;
-}) => {
-  const pathId = `circlePath-${id}`;
-  return (
-    <div
-      className={`absolute inset-0 flex items-center justify-center pointer-events-none ${className}`}
-    >
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-        className='w-full h-full'
-      >
-        <svg viewBox='0 0 100 100' className='w-full h-full overflow-visible'>
-          <path
-            id={pathId}
-            d='M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0'
-            fill='transparent'
-          />
-          <text className='text-[8px] font-bold uppercase tracking-wider fill-current'>
-            <textPath href={`#${pathId}`} startOffset='0%'>
-              {text} • {text} •
-            </textPath>
-          </text>
-        </svg>
-      </motion.div>
-    </div>
-  );
-};
-
-interface CreativeCardProps {
-  title: string;
-  description: string;
-  icon: React.ElementType;
-  stickerText: string;
-  colorClass: string;
-  bgClass: string;
-  features: string[];
-}
-
-const CreativeFeatureCard = ({
-  title,
-  description,
-  icon: Icon,
-  stickerText,
-  colorClass,
-  bgClass,
-  features,
-}: CreativeCardProps) => {
-  return (
-    <motion.div
-      variants={fadeInUp}
-      whileHover={{ y: -4 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      className='group relative h-full flex flex-col overflow-hidden rounded-3xl border-2 border-white/50 bg-white/80 backdrop-blur-sm shadow-xl hover:shadow-2xl hover:border-brand-teal/50 transition-all duration-300'
-    >
-      <div className='relative h-32 bg-linear-to-br from-brand-blush via-brand-teal to-brand-sky overflow-hidden'>
-        <motion.div
-          className='absolute inset-0'
-          animate={{ rotate: 360 }}
-          transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-        >
-          <div className='absolute top-2 right-2 w-16 h-16 bg-white/20 rounded-full' />
-          <div className='absolute bottom-2 left-2 w-12 h-12 bg-white/20 rounded-full' />
-        </motion.div>
-
-        {/* Wave Separator */}
-        <div className='absolute -bottom-px left-0 w-full leading-0'>
-          <svg
-            className='w-full h-8 text-white fill-current opacity-90'
-            viewBox='0 0 1200 120'
-            preserveAspectRatio='none'
-          >
-            <path d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z'></path>
-          </svg>
-        </div>
-      </div>
-
-      {/* 2. ROTATING STICKER */}
-      <div className='absolute top-20 left-1/2 transform -translate-x-1/2 z-20'>
-        <motion.div
-          className={`relative w-20 h-20 rounded-full ${bgClass} shadow-2xl flex items-center justify-center border-4 border-white`}
-          whileHover={{ scale: 1.05 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-        >
-          <CircularText
-            text={stickerText}
-            className={colorClass}
-            id={title.replace(/\s+/g, '-').toLowerCase()}
-          />
-          <Icon className={`w-7 h-7 ${colorClass}`} />
-        </motion.div>
-      </div>
-
-      {/* 3. CONTENT SECTION */}
-      <div className='pt-12 pb-6 px-6 flex-1 flex flex-col bg-white/80 backdrop-blur-sm relative z-10'>
-        <h3 className='text-lg font-bold text-center text-slate-900 mb-2 group-hover:text-brand-teal transition-colors'>
-          {title}
-        </h3>
-        <p className='text-slate-600 text-center mb-6 text-xs leading-relaxed'>
-          {description}
-        </p>
-
-        {/* Feature List */}
-        <ul className='space-y-2 mt-auto'>
-          {features.map((item, i) => (
-            <li key={i} className='flex items-start text-xs text-slate-600'>
-              <CheckCircle2 className={`h-4 w-4 mr-2 shrink-0 ${colorClass}`} />
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </motion.div>
-  );
-};
-
-// let demoStarted = false;
 export default function Home() {
-  // const router = useRouter();
   const [onboardReady, setOnboardReady] = useState(false);
-
-  const { scrollYProgress } = useScroll();
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 0.6]);
 
   const startDemoTour = () => {
     if (!onboardReady) return;
@@ -232,14 +103,13 @@ export default function Home() {
         }}
       />
 
-      <div className='relative w-full overflow-hidden bg-linear-to-br from-brand-sky/20 via-brand-blush/10 to-brand-sage/20 text-slate-900 selection:bg-brand-teal/20 selection:text-brand-teal'>
+      <div className='relative w-full overflow-hidden bg-gray-100'>
         <motion.div
-          className='absolute top-0 left-0 right-0 bottom-0 -z-10 overflow-hidden pointer-events-none'
-          style={{ y: backgroundY, opacity }}
+          className='absolute top-0 left-0 right-0 bottom-0 z-10 overflow-hidden pointer-events-none'
         >
-          <div className='absolute top-0 left-1/4 w-96 h-96 bg-brand-sky rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob'></div>
-          <div className='absolute top-0 right-1/4 w-96 h-96 bg-brand-teal rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000'></div>
-          <div className='absolute -bottom-32 left-1/3 w-96 h-96 bg-brand-blush rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000'></div>
+          <div className='absolute top-0 left-1/4 w-96 h-96 bg-[#CC336365] rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob'></div>
+          <div className='absolute top-0 right-1/4 w-96 h-96 bg-[#CC336365] rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000'></div>
+          <div className='absolute -bottom-32 left-1/3 w-96 h-96 bg-[#CC336365] rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000'></div>
 
           {/* Wave SVG */}
           <div className='absolute bottom-0 left-0 w-full'>
@@ -278,7 +148,7 @@ export default function Home() {
             </motion.div>
 
             <motion.h1
-              className='text-5xl md:text-7xl font-bold tracking-tight text-slate-900'
+              className='text-5xl md:text-7xl font-bold tracking-tight text-[#20063B]'
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, ease: 'easeOut' }}
@@ -287,7 +157,7 @@ export default function Home() {
               Guide Your Users
               <br />
               <motion.span
-                className='bg-linear-to-r from-brand-teal via-brand-blush to-brand-sky bg-clip-text text-transparent'
+                // className='text-[#20063B]'
                 animate={{
                   backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
                 }}
@@ -317,7 +187,7 @@ export default function Home() {
                 >
                   <Button
                     size='lg'
-                    className='text-lg px-8 h-14 bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky hover:from-brand-blush/90 hover:via-brand-teal/90 hover:to-brand-sky/90 text-white shadow-xl shadow-brand-blush/30 rounded-full transition-all duration-300 cursor-pointer'
+                    className='text-lg px-8 h-14 bg-[#2A1E5C] hover:bg-[#2A1E5C]/80 text-white rounded-full transition-all duration-300 cursor-pointer'
                   >
                     Get Started Free
                     <motion.span
@@ -338,9 +208,9 @@ export default function Home() {
                   variant='outline'
                   onClick={startDemoTour}
                   disabled={!onboardReady}
-                  className='text-lg px-8 h-14 border-2 border-brand-teal bg-white/80 hover:bg-brand-teal hover:text-white backdrop-blur-sm text-brand-teal rounded-full shadow-lg transition-all duration-300 cursor-pointer disabled:opacity-50'
+                  className='text-lg px-8 h-14 border-2 border-[#2A1E5C] text-[#2A1E5C] rounded-full shadow-lg transition-all duration-300 cursor-pointer hover:bg-[#2A1E5C] hover:text-white'
                 >
-                  <Play className='mr-2 h-4 w-4 fill-brand-teal' />
+                  <Play className='mr-2 h-4 w-4 fill-[#2A1E5C]' />
                   View Demo
                 </Button>
               </motion.div>
@@ -369,7 +239,7 @@ export default function Home() {
             transition={{ duration: 0.5 }}
           >
             <h2
-              className='text-4xl font-bold mb-4 text-slate-900'
+              className='text-4xl font-bold mb-4 text-[#20063B]'
               id='features-header'
             >
               {' '}
@@ -475,17 +345,17 @@ export default function Home() {
             transition={{ duration: 0.5 }}
             id='how-it-works-header'
           >
-            <h2 className='text-4xl font-bold mb-6 text-slate-900'>
+            <h2 className='text-4xl font-bold mb-3 text-slate-900'>
               How It Works
             </h2>
             <p className='text-2xl text-slate-600 max-w-2xl mx-auto'>
               Get Started in{' '}
-              <span className='text-brand-teal '>3 Simple Steps</span>
+              <span className='text-[#2A1E5C] '>3 Simple Steps</span>
             </p>
           </motion.div>
 
           <div className='relative max-w-6xl mx-auto'>
-            <div className='hidden md:block absolute top-12 left-[15%] right-[15%] h-1 bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky rounded-full -z-10 opacity-30' />
+            <div className='hidden md:block absolute top-12 left-[15%] right-[15%] h-1 bg-gray-500 rounded-full z-10 opacity-30' />
 
             <div className='grid md:grid-cols-3 gap-12'>
               {[
@@ -535,20 +405,20 @@ export default function Home() {
                         stiffness: 260,
                         damping: 20,
                       }}
-                      className={`w-24 h-24 rounded-full bg-linear-to-br ${item.gradient} p-1 shadow-xl mb-8 relative z-10`}
+                      className={`w-24 h-24 rounded-full bg-gray-200 backdrop-blur-2xl p-1 mb-8 relative z-10`}
                     >
-                      <div className='w-full h-full bg-white rounded-full flex items-center justify-center'>
+                      <div className='w-full h-full rounded-full flex items-center justify-center'>
                         <item.icon className={`w-10 h-10 ${item.color}`} />
                       </div>
                       <div
-                        className={`absolute -top-2 -right-2 w-8 h-8 rounded-full bg-linear-to-r ${item.gradient} flex items-center justify-center text-white font-bold text-sm shadow-lg border-2 border-white`}
+                        className={`absolute -top-2 -right-2 w-8 h-8 rounded-full bg-linear-to-r ${item.gradient} flex items-center justify-center text-white font-bold text-sm `}
                       >
                         {item.step}
                       </div>
                     </motion.div>
 
-                    <div className='bg-white/60 backdrop-blur-sm border border-white/50 p-8 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 w-full'>
-                      <h3 className='text-2xl font-bold text-slate-900 mb-3 group-hover:text-brand-teal transition-colors'>
+                    <div className='bg-white/60 backdrop-blur-sm border border-white/50 p-8 rounded-3xl shadow-sm transition-all duration-300 hover:-translate-y-2 w-full'>
+                      <h3 className='text-2xl font-bold text-slate-900 mb-3 group-hover:text-[#2A1E5C] transition-colors'>
                         {item.title}
                       </h3>
                       <p className='text-slate-600 leading-relaxed'>
@@ -571,7 +441,7 @@ export default function Home() {
             <Link href='/docs'>
               <Button
                 variant='outline'
-                className='h-14 px-8 rounded-full border-2 border-brand-teal text-brand-teal hover:bg-brand-teal hover:text-white transition-all duration-300 text-lg font-semibold shadow-lg cursor-pointer'
+                className='h-14 px-8 rounded-full border-2 border-[#2A1E5C] text-[#2A1E5C] hover:bg-[#2A1E5C] hover:text-white transition-all duration-300 text-lg font-semibold shadow-lg cursor-pointer'
                 id='docs'
               >
                 Read Documentation
@@ -589,7 +459,7 @@ export default function Home() {
             transition={{ duration: 0.6 }}
           >
             <Card className='max-w-5xl mx-auto overflow-hidden border-0 shadow-2xl rounded-3xl'>
-              <div className='bg-linear-to-br from-brand-teal via-brand-blush to-brand-sky p-12 md:p-20 text-center relative overflow-hidden'>
+              <div className='bg-linear-to-br from-[#2A1E5C] via-[#2A1E5Cee] to-[#2A1E5Ccc] backdrop-blur-2xl p-12 md:p-20 text-center relative overflow-hidden'>
                 <motion.div
                   className='absolute top-10 right-10 w-64 h-64 bg-white/10 rounded-full blur-3xl'
                   animate={{ scale: [1, 1.2, 1], x: [0, 50, 0] }}
@@ -647,7 +517,7 @@ export default function Home() {
                     >
                       <Button
                         size='lg'
-                        className='w-full sm:w-auto text-lg px-8 h-14 bg-white text-brand-teal hover:bg-white/90 border-0 rounded-full font-bold shadow-xl transition-all duration-300 cursor-pointer'
+                        className='w-full sm:w-auto text-lg px-8 h-14 bg-white text-[#2A1E5C] hover:bg-white/90 border-0 rounded-full font-bold shadow-xl transition-all duration-300 cursor-pointer'
                       >
                         Get Started
                         <ArrowRight className='ml-2 h-5 w-5' />
