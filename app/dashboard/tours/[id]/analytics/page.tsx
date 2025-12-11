@@ -161,7 +161,7 @@ export default function AnalyticsPage() {
             <Button
               variant='ghost'
               size='sm'
-              className='rounded-full border-2 border-brand-teal/20 text-slate-700 hover:border-brand-teal hover:text-brand-teal hover:bg-white bg-white/50 backdrop-blur-sm transition-all duration-300'
+              className='rounded-full border-2 border-brand-teal/20 text-slate-700 hover:border-brand-teal hover:text-brand-teal hover:bg-white bg-white/50 transition-all duration-300'
             >
               <ArrowLeft className='mr-2 h-4 w-4' />
               Back to Dashboard
@@ -189,12 +189,12 @@ export default function AnalyticsPage() {
                 transition={{ delay: i * 0.1 }}
               >
                 <Card
-                  className={`rounded-3xl border-2 border-white/50 bg-white/80 backdrop-blur-sm shadow-xl hover:shadow-2xl hover:border-brand-teal/30 transition-all duration-300 h-full`}
+                  className={`rounded-3xl border-2 border-white/50 bg-white/80 hover:border-brand-teal/30 transition-all duration-300 h-full`}
                 >
                   <CardContent className='p-6'>
                     <div className='flex items-start justify-between mb-4'>
                       <div
-                        className={`w-14 h-14 rounded-2xl bg-linear-to-br ${s.color} flex items-center justify-center shadow-lg`}
+                        className={`w-14 h-14 rounded-2xl bg-linear-to-br ${s.color} flex items-center justify-center`}
                       >
                         <s.icon className='h-7 w-7 text-white' />
                       </div>
@@ -212,7 +212,7 @@ export default function AnalyticsPage() {
           })}
         </div>
 
-        <Card className='rounded-3xl border-2 border-white/50 bg-white/80 backdrop-blur-sm shadow-xl transition-all duration-300'>
+        <Card className='rounded-3xl border-2 border-white/50 bg-white/80 transition-all duration-300'>
           <CardHeader className='border-b border-slate-100/50 pb-6'>
             <CardTitle className='text-xl font-bold text-slate-900'>
               Step Performance
@@ -237,13 +237,13 @@ export default function AnalyticsPage() {
                       <motion.div
                         whileHover={{ y: -4 }}
                         key={step.id}
-                        className='group flex flex-col justify-between rounded-2xl border border-white/60 bg-white/40 p-5 shadow-sm hover:shadow-md hover:border-brand-teal/30 transition-all duration-300'
+                        className='group flex flex-col justify-between rounded-2xl border border-white/60 bg-white/40 p-5 shadow-sm hover:border-brand-teal/30 transition-all duration-300'
                       >
                         <div className='mb-4'>
                           <div className='flex items-center gap-2 mb-3'>
                             <Badge
                               variant='outline'
-                              className='bg-white border-brand-teal/20 text-brand-teal shadow-xs'
+                              className='bg-white border-brand-teal/20 text-brand-teal'
                             >
                               Step {index + 1}
                             </Badge>
@@ -302,7 +302,7 @@ export default function AnalyticsPage() {
               <Link href={`/dashboard/tours/${tourId}/embed`}>
                 <Button
                   size='lg'
-                  className='bg-white text-brand-teal hover:bg-white/90 border-0 rounded-full shadow-lg font-bold px-8 h-12'
+                  className='bg-black text-brand-teal hover:bg-white/90 border-0 rounded-full shadow-lg font-bold px-8 h-12'
                 >
                   View Embed Code
                 </Button>
