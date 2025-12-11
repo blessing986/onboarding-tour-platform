@@ -17,8 +17,6 @@ const config: Config = {
           teal: "#66b3ba",     // Main teal for primary actions
           blush: "#ff9eaf",    // Vibrant pink for highlights
         },
-        background: "var(--background)",
-        foreground: "var(--foreground)",
         card: {
           DEFAULT: "var(--card)",
           foreground: "var(--card-foreground)",

@@ -1,5 +1,4 @@
 'use client';
-
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
@@ -7,7 +6,7 @@ import { useState } from 'react';
 const tourSteps = [
   {
     id: 1,
-    title: "Welcome! 👋",
+    title: "Welcome!",
     description: "Let's take a quick tour of your dashboard",
     position: { top: "8%", right: "5%" },
     targetElement: { top: "12%", right: "50%" },
@@ -15,7 +14,7 @@ const tourSteps = [
   },
   {
     id: 2,
-    title: "Create Tours ✨",
+    title: "Create Tours",
     description: "Build interactive guides in minutes",
     position: { top: "35%", left: "5%" },
     targetElement: { top: "25%", left: "15%" },
@@ -23,7 +22,7 @@ const tourSteps = [
   },
   {
     id: 3,
-    title: "Track Progress 📊",
+    title: "Track Progress",
     description: "Monitor user engagement and completion",
     position: { bottom: "15%", right: "5%" },
     targetElement: { bottom: "55%", right: "35%" },
@@ -31,7 +30,7 @@ const tourSteps = [
   },
   {
     id: 4,
-    title: "You're All Set! 🎉",
+    title: "You're All Set!",
     description: "Start creating amazing user experiences",
     position: { top: "50%", left: "50%", transform: "translate(-50%, -50%)" },
     targetElement: null,
@@ -63,7 +62,7 @@ export function ProductTourIllustration() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="relative bg-white rounded-2xl shadow-2xl overflow-hidden border-4 border-slate-200"
+        className="relative bg-white rounded-2xl shadow-xl overflow-hidden border-4 border-slate-200"
       >
         {/* Browser Header */}
         <div className="bg-slate-100 px-4 py-2.5 flex items-center gap-2 border-b border-slate-200">
@@ -209,7 +208,7 @@ export function ProductTourIllustration() {
               exit={{ scale: 0, opacity: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 20, duration: 0.3 }}
               style={step.position}
-              className="absolute bg-linear-to-r from-brand-blush via-brand-teal to-brand-sky text-white rounded-2xl p-4 shadow-2xl max-w-xs z-10"
+              className="absolute bg-[#20063Bcc] backdrop-blur-lg text-white rounded-2xl p-4 shadow-2xl max-w-xs z-10"
             >
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-full bg-white/30 flex items-center justify-center font-bold text-sm">
@@ -238,7 +237,7 @@ export function ProductTourIllustration() {
                   <button
                     onClick={handleNext}
                     disabled={currentStep === tourSteps.length - 1}
-                    className="px-3 py-1.5 rounded-lg bg-white text-brand-teal hover:bg-white/90 disabled:opacity-30 disabled:cursor-not-allowed transition-all text-xs font-medium flex items-center gap-1"
+                    className="px-3 py-1.5 rounded-lg bg-white text-[#2A1E5C55] hover:bg-white/90 disabled:opacity-30 disabled:cursor-not-allowed transition-all text-xs font-medium flex items-center gap-1"
                   >
                     {currentStep === tourSteps.length - 1 ? "Done" : "Next"}
                     {currentStep !== tourSteps.length - 1 && <ChevronRight className="w-3 h-3" />}
@@ -252,7 +251,7 @@ export function ProductTourIllustration() {
           <motion.div
             animate={{ y: [0, -8, 0] }}
             transition={{ duration: 3, repeat: Infinity }}
-            className="absolute top-6 left-6 w-10 h-10 rounded-full bg-brand-sky/20 blur-xl"
+            className="absolute top-6 left-6 w-10 h-10 rounded-full bg-amber-50/80 blur-xl"
           ></motion.div>
           <motion.div
             animate={{ y: [0, 8, 0] }}
@@ -269,21 +268,11 @@ export function ProductTourIllustration() {
         transition={{ delay: 0.8 }}
         className="absolute left-4 -top-6 bg-white rounded-xl shadow-xl p-2.5 border-2 border-brand-sage/30"
       >
-        <div className="w-10 h-10 rounded-lg bg-linear-to-br from-brand-sage to-brand-teal flex items-center justify-center">
+        <div className="w-10 h-10 rounded-lg bg-[#2A1E5C55] flex items-center justify-center">
           <span className="text-white text-lg">📊</span>
         </div>
       </motion.div>
 
-      <motion.div
-        initial={{ x: 50, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="absolute -right-3 -bottom-6 bg-white rounded-xl shadow-xl p-2.5 border-2 border-brand-sky/30"
-      >
-        <div className="w-10 h-10 rounded-lg bg-linear-to-br from-brand-sky to-brand-blush flex items-center justify-center">
-          <span className="text-white text-lg">🎯</span>
-        </div>
-      </motion.div>
     </div>
   );
 }

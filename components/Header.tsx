@@ -16,7 +16,7 @@ export function Header() {
 
   return (
     <motion.nav
-      className="fixed top-0 w-full z-50 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60"
+      className="fixed top-0 w-full z-50 border-b bg-gray-100/80 backdrop-blur"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
@@ -28,9 +28,9 @@ export function Header() {
             whileHover={{ rotate: 180 }}
             transition={{ duration: 0.5 }}
           >
-            <Compass className="h-6 w-6 text-brand-teal" />
+            <Compass className="h-6 w-6 text-[#2A1E5C]" />
           </motion.div>
-          <span className="font-bold text-xl group-hover:text-brand-teal transition-colors">TourGuide</span>
+          <span className="font-bold text-xl group-hover:text-[#2A1E5C] transition-colors">TourGuide</span>
         </Link>
 
         {/* Navigation Links - Center */}
@@ -38,15 +38,15 @@ export function Header() {
           <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
             <Link
               href="/"
-              className={`text-sm font-medium transition-colors hover:text-primary relative ${
-                isActive('/') ? 'text-primary' : 'text-muted-foreground'
+              className={`text-sm font-medium transition-colors hover:text-[#2A1E5C] relative ${
+                isActive('/') ? 'text-[#2A1E5C]' : 'text-muted-foreground'
               }`}
             >
               Home
               {isActive('/') && (
                 <motion.div
                   layoutId="activeNav"
-                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary"
+                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#2A1E5C]"
                   initial={false}
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 />
@@ -56,15 +56,15 @@ export function Header() {
           <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
             <Link
               href="/about"
-              className={`text-sm font-medium transition-colors hover:text-primary relative ${
-                isActive('/about') ? 'text-primary' : 'text-muted-foreground'
+              className={`text-sm font-medium transition-colors hover:text-[#2A1E5C] relative ${
+                isActive('/about') ? 'text-[#2A1E5C]' : 'text-muted-foreground'
               }`}
             >
               About
               {isActive('/about') && (
                 <motion.div
                   layoutId="activeNav"
-                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary"
+                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#2A1E5C]"
                   initial={false}
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 />
@@ -74,15 +74,15 @@ export function Header() {
           <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
             <Link
               href="/docs"
-              className={`text-sm font-medium transition-colors hover:text-primary relative ${
-                isActive('/docs') ? 'text-primary' : 'text-muted-foreground'
+              className={`text-sm font-medium transition-colors hover:text-[#2A1E5C] relative ${
+                isActive('/docs') ? 'text-[#2A1E5C]' : 'text-muted-foreground'
               }`}
             >
               Documentation
               {isActive('/docs') && (
                 <motion.div
                   layoutId="activeNav"
-                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary"
+                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#2A1E5C]"
                   initial={false}
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 />
@@ -95,7 +95,7 @@ export function Header() {
         <div className="hidden md:flex items-center">
           <Link href="/login">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button size="sm" className="bg-linear-to-r from-brand-teal to-brand-sky hover:from-brand-teal/90 hover:to-brand-sky/90 text-white rounded-full px-6">
+              <Button size="sm" className="bg-linear-to-br from-[#2A1E5C] via-[#2A1E5Cee] to-[#2A1E5Ccc] hover:from-[#2A1E5C]/90 hover:to-[#2A1E5Cee]/90 text-white rounded-full px-6">
                 Sign In
               </Button>
             </motion.div>
