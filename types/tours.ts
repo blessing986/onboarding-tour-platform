@@ -16,6 +16,7 @@ export type TourSteps = {
   content: string;
   target: string;
   position: 'top' | 'bottom' | 'left' | 'right';
+  percentage: number;
 };
 
 export type TourStep = {
