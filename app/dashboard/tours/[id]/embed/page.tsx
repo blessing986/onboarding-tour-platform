@@ -127,7 +127,7 @@ function App() {
     return null;
   }
   const cardStyle =
-    'rounded-3xl border-2 border-white/50 bg-white/80 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300';
+    'rounded-3xl border-2 border-white/50 bg-white/80 backdrop-blur-sm transition-all duration-300';
   const headerTextStyle = 'text-2xl font-bold text-slate-900';
   const subTextStyle = 'text-slate-600 leading-relaxed';
 
